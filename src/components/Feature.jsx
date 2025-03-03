@@ -7,6 +7,7 @@ import f5 from '../assets/f5.png';
 import f6 from '../assets/f6.png';
 
 
+
 const Feature = () => {
   return (
     <section id="feature" className="section-p1">
