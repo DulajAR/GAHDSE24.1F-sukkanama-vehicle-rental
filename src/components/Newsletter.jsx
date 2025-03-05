@@ -4,11 +4,11 @@ const Newsletter = () => {
   return (
     <section id="newsletter" className="section-p1 section-m1">
       <div className="newstext">
-        <h4>Sign Up For Newsletters</h4>
-        <p>Get E-mail updates about our latest functions and <span>special offers.</span></p>
+      <h2>Subscribe to Newsletter</h2>
+        <p>Sign up to get the latest updates</p>
       </div>
       <div className="form">
-        <input type="text" placeholder="Your email address" />
+        <input type="text" placeholder="Email address" />
         <button className="normal">Sign Up</button>
       </div>
     </section>

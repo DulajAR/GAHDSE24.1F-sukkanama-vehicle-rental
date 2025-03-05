@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import b17 from '../assets/b17.jpg'; // Adjust the path based on your folder structure
+import b17 from '../assets/b17.png'; // Adjust the path based on your folder structure
 import b10 from '../assets/b10.jpg';
 
 const SmallBanner = () => {

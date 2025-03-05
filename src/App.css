@@ -224,6 +224,8 @@ body {
 #feature {
   display: flex;
   width:117%;
+  font-size: 1.5rem;
+
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -253,12 +255,12 @@ body {
   padding: 9px 8px 6px 8px;
   line-height: 1;
   border-radius: 4px;
-  color: #088178;
+  color: #010f0e;
   background-color: #fddde4;
 }
 
 #feature .fe-box:nth-child(2) h6 {
-  background-color: #cdebbc;
+  background-color: #a1c78b;
 }
 
 #feature .fe-box:nth-child(3) h6 {
@@ -499,18 +501,19 @@ body {
 }
 
 .banner-box button:hover {
-  background-color: #0056b3;
+  background-color: #9e00b3;
 }
 
 /* Newsletter Section Styles */
 #newsletter {
   text-align: center;
   padding: 50px 20px;
-  background-color: #007bff;
+  width: 117%;
+  background-color: #4986c7;
   color: white;
 }
 
-#newsletter h4 {
+#newsletter h2 {
   margin: 0;
   font-size: 1.5rem;
 }
@@ -530,8 +533,8 @@ body {
 
 #newsletter button {
   padding: 10px 20px;
-  background-color: white;
-  color: #007bff;
+  background-color: rgb(176, 163, 27);
+  color: #111112;
   border: none;
   border-radius: 5px;
   cursor: pointer;
