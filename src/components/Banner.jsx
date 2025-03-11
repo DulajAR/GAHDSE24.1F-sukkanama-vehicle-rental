@@ -22,7 +22,7 @@ const Banner = () => {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        width: '115.50%',
+        width: '125%',
         height: '40vh',
       }}
     >

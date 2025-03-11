@@ -20,7 +20,7 @@ body {
   position: sticky;
   top: 0;
   left: 0;
-  width: 115%;
+  width: 118%;
 }
 
 /* Logo Styling */
@@ -155,6 +155,7 @@ body {
   background-size: cover;
   background-position: center;
   text-align: center;
+  width: 118%;
   padding: 100px 20px;
   color: white;
 }
@@ -189,7 +190,7 @@ body {
 #hero {
   text-align: center;
   padding: 100px 20px;
-  width:117%;
+  width:128%;
   background-color: #007bff;
   color: white;
 }
@@ -223,7 +224,7 @@ body {
 /* Feature.css */
 #feature {
   display: flex;
-  width:117%;
+  width:125%;
   font-size: 1.5rem;
 
   align-items: center;
@@ -508,7 +509,7 @@ body {
 #newsletter {
   text-align: center;
   padding: 50px 20px;
-  width: 117%;
+  width: 125%;
   background-color: #4986c7;
   color: white;
 }
@@ -550,9 +551,10 @@ body {
 /* Footer.css */
 footer {
   display: flex;
+  width: 130%;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 40px 20px; /* Add padding to prevent content from touching the edges */
+  padding: 8px 8px; /* Add padding to prevent content from touching the edges */
   background-color: #f8f9fa; /* Optional: Add a background color */
 }
 
@@ -560,23 +562,18 @@ footer .col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   flex: 1 1 200px; /* Allow columns to grow and shrink, with a minimum width of 200px */
-  margin-right: 20px; /* Add spacing between columns */
+  margin-right: 10px; /* Add spacing between columns */
 }
 
 footer .col:last-child {
   margin-right: 0; /* Remove margin for the last column */
 }
 
-footer .logo {
-  margin-bottom: 20px;
-  width: 120px; /* Set a fixed width for the logo */
-}
-
 footer h4 {
   font-size: 16px;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   color: #333; /* Add a color for better readability */
 }
 
@@ -590,7 +587,7 @@ footer a {
   font-size: 14px;
   text-decoration: none;
   color: #222;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   transition: color 0.3s ease; /* Add a smooth hover effect */
 }
 
@@ -640,9 +637,9 @@ footer .install img {
 }
 
 footer .copyright {
-  width: 100%;
+  width: 200%;
   text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
   border-top: 1px solid #e1e1e1; /* Add a border at the top of the copyright section */
   margin-top: 20px;
   font-size: 14px;
