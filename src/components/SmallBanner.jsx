@@ -9,22 +9,25 @@ const SmallBanner = () => {
   return (
     <section id="sm-banner" className="section-p1">
       <div
-        className="banner-box"
-        style={{ backgroundImage: `url(${b17})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-      >
-        <h4>Rent Vehicle Owners</h4>
-        <h2>Publish Your Add</h2>
-        <span>Find Customers in Easy Steps</span>
-        <button className="white" onClick={() => navigate('/loginSupplier')}>Sign Up</button>
+        className="banner-box banner-box2"
+        style={{ //backgroundImage: `url(${b10})`
+        backgroundSize: '300px,200px', backgroundPosition: 'center',backgroundRepeat: 'no-repeat'}}
+      ><div>
+        <h4>Hosts</h4>
+        <h5>Sign up and start earning from your vehicles</h5>
+        <button className="white" onClick={() => navigate('/loginCustomer')}>Register Now</button>
+        </div>
       </div>
       <div
-        className="banner-box banner-box2"
-        style={{ backgroundImage: `url(${b10})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        className="banner-box"
+        style={{ //backgroundImage: `url(${b17})`
+         backgroundSize: '300px,200px', backgroundPosition: 'center',backgroundRepeat: 'no-repeat'}}
       >
-        <h4>Vehicle Finders for Rent</h4>
-        <h2>Select & Book Your Vehicle</h2>
-        <span>Find Your vehicle in Easy Steps</span>
-        <button className="white" onClick={() => navigate('/loginCustomer')}>Sign Up</button>
+        <div>
+        <h4>Hirers</h4>
+        <h5>Register and be a member and you can start choosing from hundredrs of vehicles and find your perfect match</h5>
+        <button className="white" onClick={() => navigate('/loginSupplier')}>Register Now</button>
+      </div>
       </div>
     </section>
   );

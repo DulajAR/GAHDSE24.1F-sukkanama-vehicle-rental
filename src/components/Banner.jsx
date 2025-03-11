@@ -27,7 +27,7 @@ const Banner = () => {
       }}
     >
       <h4>Trusted Services</h4>
-      <h2>Select <span>100% Free</span> - Many Vehicle Collection for Select</h2>
+      <h2>Search your vehciles here!</h2>
       <button className="normal" onClick={exploreMore}>Explore More</button>
     </section>
   );

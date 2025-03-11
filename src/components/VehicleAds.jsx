@@ -24,7 +24,7 @@ const VehicleAds = () => {
 
   return (
     <div>
-      <h1>Vehicle Ads</h1>
+      <h1>Pick your vehicle</h1>
       <div>
         <label htmlFor="brand-filter">Filter by Brand:</label>
         <select id="brand-filter" onChange={(e) => setBrandFilter(e.target.value)}>
