@@ -45,9 +45,10 @@ body {
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #070101;
   transition: 0.3s ease;
 }
+
 
 #navbar li a:hover,
 #navbar li a.active {
