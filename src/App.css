@@ -20,7 +20,7 @@ body {
   position: sticky;
   top: 0;
   left: 0;
-  width: 115%;
+  width: 118%;
 }
 
 /* Logo Styling */
@@ -155,6 +155,7 @@ body {
   background-size: cover;
   background-position: center;
   text-align: center;
+  width: 118%;
   padding: 100px 20px;
   color: white;
 }
@@ -189,7 +190,7 @@ body {
 #hero {
   text-align: center;
   padding: 100px 20px;
-  width:117%;
+  width:128%;
   background-color: #007bff;
   color: white;
 }
@@ -223,7 +224,7 @@ body {
 /* Feature.css */
 #feature {
   display: flex;
-  width:117%;
+  width:121%;
   font-size: 1.5rem;
 
   align-items: center;
@@ -232,13 +233,13 @@ body {
 }
 
 #feature .fe-box {
-  width: 135px; /* Reduced width to make boxes smaller */
+  width: 130px; /* Reduced width to make boxes smaller */
   text-align: center;
-  padding: 20px 10px; /* Reduced padding to make content more compact */
-  box-shadow: 20px 20px 34px rgba(0, 0, 0, 0.03);
+  padding: 10px 5px; /* Reduced padding to make content more compact */
+  box-shadow: 10px 10px 34px rgba(0, 0, 0, 0.03);
   border: 1px solid #cce7d0;
   border-radius: 4px;
-  margin: 10px; /* Reduced margin to bring boxes closer together */
+  margin: 2px; /* Reduced margin to bring boxes closer together */
 }
 
 #feature .fe-box:hover {
@@ -293,7 +294,8 @@ body {
   background-position: center;
   width: 100%;
   height: 50vh;
-  color: white; /* Adjust text color for better visibility */
+  font-weight: bold;
+  color: rgb(33, 31, 31); /* Adjust text color for better visibility */
 }
 
 #banner h4 {
@@ -304,6 +306,7 @@ body {
 #banner h2 {
   font-size: 2rem;
   margin: 10px 0;
+  color:rgb(245, 179, 232);
 }
 
 #banner h2 span {
@@ -413,7 +416,8 @@ body {
 #sm-banner {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px;
+  gap: 20px;
 }
 
 #sm-banner .banner-box {
@@ -421,32 +425,34 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  min-width: 48%; /* Adjust as needed */
+  min-width: 60%; /* Adjust as needed */
   height: 50vh;
-  padding: 30px;
-  color: white;
+  padding: 10px;
+  color: rgb(204, 40, 40);
   text-align: left;
 }
 
 #sm-banner .banner-box h4 {
   font-size: 1.5rem;
-  margin: 0;
+  margin: 10px;
 }
 
 #sm-banner .banner-box h2 {
-  font-size: 2rem;
-  margin: 10px 0;
+  font-size: 1.5rem;
+  margin: 10px;
 }
 
 #sm-banner .banner-box span {
   font-size: 1rem;
-  margin-bottom: 20px;
+  margin-bottom: 100px;
 }
+
 
 #sm-banner .banner-box button.white {
   padding: 10px 20px;
   background-color: white;
-  color: #007bff;
+  color: #ff6f00;
+  font-weight: bold;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -467,26 +473,21 @@ body {
 }
 
 .banner-box {
-  text-align: center;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  width: 45%;
+  text-align: left;
+  padding: 50px;
+  background-color: #c8cdd1;
+  border-radius: 10px;
+  width: 20%;
 }
 
 .banner-box h4 {
-  margin: 0;
+  margin: 3;
   font-size: 1.5rem;
 }
 
-.banner-box h2 {
-  margin: 10px 0;
-  font-size: 2rem;
-}
-
-.banner-box span {
-  font-size: 1rem;
-  color: #555;
+.banner-box h5 {
+  font-size: 0.9rem;
+  color: #121111;
 }
 
 .banner-box button {
@@ -501,14 +502,14 @@ body {
 }
 
 .banner-box button:hover {
-  background-color: #9e00b3;
+  background-color: #be46ce;
 }
 
 /* Newsletter Section Styles */
 #newsletter {
   text-align: center;
   padding: 50px 20px;
-  width: 117%;
+  width: 125%;
   background-color: #4986c7;
   color: white;
 }
@@ -550,9 +551,10 @@ body {
 /* Footer.css */
 footer {
   display: flex;
+  width: 130%;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 40px 20px; /* Add padding to prevent content from touching the edges */
+  padding: 8px 8px; /* Add padding to prevent content from touching the edges */
   background-color: #f8f9fa; /* Optional: Add a background color */
 }
 
@@ -560,23 +562,18 @@ footer .col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   flex: 1 1 200px; /* Allow columns to grow and shrink, with a minimum width of 200px */
-  margin-right: 20px; /* Add spacing between columns */
+  margin-right: 10px; /* Add spacing between columns */
 }
 
 footer .col:last-child {
   margin-right: 0; /* Remove margin for the last column */
 }
 
-footer .logo {
-  margin-bottom: 20px;
-  width: 120px; /* Set a fixed width for the logo */
-}
-
 footer h4 {
   font-size: 16px;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   color: #333; /* Add a color for better readability */
 }
 
@@ -590,7 +587,7 @@ footer a {
   font-size: 14px;
   text-decoration: none;
   color: #222;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   transition: color 0.3s ease; /* Add a smooth hover effect */
 }
 
@@ -640,9 +637,9 @@ footer .install img {
 }
 
 footer .copyright {
-  width: 100%;
+  width: 200%;
   text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
   border-top: 1px solid #e1e1e1; /* Add a border at the top of the copyright section */
   margin-top: 20px;
   font-size: 14px;

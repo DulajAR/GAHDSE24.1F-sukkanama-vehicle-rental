@@ -9,18 +9,16 @@ const Footer = () => {
   return (
     <footer className="section-p1">
       <div className="col">
-        <img className="logo" src={logo} alt="Sukkanama Logo" />
         <h4>Contact</h4>
         <p><strong>Address: </strong>562 Kithulampitiya Road, Street 31, Galle, SriLanka</p>
-        <p><strong>Phone: </strong>+94 078 856 8282 / +94 077 987 8765</p>
-        <p><strong>Hours: </strong>24 Hours</p>
+        <p><strong>Phone: </strong>+94 78 856 8282 / +94 77 987 8765</p>
+        
         <div className="follow">
           <h4>Follow us</h4>
           <div className="icon">
             <i className="fab fa-facebook-f"></i>
             <i className="fab fa-twitter"></i>
             <i className="fab fa-instagram"></i>
-            <i className="fab fa-pinterest-p"></i>
             <i className="fab fa-youtube"></i>
           </div>
         </div>
