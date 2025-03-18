@@ -23,9 +23,9 @@ const VehicleAds = () => {
   };
 
   return (
-    <div>
+    <div className="vehicle-ads-section">
       <h1>Pick your vehicle</h1>
-      <div>
+      <div className="filter-container">
         <label htmlFor="brand-filter">Filter by Brand:</label>
         <select id="brand-filter" onChange={(e) => setBrandFilter(e.target.value)}>
           <option value="all">All Brands</option>

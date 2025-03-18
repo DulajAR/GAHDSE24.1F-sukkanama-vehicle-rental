@@ -22,12 +22,12 @@ const Banner = () => {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        width: '125%',
-        height: '40vh',
+        width: '100%', /* Updated to full width */
+        height: '50vh', /* Adjusted for better visibility */
       }}
     >
       <h4>Trusted Services</h4>
-      <h2>Search your vehciles here!</h2>
+      <h2>Search your vehicles here!</h2>
       <button className="normal" onClick={exploreMore}>Explore More</button>
     </section>
   );
