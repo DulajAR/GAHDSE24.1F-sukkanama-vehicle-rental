@@ -12,7 +12,7 @@ const Hero = () => {
   return (
     <section id="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
       <h1>Sukkanama</h1>
-      <h2>Super value vehicles</h2>
+      <h2>Super Value Vehicles</h2>
       <p>Save time, connect with us!</p>
       <button onClick={browseVehicles}>Browse Now</button>
     </section>
