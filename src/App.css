@@ -594,6 +594,8 @@ footer .install .row img {
   border: 1px solid #088178;
   border-radius: 6px;
   width: 120px; /* Set a fixed width for the app store and play store images */
+
+  
 }
 
 footer .install img {
