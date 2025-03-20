@@ -1,6 +1,5 @@
 import React from "react";
-// Import images
-import img1 from "../assets/1.png";
+import img1 from "../assets/1.png"; // Adjust the path based on your folder structure
 import img2 from "../assets/2.png";
 import img3 from "../assets/3.png";
 
@@ -18,8 +17,8 @@ const ContactFormSection = () => {
       </form>
 
       <div className="people">
-        {/* Person 1 */}
-        <div style={{ backgroundImage: `url(${img1})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div>
+          <img src={img1} alt="Kamal Perera" />
           <p>
             <span>Kamal Perera</span> Senior Marketing Manager <br />
             Phone: +94 776545432 <br />
@@ -27,8 +26,8 @@ const ContactFormSection = () => {
           </p>
         </div>
 
-        {/* Person 2 */}
-        <div style={{ backgroundImage: `url(${img2})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div>
+          <img src={img2} alt="Standra Alwis" />
           <p>
             <span>Standra Alwis</span> Managing Director <br />
             Phone: +94 716599832 <br />
@@ -36,8 +35,8 @@ const ContactFormSection = () => {
           </p>
         </div>
 
-        {/* Person 3 */}
-        <div style={{ backgroundImage: `url(${img3})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div>
+          <img src={img3} alt="Stafanie Fernando" />
           <p>
             <span>Stafanie Fernando</span> Senior Marketing Supervisor <br />
             Phone: +94 776544321 <br />
