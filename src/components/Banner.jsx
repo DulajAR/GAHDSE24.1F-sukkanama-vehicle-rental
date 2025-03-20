@@ -27,7 +27,7 @@ const Banner = () => {
       }}
     >
       <h4>Trusted Services</h4>
-      <h2>Search your vehicles here!</h2>
+      <h2>Find your vehicles here!!</h2>
       <button className="normal" onClick={exploreMore}>Explore More</button>
     </section>
   );
