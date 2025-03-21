@@ -21,12 +21,10 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/loginSupplier"
-              className={location.pathname === "/loginSupplier" ? "active" : ""}
-            >
-              Rent Your Vehicle
-            </Link>
+          <Link to="/supplier-login" className={location.pathname === "/supplier-login" ? "active" : ""}>
+  Rent Your Vehicle
+</Link>
+
           </li>
           <li>
             <Link
