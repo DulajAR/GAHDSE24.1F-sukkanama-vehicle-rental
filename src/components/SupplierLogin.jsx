@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";  // Import Link from react-router-dom
 
 const SupplierLogin = () => {
   const [formData, setFormData] = useState({ u_name: "", p_word: "" });
@@ -36,7 +37,10 @@ const SupplierLogin = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-      <p>Not registered? <a href="/signup-supplier">Register here</a></p>
+      <p>
+        Not registered?{" "}
+        <Link to="/signup-supplier">Register here</Link> {/* Using Link for navigation */}
+      </p>
     </div>
   );
 };
