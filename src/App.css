@@ -1106,3 +1106,107 @@ p a:hover {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+/* SupplierSignupForm.jsx */
+
+/* Container */
+.signup-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 40px auto; /* Added margin to create space at the top and bottom */
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+/* Title */
+.signup-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form fields */
+.signup-container input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+/* Input focus effect */
+.signup-container input:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Message */
+.signup-container .message {
+  text-align: center;
+  color: #28a745;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Button */
+.signup-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.signup-container button:hover {
+  background-color: #45a049;
+}
+
+/* Link to login */
+.signup-container a {
+  text-align: center;
+  display: block;
+  color: #007BFF;
+  margin-top: 20px;
+  text-decoration: none;
+}
+
+.signup-container a:hover {
+  text-decoration: underline;
+}
+
+.login-link {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.login-link a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
