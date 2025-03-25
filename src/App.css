@@ -1280,3 +1280,61 @@ input[type="password"] {
 .register-link {
   margin-top: 10px;
 }
+
+
+
+
+/* CustomerSignupPage.css */
+.signup-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("/images/signup-bg.jpg") no-repeat center center/cover;
+}
+
+.signup-form {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.signup-form h2 {
+  text-align: center;
+  margin-bottom: 20px; /* Space between header and form */
+}
+
+.signup-form input {
+  width: 100%; /* Ensures all inputs take the full width of the form */
+  height: 40px; /* Uniform height for all input fields */
+  padding: 10px; /* Add padding for text inside input */
+  margin: 10px 0; /* Space between input fields */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px; /* Ensure text is a consistent size */
+  box-sizing: border-box; /* Ensure padding and border are included in width calculation */
+}
+
+.signup-form button {
+  width: 100%; /* Full width button */
+  height: 45px; /* A bit taller than input fields */
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.signup-form button:disabled {
+  background-color: #ccc;
+}
+
+.signup-form span {
+  color: red;
+  font-size: 12px;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Import Link from React Router for navigation
+import { Link } from "react-router-dom"; // Import Link for navigation
 
-const SupplierSignupForm = () => {
+const CustomerSignupForm = () => {
   const [formData, setFormData] = useState({
     f_name: "",
     l_name: "",
@@ -11,8 +11,7 @@ const SupplierSignupForm = () => {
     u_name: "",
     p_word: "",
     tel_no: "",
-    tax_id: "",
-    user_type: "supplier",
+    d_licen: "",
   });
 
   const [message, setMessage] = useState("");
@@ -28,12 +27,12 @@ const SupplierSignupForm = () => {
 
     // Simulate the signup process for now
     setMessage("✅ Sign up successful! Redirecting...");
-    setTimeout(() => (window.location.href = "/dashboard"), 2000);
+    setTimeout(() => (window.location.href = "/loginCustomer"), 2000);
   };
 
   return (
     <div className="signup-container">
-      <h2>Supplier Signup</h2>
+      <h2>Customer Signup</h2>
       {message && <p className="message">{message}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -44,19 +43,19 @@ const SupplierSignupForm = () => {
         <input type="date" name="reg_date" value={formData.reg_date} onChange={handleChange} required />
         <input type="text" name="u_name" placeholder="Username" value={formData.u_name} onChange={handleChange} required />
         <input type="password" name="p_word" placeholder="Password" value={formData.p_word} onChange={handleChange} required />
-        <input type="text" name="tel_no" placeholder="Telephone Number" value={formData.tel_no} onChange={handleChange} required />
-        <input type="text" name="tax_id" placeholder="Tax ID" value={formData.tax_id} onChange={handleChange} required />
+        <input type="tel" name="tel_no" placeholder="Phone Number" value={formData.tel_no} onChange={handleChange} required />
+        <input type="text" name="d_licen" placeholder="Driving License" value={formData.d_licen} onChange={handleChange} required />
 
         <button type="submit">Sign Up</button>
       </form>
 
       <div className="login-link">
         <p>
-          Already have an account? <Link to="/supplier-login">Login here</Link>
+          Already have an account? <Link to="/loginCustomer">Login here</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default SupplierSignupForm;
+export default CustomerSignupForm;

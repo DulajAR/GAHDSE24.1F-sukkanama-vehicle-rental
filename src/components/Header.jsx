@@ -10,6 +10,12 @@ const Header = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // Check if we are on either the supplier login or signup page
+  const isRentVehicleActive = location.pathname === "/supplier-login" || location.pathname === "/signup-supplier";
+  
+  // Check if we are on either the customer login or signup page
+  const isFindVehicleActive = location.pathname === "/loginCustomer" || location.pathname === "/signup-customer";
+
   return (
     <header id="header">
       <img src={logo} className="logo" alt="Sukkanama Logo" />
@@ -21,15 +27,17 @@ const Header = () => {
             </Link>
           </li>
           <li>
-          <Link to="/supplier-login" className={location.pathname === "/supplier-login" ? "active" : ""}>
-  Rent Your Vehicle
-</Link>
-
+            <Link
+              to="/supplier-login"
+              className={isRentVehicleActive ? "active" : ""}
+            >
+              Rent Your Vehicle
+            </Link>
           </li>
           <li>
             <Link
               to="/loginCustomer"
-              className={location.pathname === "/loginCustomer" ? "active" : ""}
+              className={isFindVehicleActive ? "active" : ""}
             >
               Find Your Vehicle
             </Link>
