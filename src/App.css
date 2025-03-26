@@ -1041,15 +1041,13 @@ label {
 }
 
 /* Input Fields */
-input[type="text"],
-input[type="password"] {
-  width: 90%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  background-color: #f9f9f9;
-  transition: all 0.3s ease-in-out;
+.input-field {
+  width: 95%; /* Adjust width to fill the container */
+  padding: 10px; /* Add padding for better spacing */
+  margin-bottom: 15px; /* Add spacing between inputs */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ccc; /* Light border color */
+  font-size: 16px; /* Set font size */
 }
 
 input:focus {
@@ -1338,3 +1336,17 @@ input[type="password"] {
   color: red;
   font-size: 12px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
