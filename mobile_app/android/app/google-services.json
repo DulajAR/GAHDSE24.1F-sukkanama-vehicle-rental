@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "855380930373",
+    "project_id": "sukkanama-vehicle-rent",
+    "storage_bucket": "sukkanama-vehicle-rent.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855380930373:android:7fc4ee03ebfd414309582c",
+        "android_client_info": {
+          "package_name": "com.example.mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3sE1tn2_ZjQr1j2O6Z_VBVRw-ZErq_5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
