@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";  // Import Link for navigation
+import { Link } from "react-router-dom";
+import { auth } from "../firebase-config"; // Import Firebase Auth
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const CustomerLogin = () => {
-  const [formData, setFormData] = useState({ u_name: "", p_word: "" });
+  const [formData, setFormData] = useState({ email: "", p_word: "" });
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -11,40 +13,33 @@ const CustomerLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error before new request
+    setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      // Sign in customer with Firebase Authentication using email
+      const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.p_word);
+      const user = userCredential.user;
 
-      const data = await response.json();
-      if (data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        window.location.href = "/customer-dashboard"; // Redirect to dashboard
-      } else {
-        setError(data.message || "Invalid credentials.");
-      }
+      alert("Login Successful!");
+      window.location.href = "/customer-dashboard"; // Redirect to customer dashboard
     } catch (error) {
-      console.error("Login error:", error);
-      setError("An error occurred. Please try again.");
+      setError("Login failed. Please check your email and password.");
     }
   };
 
   return (
-    <div className="login-container">
+    <div className="container">
       <h2>Customer Login</h2>
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Username:</label>
+          <label>Email:</label>
           <input
-            type="text"
-            name="u_name"
-            value={formData.u_name}
+            type="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
+            className="input-field"
             required
           />
         </div>
@@ -55,10 +50,11 @@ const CustomerLogin = () => {
             name="p_word"
             value={formData.p_word}
             onChange={handleChange}
+            className="input-field"
             required
           />
         </div>
-        <button type="submit" className="login-button">Login</button>
+        <button type="submit">Login</button>
       </form>
       <p>
         Not registered? <Link to="/signup-customer">Register here</Link>
