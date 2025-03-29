@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { db, auth } from "../firebase-Config"; // Import Firebase db & auth
+import { db, auth } from "../firebase-config"; // Import Firebase db & auth
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-
 
 const SupplierDashboard = () => {
   const [supplierData, setSupplierData] = useState(null);
@@ -51,7 +50,17 @@ const SupplierDashboard = () => {
 
   return (
     <div className="supplier-dashboard">
-      <h1>Welcome, {supplierData.f_name} {supplierData.l_name}</h1>
+      <h1>Supplier Dashboard</h1>
+      <h2>Welcome, {supplierData.f_name} {supplierData.l_name}</h2>
+
+      <section className="supplier-info">
+        <h2>Your Information</h2>
+        <p><strong>Email:</strong> {supplierData.email}</p>
+        <p><strong>NIC:</strong> {supplierData.nic}</p>
+        <p><strong>Registered on:</strong> {supplierData.reg_date}</p>
+        <p><strong>Tax ID:</strong> {supplierData.tax_id}</p>
+        <p><strong>Phone Number:</strong> {supplierData.tel_no}</p>
+      </section>
 
       <section>
         <h2>Your Vehicles</h2>

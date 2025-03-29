@@ -9,6 +9,7 @@ import SupplierSignupPage from "./pages/SupplierSignupPage";
 import CustomerLoginPage from "./pages/CustomerLoginPage";
 import CustomerSignupPage from "./pages/CustomerSignupPage";
 import SupplierDashboardPage from "./pages/SupplierDashboardPage";
+import CustomerDashboardPage from "./pages/CustomerDashboardPage";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="loginCustomer" element={<CustomerLoginPage />} />
         <Route path="signup-customer" element={<CustomerSignupPage />} />
         <Route path="/supplier-dashboard" element={<SupplierDashboardPage />} />
+        <Route path="/customer-dashboard" element={<CustomerDashboardPage />} />
       </Routes>
     </div>
   );
