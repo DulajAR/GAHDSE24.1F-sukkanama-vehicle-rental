@@ -8,6 +8,7 @@ import ContactPage from "./pages/ContactPage";
 import SupplierSignupPage from "./pages/SupplierSignupPage";
 import CustomerLoginPage from "./pages/CustomerLoginPage";
 import CustomerSignupPage from "./pages/CustomerSignupPage";
+import SupplierDashboardPage from "./pages/SupplierDashboardPage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/signup-supplier" element={<SupplierSignupPage />} />
         <Route path="loginCustomer" element={<CustomerLoginPage />} />
         <Route path="signup-customer" element={<CustomerSignupPage />} />
+        <Route path="/supplier-dashboard" element={<SupplierDashboardPage />} />
       </Routes>
     </div>
   );
