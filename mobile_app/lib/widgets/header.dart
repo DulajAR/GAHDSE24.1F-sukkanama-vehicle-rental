@@ -19,19 +19,48 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: AppStyles.headerDecoration,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Logo
-          Image.asset('assets/logo.png', height: 50)
-,
+    bool isMobile = MediaQuery.of(context).size.width <= 768;
 
-          // Navigation Menu
-          if (MediaQuery.of(context).size.width > 768)
-            Row(
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: AppStyles.headerDecoration,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Logo
+              Image.asset('assets/logo.png', height: 50),
+
+              // Navigation Menu (Desktop View)
+              if (!isMobile)
+                Row(
+                  children: [
+                    _navItem('Home', () {}),
+                    _navItem('Rent Your Vehicle', () {}),
+                    _navItem('Find Your Vehicle', () {}),
+                    _navItem('About', () {}),
+                    _navItem('Contact', () {}),
+                  ],
+                ),
+
+              // Mobile Menu Button
+              if (isMobile)
+                IconButton(
+                  icon: Icon(isMobileMenuOpen ? Icons.close : Icons.menu),
+                  onPressed: toggleMobileMenu,
+                ),
+            ],
+          ),
+        ),
+
+        // Mobile Menu (Expanded)
+        if (isMobile && isMobileMenuOpen)
+          Container(
+            width: double.infinity,
+            color: Colors.white, // Adjust background color as needed
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Column(
               children: [
                 _navItem('Home', () {}),
                 _navItem('Rent Your Vehicle', () {}),
@@ -40,21 +69,14 @@ class _HeaderState extends State<Header> {
                 _navItem('Contact', () {}),
               ],
             ),
-
-          // Mobile Menu Button
-          if (MediaQuery.of(context).size.width <= 768)
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: toggleMobileMenu,
-            ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 
   Widget _navItem(String title, VoidCallback onTap) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
         onTap: onTap,
         child: Text(title, style: AppStyles.navText),
