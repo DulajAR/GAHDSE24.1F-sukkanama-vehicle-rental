@@ -66,4 +66,49 @@ class AppStyles {
     ),
   );
 
+
+
+
+
+
+
+
+
+
+
+
+   // Feature Section Colors
+ // Feature Section Colors
+  static const feature1Color = Color(0xFFFDDDE4); // 100% Trusted Service
+  static const feature2Color = Color(0xFFA1C78B); // Easy Booking
+  static const feature3Color = Color(0xFFD1E8F2); // 24/7 Service
+  static const feature4Color = Color(0xFFCDD4F8); // Virtual Vehicle Tours
+  static const feature5Color = Color(0xFFF6DBF6); // Booking Calendar
+
+  // Feature Box Style Constants
+  static const double featureBoxHeight = 200.0; // Height for all feature boxes
+  static const double featureBoxWidthFactor = 0.18; // Width factor for responsive design
+
+  // Box Shadow for Feature Box
+  static final BoxDecoration featureBoxDecoration = BoxDecoration(
+    borderRadius: BorderRadius.circular(4),
+    border: Border.all(color: Colors.grey.withOpacity(0.3)),
+    boxShadow: [
+      BoxShadow(
+        offset: Offset(0, 4),
+        blurRadius: 10,
+        color: Colors.black.withOpacity(0.05),
+      ),
+    ],
+    color: Colors.white,
+  );
+
+  // Box Decoration for Feature Box Title
+  static BoxDecoration featureBoxTitleDecoration(Color color) {
+    return BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(4),
+    );
+  }
+
 }
