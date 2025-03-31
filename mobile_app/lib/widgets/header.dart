@@ -35,6 +35,7 @@ class _HeaderState extends State<Header> {
               // Navigation Menu (Desktop View)
               if (!isMobile)
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     _navItem('Home', () {}),
                     _navItem('Rent Your Vehicle', () {}),
@@ -76,7 +77,7 @@ class _HeaderState extends State<Header> {
 
   Widget _navItem(String title, VoidCallback onTap) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0), // Adjust horizontal space
       child: InkWell(
         onTap: onTap,
         child: Text(title, style: AppStyles.navText),
