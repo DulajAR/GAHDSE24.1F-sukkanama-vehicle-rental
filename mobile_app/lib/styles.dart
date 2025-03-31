@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 
 // ✅ Common styles for header
 class AppStyles {
+  // General constants
   static const double padding = 16.0;
   static const double borderRadius = 8.0;
   static const Color primaryColor = Color(0xFF088178);
 
+  // Header Text Style
   static const TextStyle navText = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
     color: Colors.black,
   );
 
+  // Header BoxDecoration
   static BoxDecoration headerDecoration = BoxDecoration(
     color: const Color(0xFFE3E6F3),
     boxShadow: [
@@ -23,15 +26,7 @@ class AppStyles {
     ],
   );
 
-
-
-
-
-
-
-
-
- // Hero Section Styles
+  // Hero Section Styles
   static const double heroHeightFactor = 0.6;
 
   static const BoxDecoration heroBackground = BoxDecoration(
@@ -66,19 +61,7 @@ class AppStyles {
     ),
   );
 
-
-
-
-
-
-
-
-
-
-
-
-   // Feature Section Colors
- // Feature Section Colors
+  // Feature Section Colors
   static const feature1Color = Color(0xFFFDDDE4); // 100% Trusted Service
   static const feature2Color = Color(0xFFA1C78B); // Easy Booking
   static const feature3Color = Color(0xFFD1E8F2); // 24/7 Service
@@ -110,5 +93,27 @@ class AppStyles {
       borderRadius: BorderRadius.circular(4),
     );
   }
+}
 
+// Banner Text Styles
+class BannerTextStyles {
+  static const TextStyle heading4 = TextStyle(
+    fontSize: 24.0, // Adjusted size similar to your h4
+    color: Colors.white,
+  );
+
+  static const TextStyle heading2 = TextStyle(
+    fontSize: 32.0, // Adjusted size similar to your h2
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+    backgroundColor: Colors.white, // Replaces 'primary' with 'backgroundColor'
+    foregroundColor: Color(0xFF007BFF), // Replaces 'onPrimary' with 'foregroundColor'
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5.0),
+    ),
+  );
 }
