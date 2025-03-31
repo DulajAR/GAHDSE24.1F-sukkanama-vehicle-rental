@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/header.dart';
 import 'package:mobile_app/widgets/hero.dart'; // Import HeroSection
+import 'package:mobile_app/widgets/feature.dart'; // Import Feature widget
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,6 +13,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           const Header(), // ✅ Header at the top
           const HeroSection(), // ✅ Hero Section added below Header
+          const FeatureSection(), // ✅ Feature widget added below Hero Section
           Expanded(
             child: Center(
               child: Text(
