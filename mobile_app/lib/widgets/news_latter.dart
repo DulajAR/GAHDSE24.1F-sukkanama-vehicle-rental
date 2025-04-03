@@ -5,7 +5,11 @@ class NewsLetter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen width
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
+      width: screenWidth, // Make it full width
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       decoration: BoxDecoration(
         color: const Color(0xFF036ffc), // Background color
@@ -25,18 +29,15 @@ class NewsLetter extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            "Get E-mail updates about our latest functions and ",
+            "Get E-mail updates about our latest functions and special offers.",
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF01080d)),
-          ),
-          const Text(
-            "special offers.",
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFFFFBD27)),
           ),
           const SizedBox(height: 16),
 
           // Email Input Field & Button
           Container(
-            width: 400,
+            width: screenWidth < 600 ? screenWidth * 0.9 : 400, // Full width on small screens, fixed width on larger
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(4),
