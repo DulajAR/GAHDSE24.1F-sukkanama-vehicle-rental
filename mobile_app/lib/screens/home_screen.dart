@@ -3,6 +3,7 @@ import 'package:mobile_app/widgets/header.dart';
 import 'package:mobile_app/widgets/hero.dart'; // Import HeroSection
 import 'package:mobile_app/widgets/feature.dart'; // Import Feature widget
 import 'package:mobile_app/widgets/banner.dart'; // Import BannerSection
+import 'package:mobile_app/widgets/vehicle_ads.dart'; // Import VehicleAds widget
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,13 +18,7 @@ class HomeScreen extends StatelessWidget {
             const HeroSection(), // ✅ Hero Section added below Header
             const FeatureSection(), // ✅ Feature widget added below Hero Section
             const BannerSection(), // ✅ BannerSection added below Feature Section
-            // Removed the Expanded widget around the Text widget
-            Center(
-              child: Text(
-                "Welcome to Sukkanama!",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
+            VehicleAds(), // ✅ VehicleAds widget added below Feature Section
           ],
         ),
       ),
