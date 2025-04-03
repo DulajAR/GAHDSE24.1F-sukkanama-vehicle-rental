@@ -5,6 +5,7 @@ import 'package:mobile_app/widgets/feature.dart'; // Import Feature widget
 import 'package:mobile_app/widgets/banner.dart'; // Import BannerSection
 import 'package:mobile_app/widgets/vehicle_ads.dart'; // Import VehicleAds widget
 import 'package:mobile_app/widgets/small_banner.dart';
+import 'package:mobile_app/widgets/news_latter.dart'; // ✅ Import the Newsletter widget
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,8 @@ class HomeScreen extends StatelessWidget {
             const BannerSection(), // ✅ BannerSection added below Feature Section
             VehicleAds(), // ✅ VehicleAds widget added below Feature Section
             const SmallBanner(), // ✅ Add this line to display the small banners
+            const SizedBox(height: 20), // ✅ Added space before Newsletter
+            const NewsLetter(), // ✅ Newsletter widget at the bottom
           ],
         ),
       ),
