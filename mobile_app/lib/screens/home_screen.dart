@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/header.dart';
 import 'package:mobile_app/widgets/hero.dart'; // Import HeroSection
 import 'package:mobile_app/widgets/feature.dart'; // Import Feature widget
+import 'package:mobile_app/widgets/vehicle_ads.dart'; // Import VehicleAds widget
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,20 +10,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Header(), // ✅ Header at the top
-          const HeroSection(), // ✅ Hero Section added below Header
-          const FeatureSection(), // ✅ Feature widget added below Hero Section
-          Expanded(
-            child: Center(
-              child: Text(
-                "Welcome to Sukkanama!",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Header(), // ✅ Header at the top
+            const HeroSection(), // ✅ Hero Section added below Header
+            const FeatureSection(), // ✅ Feature widget added below Hero Section
+            VehicleAds(), // ✅ VehicleAds widget added below Feature Section
+          ],
+        ),
       ),
     );
   }
