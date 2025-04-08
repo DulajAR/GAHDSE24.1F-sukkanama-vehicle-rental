@@ -78,7 +78,7 @@ class AppStyles {
     border: Border.all(color: Colors.grey.withOpacity(0.3)),
     boxShadow: [
       BoxShadow(
-        offset: Offset(0, 4),
+        offset: const Offset(0, 4),
         blurRadius: 10,
         color: Colors.black.withOpacity(0.05),
       ),
@@ -110,8 +110,8 @@ class BannerTextStyles {
 
   static final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     backgroundColor: Colors.white, // Replaces 'primary' with 'backgroundColor'
-    foregroundColor: Color(0xFF007BFF), // Replaces 'onPrimary' with 'foregroundColor'
-    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    foregroundColor: const Color(0xFF007BFF), // Replaces 'onPrimary' with 'foregroundColor'
+    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(5.0),
     ),

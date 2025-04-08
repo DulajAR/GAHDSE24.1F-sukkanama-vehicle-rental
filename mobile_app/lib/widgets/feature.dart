@@ -8,7 +8,7 @@ class FeatureSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FeatureBox(image: 'assets/f1.png', title: '100% Trusted Service', color: AppStyles.feature1Color),
