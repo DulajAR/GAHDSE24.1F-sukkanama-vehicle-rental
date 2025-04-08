@@ -9,7 +9,7 @@ class BannerSection extends StatelessWidget {  // Changed the class name to Bann
     return Container(
       width: double.infinity,
       height: 300, // Adjust the height as needed (similar to 50vh)
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/b2.jpg'), // Adjust path to your image
           fit: BoxFit.cover,
@@ -22,23 +22,23 @@ class BannerSection extends StatelessWidget {  // Changed the class name to Bann
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Trusted Services',
               style: BannerTextStyles.heading4, // Ensure this is defined in your BannerTextStyles
             ),
-            SizedBox(height: 8), // Add some spacing between the texts
-            Text(
+            const SizedBox(height: 8), // Add some spacing between the texts
+            const Text(
               'Find your vehicles here!!',
               style: BannerTextStyles.heading2, // Ensure this is defined in your BannerTextStyles
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navigate to the loginCustomer route
                 Navigator.pushNamed(context, '/loginCustomer');
               },
               style: BannerTextStyles.buttonStyle, // Ensure this is defined in your BannerTextStyles
-              child: Text('Explore More'),
+              child: const Text('Explore More'),
             ),
           ],
         ),

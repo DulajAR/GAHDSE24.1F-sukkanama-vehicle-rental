@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Footer extends StatelessWidget {
-  const Footer({Key? key}) : super(key: key);
+  const Footer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class Footer extends StatelessWidget {
                       ],
                     ),
               const SizedBox(height: 20),
-              Center(
+              const Center(
                 child: Text(
                   "© 2025, Sukkanama etc - All Rights Reserved.",
                   style: TextStyle(fontSize: 12, color: Colors.black54),
@@ -138,7 +138,7 @@ class Footer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         ...children,
       ],
@@ -149,7 +149,7 @@ class Footer extends StatelessWidget {
   Widget _footerText(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text(text, style: TextStyle(fontSize: 13, color: Colors.black87)),
+      child: Text(text, style: const TextStyle(fontSize: 13, color: Colors.black87)),
     );
   }
 
@@ -161,7 +161,7 @@ class Footer extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8),
         child: Text(
           text,
-          style: TextStyle(fontSize: 13, color: Colors.black87),
+          style: const TextStyle(fontSize: 13, color: Colors.black87),
         ),
       ),
     );
@@ -173,23 +173,23 @@ class Footer extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: FaIcon(FontAwesomeIcons.facebook, color: Color(0xFF465b52), size: 18),
+          icon: const FaIcon(FontAwesomeIcons.facebook, color: Color(0xFF465b52), size: 18),
           onPressed: () {}, // Add link
         ),
         IconButton(
-          icon: FaIcon(FontAwesomeIcons.twitter, color: Color(0xFF465b52), size: 18),
+          icon: const FaIcon(FontAwesomeIcons.twitter, color: Color(0xFF465b52), size: 18),
           onPressed: () {}, // Add link
         ),
         IconButton(
-          icon: FaIcon(FontAwesomeIcons.instagram, color: Color(0xFF465b52), size: 18),
+          icon: const FaIcon(FontAwesomeIcons.instagram, color: Color(0xFF465b52), size: 18),
           onPressed: () {}, // Add link
         ),
         IconButton(
-          icon: FaIcon(FontAwesomeIcons.pinterest, color: Color(0xFF465b52), size: 18),
+          icon: const FaIcon(FontAwesomeIcons.pinterest, color: Color(0xFF465b52), size: 18),
           onPressed: () {}, // Add link
         ),
         IconButton(
-          icon: FaIcon(FontAwesomeIcons.youtube, color: Color(0xFF465b52), size: 18),
+          icon: const FaIcon(FontAwesomeIcons.youtube, color: Color(0xFF465b52), size: 18),
           onPressed: () {}, // Add link
         ),
       ],
@@ -202,7 +202,7 @@ class Footer extends StatelessWidget {
       width: 180,
       height: 40,
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF088178)),
+        border: Border.all(color: const Color(0xFF088178)),
         borderRadius: BorderRadius.circular(6),
         image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
       ),

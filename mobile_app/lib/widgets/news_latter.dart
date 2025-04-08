@@ -11,9 +11,9 @@ class NewsLetter extends StatelessWidget {
     return Container(
       width: screenWidth, // Make it full width
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF036ffc), // Background color
-        image: const DecorationImage(
+      decoration: const BoxDecoration(
+        color: Color(0xFF036ffc), // Background color
+        image: DecorationImage(
           image: AssetImage("assets/b14.png"), // Background image
           fit: BoxFit.cover,
           alignment: Alignment(0.2, 0.3), // Matches background-position: 20% 30%;
@@ -52,12 +52,12 @@ class NewsLetter extends StatelessWidget {
             child: Row(
               children: [
                 // Email Input Field
-                Expanded(
+                const Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: "Your email address",
-                      hintStyle: const TextStyle(fontSize: 14),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      hintStyle: TextStyle(fontSize: 14),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       border: InputBorder.none,
                     ),
                   ),

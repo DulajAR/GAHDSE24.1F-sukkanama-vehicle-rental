@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/styles.dart';
 
+import '../screens/about_screen.dart';
+import '../screens/home_screen.dart';
+
 class Header extends StatefulWidget {
   const Header({super.key});
 
@@ -37,10 +40,20 @@ class _HeaderState extends State<Header> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    _navItem('Home', () {}),
+                    _navItem('Home', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      );
+                    }),
                     _navItem('Rent Your Vehicle', () {}),
                     _navItem('Find Your Vehicle', () {}),
-                    _navItem('About', () {}),
+                    _navItem('About', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AboutScreenPage()),
+                      );
+                    }),
                     _navItem('Contact', () {}),
                   ],
                 ),
@@ -59,14 +72,24 @@ class _HeaderState extends State<Header> {
         if (isMobile && isMobileMenuOpen)
           Container(
             width: double.infinity,
-            color: Colors.white, // Adjust background color as needed
+            color: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Column(
               children: [
-                _navItem('Home', () {}),
+                _navItem('Home', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
+                }),
                 _navItem('Rent Your Vehicle', () {}),
                 _navItem('Find Your Vehicle', () {}),
-                _navItem('About', () {}),
+                _navItem('About', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AboutScreenPage()),
+                  );
+                }),
                 _navItem('Contact', () {}),
               ],
             ),
@@ -77,7 +100,7 @@ class _HeaderState extends State<Header> {
 
   Widget _navItem(String title, VoidCallback onTap) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0), // Adjust horizontal space
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: InkWell(
         onTap: onTap,
         child: Text(title, style: AppStyles.navText),
