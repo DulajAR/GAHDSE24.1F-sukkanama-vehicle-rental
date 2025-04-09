@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/contact_screen.dart';
 import 'package:mobile_app/styles.dart';
 
 import '../screens/about_screen.dart';
@@ -54,7 +55,12 @@ class _HeaderState extends State<Header> {
                         MaterialPageRoute(builder: (context) => const AboutScreenPage()),
                       );
                     }),
-                    _navItem('Contact', () {}),
+                    _navItem('Contact', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ContactScreenPage()),
+                      );
+                    }),
                   ],
                 ),
 
@@ -90,7 +96,12 @@ class _HeaderState extends State<Header> {
                     MaterialPageRoute(builder: (context) => const AboutScreenPage()),
                   );
                 }),
-                _navItem('Contact', () {}),
+                _navItem('Contact', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ContactScreenPage()),
+                   );
+                }),
               ],
             ),
           ),
