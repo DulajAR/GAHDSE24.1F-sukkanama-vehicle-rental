@@ -274,9 +274,23 @@ class _PersonCard extends StatelessWidget {
           ),
           const SizedBox(width: 15),
           Expanded(
-            child: Text(
-              "$name\n$position\nPhone: $phone\nEmail: $email",
-              style: const TextStyle(fontSize: 14, height: 1.6),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// Name highlighted
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(position),
+                Text("Phone: $phone"),
+                Text("Email: $email"),
+              ],
             ),
           ),
         ],
