@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobile_app/screens/supplier_signup_screen.dart'; // ✅ Don't forget this import
 
 class SupplierLogin extends StatefulWidget {
   const SupplierLogin({super.key});
@@ -115,7 +116,12 @@ class _SupplierLoginState extends State<SupplierLogin> {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/supplierRegister');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SupplierSignupScreen(),
+                    ),
+                  );
                 },
                 child: const Text("Not registered? Register here"),
               ),
