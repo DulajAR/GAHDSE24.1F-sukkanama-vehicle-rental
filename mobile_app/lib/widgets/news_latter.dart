@@ -14,7 +14,7 @@ class NewsLetter extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Color(0xFF036ffc), // Background color
         image: DecorationImage(
-          image: AssetImage("assets/b14.png"), // Background image
+          image: AssetImage("assets/button.png"), // Background image
           fit: BoxFit.cover,
           alignment: Alignment(0.2, 0.3), // Matches background-position: 20% 30%;
         ),
