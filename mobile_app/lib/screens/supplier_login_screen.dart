@@ -8,13 +8,13 @@ class SupplierLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Header(),
-            SupplierLogin(),  // Your form widget
-            const Footer(),
+            Header(),
+            SupplierLogin(), // Your form widget
+            Footer(),
           ],
         ),
       ),

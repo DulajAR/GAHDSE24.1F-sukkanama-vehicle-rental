@@ -9,13 +9,13 @@ class SupplierSignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Header(),
-            const SupplierSignup(), // Your signup form widget
-            const Footer(),
+            Header(),
+            SupplierSignup(), // Your signup form widget
+            Footer(),
           ],
         ),
       ),

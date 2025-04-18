@@ -10,6 +10,7 @@ import CustomerLoginPage from "./pages/CustomerLoginPage";
 import CustomerSignupPage from "./pages/CustomerSignupPage";
 import SupplierDashboardPage from "./pages/SupplierDashboardPage";
 import CustomerDashboardPage from "./pages/CustomerDashboardPage";
+import VehicleRegisterPage from "./pages/VehicleRegisterPage";
 
 const App = () => {
   return (
@@ -25,6 +26,8 @@ const App = () => {
         <Route path="signup-customer" element={<CustomerSignupPage />} />
         <Route path="/supplier-dashboard" element={<SupplierDashboardPage />} />
         <Route path="/customer-dashboard" element={<CustomerDashboardPage />} />
+        <Route path="/register-vehicle" element={<VehicleRegisterPage />} />
+
       </Routes>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { db, auth } from "../firebase-config"; // Import Firebase db & auth
+import { useNavigate } from "react-router-dom";
+import { db, auth } from "../firebase-config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -8,6 +9,7 @@ const SupplierDashboard = () => {
   const [vehicles, setVehicles] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSupplierData = async (userEmail) => {
@@ -19,11 +21,13 @@ const SupplierDashboard = () => {
           const supplier = supplierSnapshot.docs[0].data();
           setSupplierData(supplier);
 
-          const vehicleQuery = query(collection(db, "vehicles"), where("supplier_id", "==", supplierSnapshot.docs[0].id));
+          const supplierId = supplierSnapshot.docs[0].id;
+
+          const vehicleQuery = query(collection(db, "vehicles"), where("supplier_id", "==", supplierId));
           const vehicleSnapshot = await getDocs(vehicleQuery);
           setVehicles(vehicleSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
 
-          const bookingQuery = query(collection(db, "bookings"), where("supplier_id", "==", supplierSnapshot.docs[0].id));
+          const bookingQuery = query(collection(db, "bookings"), where("supplier_id", "==", supplierId));
           const bookingSnapshot = await getDocs(bookingQuery);
           setBookings(bookingSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
         }
@@ -52,6 +56,11 @@ const SupplierDashboard = () => {
     <div className="supplier-dashboard">
       <h1>Supplier Dashboard</h1>
       <h2>Welcome, {supplierData.f_name} {supplierData.l_name}</h2>
+
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+        <button onClick={() => navigate("/supplier-login")}>Back</button>
+        <button onClick={() => navigate("/register-vehicle")}>Vehicle Add</button>
+      </div>
 
       <section className="supplier-info">
         <h2>Your Information</h2>
