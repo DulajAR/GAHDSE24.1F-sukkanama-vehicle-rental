@@ -76,19 +76,23 @@ class ContactPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Contact Info
-          Expanded(
+          const Expanded(
             flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text("GET IN TOUCH", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              children: [
+                Text("GET IN TOUCH",
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 SizedBox(height: 10),
                 Text(
                   "Explore our Sukkanama website today and discover premium service.",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 20),
-                Text("Contact Us", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                Text("Contact Us",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                 SizedBox(height: 15),
                 _ContactItem(
                   icon: Icons.location_on,
@@ -144,9 +148,11 @@ class ContactPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("LEAVE A MESSAGE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+            const Text("LEAVE A MESSAGE",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             const SizedBox(height: 10),
-            const Text("We love to hear from you", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const Text("We love to hear from you",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
             _buildTextField(_nameController, "Your Name"),
             _buildTextField(_emailController, "E-Mail"),
@@ -159,7 +165,8 @@ class ContactPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF088178),
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
               ),
               child: const Text("Submit"),
             ),
@@ -170,10 +177,10 @@ class ContactPage extends StatelessWidget {
   }
 
   Widget _peopleSection() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
+    return const Padding(
+      padding: EdgeInsets.all(20),
       child: Column(
-        children: const [
+        children: [
           _PersonCard(
             name: "Dulaj Ayeshmantha",
             position: "CEO / Founder",
@@ -210,7 +217,8 @@ class ContactPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hint, {int maxLines = 1}) {
+  Widget _buildTextField(TextEditingController controller, String hint,
+      {int maxLines = 1}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextField(
@@ -218,7 +226,8 @@ class ContactPage extends StatelessWidget {
         maxLines: maxLines,
         decoration: InputDecoration(
           hintText: hint,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
@@ -270,7 +279,8 @@ class _PersonCard extends StatelessWidget {
       child: Row(
         children: [
           ClipOval(
-            child: Image.asset(imagePath, width: 65, height: 65, fit: BoxFit.cover),
+            child: Image.asset(imagePath,
+                width: 65, height: 65, fit: BoxFit.cover),
           ),
           const SizedBox(width: 15),
           Expanded(
