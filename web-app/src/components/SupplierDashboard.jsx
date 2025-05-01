@@ -23,7 +23,8 @@ const SupplierDashboard = () => {
 
           const supplierId = supplierSnapshot.docs[0].id;
 
-          const vehicleQuery = query(collection(db, "vehicles"), where("supplier_id", "==", supplierId));
+          // Fetch all vehicles (not filtered by supplier_id)
+          const vehicleQuery = collection(db, "vehicles");
           const vehicleSnapshot = await getDocs(vehicleQuery);
           setVehicles(vehicleSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
 
@@ -59,7 +60,7 @@ const SupplierDashboard = () => {
 
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <button onClick={() => navigate("/supplier-login")}>Back</button>
-        <button onClick={() => navigate("/register-vehicle")}>Vehicle Add</button>
+        <button onClick={() => navigate("/register-vehicle")}>Add Vehicle</button>
       </div>
 
       <section className="supplier-info">
@@ -77,10 +78,17 @@ const SupplierDashboard = () => {
           {vehicles.length > 0 ? (
             vehicles.map((vehicle) => (
               <div key={vehicle.id} className="vehicle-card">
-                <img src={vehicle.image_url} alt={vehicle.model} />
+                <img src={vehicle.vehicleImageUrl} alt={vehicle.model} style={{ width: "200px", height: "auto" }} />
                 <h3>{vehicle.model}</h3>
-                <p>Category: {vehicle.category}</p>
-                <p>Rent per day: ${vehicle.rent_per_day}</p>
+                <p><strong>Brand:</strong> {vehicle.brand}</p>
+                <p><strong>Engine Capacity:</strong> {vehicle.eng_capacity} cc</p>
+                <p><strong>Fuel Type:</strong> {vehicle.f_type}</p>
+                <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
+                <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
+                <p><strong>Year of Manufacture:</strong> {vehicle.yom}</p>
+                <p><strong>Color:</strong> {vehicle.color}</p>
+                <p><strong>Price per Day:</strong> ${vehicle.per_day_chrg}</p>
+                <p><strong>Description:</strong> {vehicle.description}</p>
               </div>
             ))
           ) : (
