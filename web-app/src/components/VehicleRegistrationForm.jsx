@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // Firebase config
@@ -24,6 +31,7 @@ const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 const VehicleRegistrationForm = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [supplierId, setSupplierId] = useState(null);
   const [formData, setFormData] = useState({
     plate: "",
     eng_capacity: "",
@@ -43,13 +51,32 @@ const VehicleRegistrationForm = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) {
-        navigate("/login"); // redirect to login if not logged in
+        navigate("/login");
       } else {
         setUser(currentUser);
+
+        // Fetch supplier ID from Firestore based on user's email
+        try {
+          const q = query(
+            collection(db, "suppliers"),
+            where("email", "==", currentUser.email)
+          );
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) {
+            const doc = querySnapshot.docs[0];
+            setSupplierId(doc.id); // Use Firestore document ID as supplierId
+          } else {
+            setMessage("❌ No supplier profile found for this user.");
+          }
+        } catch (error) {
+          console.error("Error fetching supplier ID: ", error);
+          setMessage("❌ Failed to retrieve supplier profile.");
+        }
       }
     });
+
     return () => unsubscribe();
   }, [navigate]);
 
@@ -82,8 +109,9 @@ const VehicleRegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      setMessage("❌ You must be logged in to register a vehicle.");
+
+    if (!user || !supplierId) {
+      setMessage("❌ User or Supplier not found. Please check your account.");
       return;
     }
 
@@ -99,7 +127,7 @@ const VehicleRegistrationForm = () => {
         vehicleImageUrl,
         view360ImageUrl,
         createdAt: new Date(),
-        userId: user.uid,
+        userId: supplierId,       // ✅ Use Firestore document ID here
         userEmail: user.email,
       });
 
@@ -211,9 +239,7 @@ const VehicleRegistrationForm = () => {
         <input type="text" name="color" placeholder="Color" onChange={handleChange} value={formData.color} required />
         <input type="number" name="seat_capacity" placeholder="Seat Capacity" onChange={handleChange} value={formData.seat_capacity} required />
 
-        <div style={{
-          display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem", flexWrap: "wrap",
-        }}>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
           <input type="number" name="per_day_chrg" placeholder="Per Day Charge (Rs.)" onChange={handleChange} value={formData.per_day_chrg} required style={{ flex: 1 }} />
           <button type="button" onClick={handleChargeIncrease} style={{
             backgroundColor: "#007bff", color: "#fff", border: "none", borderRadius: "5px", padding: "0.5rem 1rem",

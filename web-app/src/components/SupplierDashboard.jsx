@@ -23,12 +23,19 @@ const SupplierDashboard = () => {
 
           const supplierId = supplierSnapshot.docs[0].id;
 
-          // Fetch all vehicles (not filtered by supplier_id)
-          const vehicleQuery = collection(db, "vehicles");
+          // ✅ CORRECT: Filter vehicles where userId == supplierId
+          const vehicleQuery = query(
+            collection(db, "vehicles"),
+            where("userId", "==", supplierId)
+          );
           const vehicleSnapshot = await getDocs(vehicleQuery);
           setVehicles(vehicleSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
 
-          const bookingQuery = query(collection(db, "bookings"), where("supplier_id", "==", supplierId));
+          // ✅ Optional: Update bookings query if bookings use userId
+          const bookingQuery = query(
+            collection(db, "bookings"),
+            where("userId", "==", supplierId)
+          );
           const bookingSnapshot = await getDocs(bookingQuery);
           setBookings(bookingSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
         }
