@@ -11,6 +11,7 @@ import CustomerSignupPage from "./pages/CustomerSignupPage";
 import SupplierDashboardPage from "./pages/SupplierDashboardPage";
 import CustomerDashboardPage from "./pages/CustomerDashboardPage";
 import VehicleRegisterPage from "./pages/VehicleRegisterPage";
+import VehicleAddUpdatePage from "./pages/VehicleAddUpdatePage";
 
 const App = () => {
   return (
@@ -27,6 +28,8 @@ const App = () => {
         <Route path="/supplier-dashboard" element={<SupplierDashboardPage />} />
         <Route path="/customer-dashboard" element={<CustomerDashboardPage />} />
         <Route path="/register-vehicle" element={<VehicleRegisterPage />} />
+        <Route path="/update-vehicle/:id" element={<VehicleAddUpdatePage />} />
+
 
       </Routes>
     </div>
