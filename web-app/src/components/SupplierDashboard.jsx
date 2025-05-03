@@ -127,10 +127,7 @@ const SupplierDashboard = () => {
                 />
                 <h3>{vehicle.model}</h3>
                 <p><strong>Brand:</strong> {vehicle.brand}</p>
-                <p><strong>Engine Capacity:</strong>
-
-Dulaj Ayya, [5/3/2025 3:02 PM]
-{vehicle.eng_capacity}</p>
+                <p><strong>Engine Capacity:</strong> {vehicle.eng_capacity}</p>
                 <p><strong>Fuel Type:</strong> {vehicle.f_type}</p>
                 <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
                 <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
