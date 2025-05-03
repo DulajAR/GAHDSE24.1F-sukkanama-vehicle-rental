@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase-config";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 const SupplierDashboard = () => {
@@ -14,7 +21,10 @@ const SupplierDashboard = () => {
   useEffect(() => {
     const fetchSupplierData = async (userEmail) => {
       try {
-        const supplierQuery = query(collection(db, "suppliers"), where("email", "==", userEmail));
+        const supplierQuery = query(
+          collection(db, "suppliers"),
+          where("email", "==", userEmail)
+        );
         const supplierSnapshot = await getDocs(supplierQuery);
 
         if (!supplierSnapshot.empty) {
@@ -23,21 +33,29 @@ const SupplierDashboard = () => {
 
           const supplierId = supplierSnapshot.docs[0].id;
 
-          // ✅ CORRECT: Filter vehicles where userId == supplierId
           const vehicleQuery = query(
             collection(db, "vehicles"),
             where("userId", "==", supplierId)
           );
           const vehicleSnapshot = await getDocs(vehicleQuery);
-          setVehicles(vehicleSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+          setVehicles(
+            vehicleSnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          );
 
-          // ✅ Optional: Update bookings query if bookings use userId
           const bookingQuery = query(
             collection(db, "bookings"),
             where("userId", "==", supplierId)
           );
           const bookingSnapshot = await getDocs(bookingQuery);
-          setBookings(bookingSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+          setBookings(
+            bookingSnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          );
         }
       } catch (error) {
         console.error("Error fetching data from Firebase:", error);
@@ -57,13 +75,30 @@ const SupplierDashboard = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleDelete = async (vehicleId) => {
+    try {
+      await deleteDoc(doc(db, "vehicles", vehicleId));
+      setVehicles((prev) => prev.filter((v) => v.id !== vehicleId));
+      alert("Vehicle deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting vehicle:", error);
+      alert("Failed to delete vehicle.");
+    }
+  };
+
+  const handleUpdate = (vehicleId) => {
+    navigate(`/update-vehicle/${vehicleId}`);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (!supplierData) return <p>No supplier data found.</p>;
 
   return (
     <div className="supplier-dashboard">
       <h1>Supplier Dashboard</h1>
-      <h2>Welcome, {supplierData.f_name} {supplierData.l_name}</h2>
+      <h2>
+        Welcome, {supplierData.f_name} {supplierData.l_name}
+      </h2>
 
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <button onClick={() => navigate("/supplier-login")}>Back</button>
@@ -85,17 +120,29 @@ const SupplierDashboard = () => {
           {vehicles.length > 0 ? (
             vehicles.map((vehicle) => (
               <div key={vehicle.id} className="vehicle-card">
-                <img src={vehicle.vehicleImageUrl} alt={vehicle.model} style={{ width: "200px", height: "auto" }} />
+                <img
+                  src={vehicle.vehicleImageUrl}
+                  alt={vehicle.model}
+                  style={{ width: "200px", height: "auto" }}
+                />
                 <h3>{vehicle.model}</h3>
                 <p><strong>Brand:</strong> {vehicle.brand}</p>
-                <p><strong>Engine Capacity:</strong> {vehicle.eng_capacity} cc</p>
+                <p><strong>Engine Capacity:</strong>
+
+Dulaj Ayya, [5/3/2025 3:02 PM]
+{vehicle.eng_capacity}</p>
                 <p><strong>Fuel Type:</strong> {vehicle.f_type}</p>
                 <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
                 <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
                 <p><strong>Year of Manufacture:</strong> {vehicle.yom}</p>
                 <p><strong>Color:</strong> {vehicle.color}</p>
-                <p><strong>Price per Day:</strong> ${vehicle.per_day_chrg}</p>
+                <p><strong>Price per Day:</strong> Rs.{vehicle.per_day_chrg}</p>
                 <p><strong>Description:</strong> {vehicle.description}</p>
+
+                <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
+                  <button onClick={() => handleUpdate(vehicle.id)}>Update</button>
+                  <button onClick={() => handleDelete(vehicle.id)}>Delete</button>
+                </div>
               </div>
             ))
           ) : (
