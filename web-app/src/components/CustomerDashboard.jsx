@@ -66,6 +66,11 @@ const CustomerDashboard = () => {
         <p><strong>Phone:</strong> {customer.tel_no}</p>
         <p><strong>Registered on:</strong> {customer.reg_date}</p>
       </div>
+
+      <button onClick={() => window.location.href = "/all-vehicles"}>
+  View All Vehicles
+</button>
+
     </div>
   );
 };
