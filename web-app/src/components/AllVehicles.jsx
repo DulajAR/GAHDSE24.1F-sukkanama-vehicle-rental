@@ -7,23 +7,50 @@ const AllVehicles = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAllVehicles = async () => {
+    const fetchAllData = async () => {
       try {
-        const vehicleCollection = collection(db, "vehicles");
-        const querySnapshot = await getDocs(vehicleCollection);
-        const vehicleList = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        // Fetch all suppliers and map them by document ID
+        const supplierSnapshot = await getDocs(collection(db, "suppliers"));
+        const suppliersMap = {};
+        supplierSnapshot.forEach((doc) => {
+          const supplier = doc.data();
+          suppliersMap[doc.id] = {
+            name: `${supplier.f_name} ${supplier.l_name}`,
+            phone: supplier.tel_no,
+            email: supplier.email,
+          };
+        });
+
+        // Fetch all vehicles
+        const vehicleSnapshot = await getDocs(collection(db, "vehicles"));
+        const vehicleList = vehicleSnapshot.docs.map((doc) => {
+          const data = doc.data();
+          const supplierId = data.userId; // ✅ use userId instead of supplier_id
+
+          const supplierInfo = suppliersMap[supplierId] || {
+            name: "Unknown",
+            phone: "N/A",
+            email: "Not specified",
+          };
+
+          return {
+            id: doc.id,
+            ...data,
+            supplierName: supplierInfo.name,
+            supplierPhone: supplierInfo.phone,
+            supplierEmail: supplierInfo.email,
+          };
+        });
+
         setVehicles(vehicleList);
       } catch (error) {
-        console.error("Error fetching vehicles:", error);
+        console.error("Error fetching vehicles or suppliers:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAllVehicles();
+    fetchAllData();
   }, []);
 
   if (loading) return <p style={styles.loadingText}>Loading vehicles...</p>;
@@ -33,14 +60,16 @@ const AllVehicles = () => {
     <div style={styles.container}>
       <h1 style={styles.title}>All Available Vehicles</h1>
       <div style={styles.scrollContainer}>
-        {vehicles.map(vehicle => (
+        {vehicles.map((vehicle) => (
           <div key={vehicle.id} style={styles.card}>
             <img
               src={vehicle.vehicleImageUrl}
               alt={vehicle.model}
               style={styles.image}
             />
-            <h2 style={styles.modelTitle}>{vehicle.brand} {vehicle.model}</h2>
+            <h2 style={styles.modelTitle}>
+              {vehicle.brand} {vehicle.model}
+            </h2>
             <div style={styles.details}>
               <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
               <p><strong>Fuel:</strong> {vehicle.f_type}</p>
@@ -49,7 +78,10 @@ const AllVehicles = () => {
               <p><strong>Year:</strong> {vehicle.yom}</p>
               <p><strong>Color:</strong> {vehicle.color}</p>
               <p><strong>Price/Day:</strong> Rs. {vehicle.per_day_chrg}</p>
-              <p><strong>Supplier:</strong> {vehicle.supplier_email}</p>
+              <hr />
+              <p><strong>Supplier Name:</strong> {vehicle.supplierName}</p>
+              <p><strong>Supplier Phone:</strong> {vehicle.supplierPhone}</p>
+              <p><strong>Supplier Email:</strong> {vehicle.supplierEmail}</p>
             </div>
           </div>
         ))}
@@ -108,7 +140,7 @@ const styles = {
     fontSize: "1.2rem",
     color: "#888",
     padding: "2rem",
-  }
+  },
 };
 
 export default AllVehicles;
