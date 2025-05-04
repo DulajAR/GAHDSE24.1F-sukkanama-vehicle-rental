@@ -1,13 +1,19 @@
 // src/pages/AllVehiclesPage.jsx
 import React from "react";
 import AllVehicles from "../components/AllVehicles";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const AllVehiclesPage = () => {
   return (
-    <div className="all-vehicles-page">
-      <h1>All Your Vehicles</h1>
-      <AllVehicles />
-    </div>
+    <>
+      <Header />
+      <div className="all-vehicles-page">
+        <h1 style={{ textAlign: "center", marginTop: "1rem" }}>All Your Vehicles</h1>
+        <AllVehicles />
+      </div>
+      <Footer />
+    </>
   );
 };
 

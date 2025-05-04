@@ -87,7 +87,7 @@ const VehicleAddUpdateForm = () => {
           const data = docSnap.data();
           setFormData({
             ...data,
-            yom: data.yom ? data.yom : "", // Ensure date is correctly formatted
+            yom: data.yom ? String(data.yom) : "",
           });
         } else {
           setMessage("❌ Vehicle not found.");
@@ -139,6 +139,7 @@ const VehicleAddUpdateForm = () => {
 
       const vehicleData = {
         ...formData,
+        yom: parseInt(formData.yom),
         vehicleImageUrl,
         view360ImageUrl,
         userId: supplierId,
@@ -223,7 +224,16 @@ const VehicleAddUpdateForm = () => {
           <option value="Hybrid">Hybrid</option>
           <option value="Electric">Electric</option>
         </select>
-        <input type="date" name="yom" value={formData.yom} onChange={handleChange} required />
+        <input
+          type="number"
+          name="yom"
+          placeholder="Year of Manufacture"
+          value={formData.yom}
+          onChange={handleChange}
+          min="1900"
+          max={new Date().getFullYear()}
+          required
+        />
         <input name="color" placeholder="Color" value={formData.color} onChange={handleChange} required />
         <input name="seat_capacity" type="number" placeholder="Seats" value={formData.seat_capacity} onChange={handleChange} required />
         <div>
@@ -242,7 +252,3 @@ const VehicleAddUpdateForm = () => {
 };
 
 export default VehicleAddUpdateForm;
-
-
-    
-

@@ -56,8 +56,6 @@ const VehicleRegistrationForm = () => {
         navigate("/login");
       } else {
         setUser(currentUser);
-
-        // Fetch supplier ID from Firestore based on user's email
         try {
           const q = query(
             collection(db, "suppliers"),
@@ -66,7 +64,7 @@ const VehicleRegistrationForm = () => {
           const querySnapshot = await getDocs(q);
           if (!querySnapshot.empty) {
             const doc = querySnapshot.docs[0];
-            setSupplierId(doc.id); // Use Firestore document ID as supplierId
+            setSupplierId(doc.id);
           } else {
             setMessage("❌ No supplier profile found for this user.");
           }
@@ -76,7 +74,6 @@ const VehicleRegistrationForm = () => {
         }
       }
     });
-
     return () => unsubscribe();
   }, [navigate]);
 
@@ -96,12 +93,10 @@ const VehicleRegistrationForm = () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", uploadPreset);
-
     const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
       method: "POST",
       body: formData,
     });
-
     if (!res.ok) throw new Error("Cloudinary upload failed");
     const data = await res.json();
     return data.secure_url;
@@ -109,7 +104,6 @@ const VehicleRegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!user || !supplierId) {
       setMessage("❌ User or Supplier not found. Please check your account.");
       return;
@@ -118,7 +112,6 @@ const VehicleRegistrationForm = () => {
     try {
       let vehicleImageUrl = "";
       let view360ImageUrl = "";
-
       if (vehicleImage) vehicleImageUrl = await uploadToCloudinary(vehicleImage);
       if (view360Image) view360ImageUrl = await uploadToCloudinary(view360Image);
 
@@ -127,12 +120,11 @@ const VehicleRegistrationForm = () => {
         vehicleImageUrl,
         view360ImageUrl,
         createdAt: new Date(),
-        userId: supplierId,       // ✅ Use Firestore document ID here
+        userId: supplierId,
         userEmail: user.email,
       });
 
       setMessage("✅ Vehicle Registered Successfully!");
-
       setFormData({
         plate: "",
         eng_capacity: "",
@@ -153,6 +145,15 @@ const VehicleRegistrationForm = () => {
       console.error("Registration Error: ", err);
       setMessage("❌ Error: Could not register vehicle.");
     }
+  };
+
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let i = currentYear; i >= 1990; i--) {
+      years.push(i);
+    }
+    return years;
   };
 
   return (
@@ -178,11 +179,7 @@ const VehicleRegistrationForm = () => {
         ⬅️ Back to Dashboard
       </button>
 
-      <h2 style={{
-        textAlign: "center",
-        marginBottom: "1.5rem",
-        fontSize: "1.8rem",
-      }}>
+      <h2 style={{ textAlign: "center", marginBottom: "1.5rem", fontSize: "1.8rem" }}>
         🚗 Vehicle Registration
       </h2>
 
@@ -196,11 +193,7 @@ const VehicleRegistrationForm = () => {
         </p>
       )}
 
-      <form onSubmit={handleSubmit} style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-      }}>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {[{ name: "plate", placeholder: "Plate Number" }, { name: "eng_capacity", placeholder: "Engine Capacity" }]
           .map(({ name, placeholder }) => (
             <input key={name} type="text" name={name} placeholder={placeholder} value={formData[name]} onChange={handleChange} required style={{
@@ -235,7 +228,14 @@ const VehicleRegistrationForm = () => {
           <option value="Electric">Electric</option>
         </select>
 
-        <input type="date" name="yom" onChange={handleChange} value={formData.yom} required />
+        {/* Updated YOM Year Dropdown */}
+        <select name="yom" value={formData.yom} onChange={handleChange} required>
+          <option value="">Select Year of Manufacture</option>
+          {generateYearOptions().map((year) => (
+            <option key={year} value={year}>{year}</option>
+          ))}
+        </select>
+
         <input type="text" name="color" placeholder="Color" onChange={handleChange} value={formData.color} required />
         <input type="number" name="seat_capacity" placeholder="Seat Capacity" onChange={handleChange} value={formData.seat_capacity} required />
 
