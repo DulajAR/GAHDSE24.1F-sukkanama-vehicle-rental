@@ -38,7 +38,7 @@ const AllVehicles = () => {
           return {
             id: doc.id,
             ...data,
-            yom: data.yom?.toString() || "", // convert to string here
+            yom: data.yom?.toString() || "",
             supplierName: supplierInfo.name,
             supplierPhone: supplierInfo.phone,
             supplierEmail: supplierInfo.email,
@@ -69,17 +69,21 @@ const AllVehicles = () => {
     });
   };
 
-  // Get unique brand and year options for filters
   const uniqueBrands = [...new Set(vehicles.map((vehicle) => vehicle.brand))];
   const uniqueYears = [
     ...new Set(vehicles.map((vehicle) => vehicle.yom)),
-  ].sort((a, b) => b.localeCompare(a)).reverse(); // sort as strings descending
+  ].sort((a, b) => b.localeCompare(a)).reverse();
 
   if (loading) return <p style={styles.loadingText}>Loading vehicles...</p>;
   if (vehicles.length === 0) return <p style={styles.loadingText}>No vehicles found.</p>;
 
   return (
     <div style={styles.container}>
+      {/* Back to Dashboard Button */}
+      <button onClick={() => navigate("/customer-dashboard")} style={styles.backButton}>
+        ← Back to Dashboard
+      </button>
+
       <h1 style={styles.title}>All Available Vehicles</h1>
 
       {/* Filters */}
@@ -164,6 +168,16 @@ const styles = {
     fontSize: "2rem",
     marginBottom: "1.5rem",
     color: "#333",
+  },
+  backButton: {
+    marginBottom: "1rem",
+    padding: "10px 20px",
+    backgroundColor: "#6c757d",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
   },
   filterContainer: {
     display: "flex",
