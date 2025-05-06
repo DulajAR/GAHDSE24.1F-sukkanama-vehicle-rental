@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
+import { Viewer } from "photo-sphere-viewer";
+import "photo-sphere-viewer/dist/photo-sphere-viewer.css";
 
 const AllVehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [brandFilter, setBrandFilter] = useState("all");
   const [yearFilter, setYearFilter] = useState("all");
+  const [selected360Image, setSelected360Image] = useState(null);
+  const [viewer, setViewer] = useState(null);
+  const viewerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +61,21 @@ const AllVehicles = () => {
     fetchAllData();
   }, []);
 
+  useEffect(() => {
+    if (selected360Image && viewerRef.current) {
+      if (viewer) {
+        viewer.destroy();
+      }
+      
+      const newViewer = new Viewer({
+        container: viewerRef.current,
+        panorama: selected360Image,
+        navbar: ["zoom", "fullscreen"],
+      });
+      setViewer(newViewer);
+    }
+  }, [selected360Image]);
+
   const handleBookNow = (vehicleId) => {
     navigate(`/book/${vehicleId}`);
   };
@@ -69,24 +89,20 @@ const AllVehicles = () => {
     });
   };
 
-  const uniqueBrands = [...new Set(vehicles.map((vehicle) => vehicle.brand))];
-  const uniqueYears = [
-    ...new Set(vehicles.map((vehicle) => vehicle.yom)),
-  ].sort((a, b) => b.localeCompare(a)).reverse();
+  const uniqueBrands = [...new Set(vehicles.map((v) => v.brand))];
+  const uniqueYears = [...new Set(vehicles.map((v) => v.yom))].sort();
 
   if (loading) return <p style={styles.loadingText}>Loading vehicles...</p>;
   if (vehicles.length === 0) return <p style={styles.loadingText}>No vehicles found.</p>;
 
   return (
     <div style={styles.container}>
-      {/* Back to Dashboard Button */}
       <button onClick={() => navigate("/customer-dashboard")} style={styles.backButton}>
         ← Back to Dashboard
       </button>
 
       <h1 style={styles.title}>All Available Vehicles</h1>
 
-      {/* Filters */}
       <div style={styles.filterContainer}>
         <label htmlFor="brand-filter">Filter by Brand:</label>
         <select
@@ -96,9 +112,7 @@ const AllVehicles = () => {
         >
           <option value="all">All Brands</option>
           {uniqueBrands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
+            <option key={brand} value={brand}>{brand}</option>
           ))}
         </select>
 
@@ -110,14 +124,11 @@ const AllVehicles = () => {
         >
           <option value="all">All Years</option>
           {uniqueYears.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
+            <option key={year} value={year}>{year}</option>
           ))}
         </select>
       </div>
 
-      {/* Display Filtered Vehicles */}
       <div style={styles.scrollContainer}>
         {filterVehicles().map((vehicle) => (
           <div key={vehicle.id} style={styles.card}>
@@ -142,16 +153,36 @@ const AllVehicles = () => {
               <p><strong>Supplier Phone:</strong> {vehicle.supplierPhone}</p>
               <p><strong>Supplier Email:</strong> {vehicle.supplierEmail}</p>
 
-              <button
-                style={styles.bookButton}
-                onClick={() => handleBookNow(vehicle.id)}
-              >
-                Book Now
-              </button>
+              <div style={styles.buttonContainer}>
+                <button
+                  style={styles.bookButton}
+                  onClick={() => handleBookNow(vehicle.id)}
+                >
+                  Book Now
+                </button>
+
+                {vehicle.view360ImageUrl && (
+                  <button
+                    style={styles.previewButton}
+                    onClick={() => setSelected360Image(vehicle.view360ImageUrl)}
+                  >
+                    View in 360°
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
       </div>
+
+      {selected360Image && (
+        <div style={styles.modalOverlay} onClick={() => setSelected360Image(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div ref={viewerRef} style={{ width: "100%", height: "500px" }}></div>
+            <button style={styles.closeButton} onClick={() => setSelected360Image(null)}>✖ Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -200,6 +231,9 @@ const styles = {
     padding: "1rem",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     transition: "transform 0.2s",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   image: {
     width: "100%",
@@ -217,8 +251,12 @@ const styles = {
     fontSize: "0.95rem",
     color: "#555",
   },
-  bookButton: {
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "space-between",
     marginTop: "1rem",
+  },
+  bookButton: {
     padding: "10px 20px",
     backgroundColor: "#007bff",
     color: "#fff",
@@ -226,13 +264,52 @@ const styles = {
     borderRadius: "5px",
     cursor: "pointer",
     fontWeight: "bold",
-    transition: "background-color 0.2s ease",
+    width: "48%",
+  },
+  previewButton: {
+    padding: "10px 20px",
+    backgroundColor: "#28a745",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    width: "48%",
   },
   loadingText: {
     textAlign: "center",
     fontSize: "1.2rem",
     color: "#888",
     padding: "2rem",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.7)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 999,
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    padding: "1rem",
+    maxWidth: "90%",
+    width: "800px",
+    position: "relative",
+  },
+  closeButton: {
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    background: "transparent",
+    fontSize: "1.5rem",
+    border: "none",
+    cursor: "pointer",
   },
 };
 
