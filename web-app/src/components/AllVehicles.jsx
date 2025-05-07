@@ -66,7 +66,7 @@ const AllVehicles = () => {
       if (viewer) {
         viewer.destroy();
       }
-      
+
       const newViewer = new Viewer({
         container: viewerRef.current,
         panorama: selected360Image,
@@ -230,7 +230,6 @@ const styles = {
     borderRadius: "10px",
     padding: "1rem",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    transition: "transform 0.2s",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
