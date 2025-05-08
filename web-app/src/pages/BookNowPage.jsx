@@ -38,18 +38,6 @@ const BookNowPage = () => {
       <Header />
 
       <main className="book-now-page" style={{ padding: '2rem' }}>
-        <h2>Book Honda Vezel</h2>
-
-        <div className="vehicle-details" style={{ marginBottom: '2rem' }}>
-          <p><strong>Engine:</strong> 2000cc</p>
-          <p><strong>Fuel:</strong> Diesel</p>
-          <p><strong>Transmission:</strong> Auto</p>
-          <p><strong>Seats:</strong> 9</p>
-          <p><strong>Year:</strong> 2018</p>
-          <p><strong>Color:</strong> White</p>
-          <p><strong>Price/Day:</strong> Rs. 3000</p>
-          <p><strong>Supplier:</strong> Dulaj Ayeshmantha (0788568282 | dulajayeshmantha91@gmail.com)</p>
-        </div>
 
         <BookNow vehicleId={vehicleId} />
 
