@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase-config";
 import {
@@ -10,12 +10,17 @@ import {
   doc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { Viewer } from "photo-sphere-viewer";
+import "photo-sphere-viewer/dist/photo-sphere-viewer.css";
 
 const SupplierDashboard = () => {
   const [supplierData, setSupplierData] = useState(null);
   const [vehicles, setVehicles] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selected360Image, setSelected360Image] = useState(null);
+  const [viewer, setViewer] = useState(null);
+  const viewerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,11 +33,13 @@ const SupplierDashboard = () => {
         const supplierSnapshot = await getDocs(supplierQuery);
 
         if (!supplierSnapshot.empty) {
-          const supplier = supplierSnapshot.docs[0].data();
-          setSupplierData(supplier);
+          const supplierDoc = supplierSnapshot.docs[0];
+          const supplier = supplierDoc.data();
+          setSupplierData({ ...supplier, id: supplierDoc.id });
 
-          const supplierId = supplierSnapshot.docs[0].id;
+          const supplierId = supplierDoc.id;
 
+          // Fetch vehicles
           const vehicleQuery = query(
             collection(db, "vehicles"),
             where("userId", "==", supplierId)
@@ -45,6 +52,7 @@ const SupplierDashboard = () => {
             }))
           );
 
+          // Fetch bookings
           const bookingQuery = query(
             collection(db, "bookings"),
             where("userId", "==", supplierId)
@@ -58,7 +66,7 @@ const SupplierDashboard = () => {
           );
         }
       } catch (error) {
-        console.error("Error fetching data from Firebase:", error);
+        console.error("Error fetching supplier data:", error);
       } finally {
         setLoading(false);
       }
@@ -68,45 +76,64 @@ const SupplierDashboard = () => {
       if (user) {
         fetchSupplierData(user.email);
       } else {
-        setLoading(false);
+        navigate("/login");
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   const handleDelete = async (vehicleId) => {
-    try {
-      await deleteDoc(doc(db, "vehicles", vehicleId));
-      setVehicles((prev) => prev.filter((v) => v.id !== vehicleId));
-      alert("Vehicle deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting vehicle:", error);
-      alert("Failed to delete vehicle.");
+    if (window.confirm("Are you sure you want to delete this vehicle?")) {
+      try {
+        await deleteDoc(doc(db, "vehicles", vehicleId));
+        setVehicles((prev) => prev.filter((v) => v.id !== vehicleId));
+        alert("Vehicle deleted.");
+      } catch (error) {
+        console.error("Error deleting vehicle:", error);
+        alert("Failed to delete.");
+      }
     }
   };
 
-  const handleUpdate = (vehicleId) => {
+  const handleEdit = (vehicleId) => {
     navigate(`/update-vehicle/${vehicleId}`);
   };
 
-  if (loading) return <p>Loading...</p>;
+  const handleView360 = (imageUrl) => {
+    setSelected360Image(imageUrl);
+  };
+
+  useEffect(() => {
+    if (selected360Image && viewerRef.current) {
+      if (viewer) viewer.destroy();
+
+      const newViewer = new Viewer({
+        container: viewerRef.current,
+        panorama: selected360Image,
+        navbar: ["zoom", "fullscreen"],
+      });
+      setViewer(newViewer);
+    }
+  }, [selected360Image]);
+
+  if (loading) return <p style={styles.loading}>Loading dashboard...</p>;
   if (!supplierData) return <p>No supplier data found.</p>;
 
   return (
-    <div className="supplier-dashboard">
+    <div style={styles.container}>
       <h1>Supplier Dashboard</h1>
       <h2>
         Welcome, {supplierData.f_name} {supplierData.l_name}
       </h2>
 
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+      <div style={styles.buttonGroup}>
         <button onClick={() => navigate("/supplier-login")}>Back</button>
         <button onClick={() => navigate("/register-vehicle")}>Add Vehicle</button>
       </div>
 
-      <section className="supplier-info">
-        <h2>Your Information</h2>
+      <section style={styles.section}>
+        <h3>Your Information</h3>
         <p><strong>Email:</strong> {supplierData.email}</p>
         <p><strong>NIC:</strong> {supplierData.nic}</p>
         <p><strong>Registered on:</strong> {supplierData.reg_date}</p>
@@ -114,44 +141,52 @@ const SupplierDashboard = () => {
         <p><strong>Phone Number:</strong> {supplierData.tel_no}</p>
       </section>
 
-      <section>
-        <h2>Your Vehicles</h2>
-        <div className="vehicle-card-container">
+      <section style={styles.section}>
+        <h3>Your Vehicles</h3>
+        <div style={styles.vehiclesContainer}>
           {vehicles.length > 0 ? (
             vehicles.map((vehicle) => (
-              <div key={vehicle.id} className="vehicle-card">
+              <div key={vehicle.id} style={styles.card}>
                 <img
                   src={vehicle.vehicleImageUrl}
                   alt={vehicle.model}
-                  style={{ width: "200px", height: "auto" }}
+                  style={styles.vehicleImage}
                 />
-                <h3>{vehicle.model}</h3>
+                <h4>{vehicle.model}</h4>
                 <p><strong>Brand:</strong> {vehicle.brand}</p>
-                <p><strong>Engine Capacity:</strong> {vehicle.eng_capacity}</p>
-                <p><strong>Fuel Type:</strong> {vehicle.f_type}</p>
+                <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
+                <p><strong>Fuel:</strong> {vehicle.f_type}</p>
                 <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
                 <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
-                <p><strong>Year of Manufacture:</strong> {vehicle.yom}</p>
+                <p><strong>Year:</strong> {vehicle.yom}</p>
                 <p><strong>Color:</strong> {vehicle.color}</p>
-                <p><strong>Price per Day:</strong> Rs.{vehicle.per_day_chrg}</p>
+                <p><strong>Price/Day:</strong> Rs.{vehicle.per_day_chrg}</p>
                 <p><strong>Description:</strong> {vehicle.description}</p>
 
-                <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
-                  <button onClick={() => handleUpdate(vehicle.id)}>Update</button>
+                {vehicle.view360ImageUrl ? (
+                  <button onClick={() => handleView360(vehicle.view360ImageUrl)}>
+                    View 360 Image
+                  </button>
+                ) : (
+                  <p style={{ fontSize: "0.85rem", color: "gray" }}>No 360 image</p>
+                )}
+
+                <div style={styles.cardButtons}>
+                  <button onClick={() => handleEdit(vehicle.id)}>Update</button>
                   <button onClick={() => handleDelete(vehicle.id)}>Delete</button>
                 </div>
               </div>
             ))
           ) : (
-            <p className="no-data">No vehicles found.</p>
+            <p>No vehicles found.</p>
           )}
         </div>
       </section>
 
-      <section>
-        <h2>Recent Bookings</h2>
+      <section style={styles.section}>
+        <h3>Recent Bookings</h3>
         {bookings.length > 0 ? (
-          <table className="booking-table">
+          <table style={styles.table}>
             <thead>
               <tr>
                 <th>Booking ID</th>
@@ -172,11 +207,68 @@ const SupplierDashboard = () => {
             </tbody>
           </table>
         ) : (
-          <p className="no-data">No bookings found.</p>
+          <p>No bookings found.</p>
         )}
       </section>
+
+      {selected360Image && (
+        <div>
+          <h3>360° Viewer</h3>
+          <div ref={viewerRef} style={{ width: "100%", height: "500px" }} />
+        </div>
+      )}
     </div>
   );
+};
+
+const styles = {
+  container: {
+    padding: "1.5rem",
+    fontFamily: "Arial, sans-serif",
+    maxWidth: "1200px",
+    margin: "auto",
+  },
+  heading: {
+    color: "#2c3e50",
+  },
+  section: {
+    marginBottom: "2rem",
+  },
+  vehiclesContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+  },
+  card: {
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    padding: "1rem",
+    width: "300px",
+  },
+  vehicleImage: {
+    width: "100%",
+    height: "auto",
+    marginBottom: "0.5rem",
+  },
+  cardButtons: {
+    display: "flex",
+    gap: "0.5rem",
+    marginTop: "0.5rem",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+  },
+  buttonGroup: {
+    display: "flex",
+    gap: "1rem",
+    marginBottom: "1.5rem",
+  },
+  loading: {
+    fontSize: "1.2rem",
+    textAlign: "center",
+    marginTop: "2rem",
+  },
 };
 
 export default SupplierDashboard;
