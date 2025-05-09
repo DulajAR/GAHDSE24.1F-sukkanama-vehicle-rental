@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { collection, addDoc, getDoc, doc, serverTimestamp } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDoc,
+  setDoc,
+  doc,
+  serverTimestamp
+} from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase-config';
 
@@ -18,15 +25,34 @@ const BookNow = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        await ensureCustomerProfile(currentUser);
       } else {
         navigate('/login');
       }
     });
     return () => unsubscribe();
   }, [navigate]);
+
+  const ensureCustomerProfile = async (currentUser) => {
+    const customerRef = doc(db, 'customers', currentUser.uid);
+    const docSnap = await getDoc(customerRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(customerRef, {
+        email: currentUser.email,
+        f_name: '',
+        l_name: '',
+        d_licen: '',
+        nic: '',
+        tel_no: '',
+        user_type: 'customer',
+        reg_date: new Date().toISOString().split('T')[0],
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchVehicleOwner = async () => {
@@ -82,7 +108,7 @@ const BookNow = () => {
       const bookingData = {
         vehicleId,
         vehicleOwnerId,
-        customerId: user.uid,
+        customerId: user.uid, // ✅ Add the customer ID (logged-in user's UID)
         customerEmail: user.email,
         startDate,
         endDate,

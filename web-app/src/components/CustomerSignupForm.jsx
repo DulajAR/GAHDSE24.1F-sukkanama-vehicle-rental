@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 // Firebase config
 const firebaseConfig = {
@@ -55,11 +55,15 @@ const CustomerSignupForm = () => {
 
     try {
       // Create a new user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.p_word);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.p_word
+      );
       const user = userCredential.user;
 
-      // Add customer data to Firestore
-      await addDoc(collection(db, "customers"), {
+      // Save customer data to Firestore using the same UID as document ID
+      await setDoc(doc(db, "customers", user.uid), {
         f_name: formData.f_name,
         l_name: formData.l_name,
         email: formData.email,
@@ -72,7 +76,7 @@ const CustomerSignupForm = () => {
 
       setMessage("✅ Sign up successful! Redirecting...");
       setTimeout(() => {
-        window.location.href = "/loginCustomer"; // Redirect after success
+        window.location.href = "/loginCustomer";
       }, 2000);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -86,12 +90,45 @@ const CustomerSignupForm = () => {
       {message && <p className="message">{message}</p>}
 
       <form onSubmit={handleSubmit}>
-        <input type="text" name="f_name" placeholder="First Name" value={formData.f_name} onChange={handleChange} required />
-        <input type="text" name="l_name" placeholder="Last Name" value={formData.l_name} onChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-        <input type="text" name="nic" placeholder="NIC" value={formData.nic} onChange={handleChange} required />
-        <input type="date" name="reg_date" value={formData.reg_date} onChange={handleChange} required />
-
+        <input
+          type="text"
+          name="f_name"
+          placeholder="First Name"
+          value={formData.f_name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="l_name"
+          placeholder="Last Name"
+          value={formData.l_name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="nic"
+          placeholder="NIC"
+          value={formData.nic}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="date"
+          name="reg_date"
+          value={formData.reg_date}
+          onChange={handleChange}
+          required
+        />
         <input
           type="password"
           name="p_word"
@@ -101,11 +138,26 @@ const CustomerSignupForm = () => {
           required
         />
         {passwordError && <p className="error-text">{passwordError}</p>}
+        <input
+          type="tel"
+          name="tel_no"
+          placeholder="Phone Number"
+          value={formData.tel_no}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="d_licen"
+          placeholder="Driving License"
+          value={formData.d_licen}
+          onChange={handleChange}
+          required
+        />
 
-        <input type="tel" name="tel_no" placeholder="Phone Number" value={formData.tel_no} onChange={handleChange} required />
-        <input type="text" name="d_licen" placeholder="Driving License" value={formData.d_licen} onChange={handleChange} required />
-
-        <button type="submit" disabled={passwordError}>Sign Up</button>
+        <button type="submit" disabled={passwordError}>
+          Sign Up
+        </button>
       </form>
 
       <div className="login-link">

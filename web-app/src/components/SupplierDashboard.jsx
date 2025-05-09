@@ -8,6 +8,8 @@ import {
   where,
   deleteDoc,
   doc,
+  updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { Viewer } from "photo-sphere-viewer";
@@ -39,7 +41,6 @@ const SupplierDashboard = () => {
 
           const supplierId = supplierDoc.id;
 
-          // Fetch vehicles
           const vehicleQuery = query(
             collection(db, "vehicles"),
             where("userId", "==", supplierId)
@@ -52,18 +53,32 @@ const SupplierDashboard = () => {
             }))
           );
 
-          // Fetch bookings
           const bookingQuery = query(
             collection(db, "bookings"),
-            where("userId", "==", supplierId)
+            where("vehicleOwnerId", "==", supplierId)
           );
           const bookingSnapshot = await getDocs(bookingQuery);
-          setBookings(
-            bookingSnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
+          const rawBookings = bookingSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          // Fetch customer names using customerId
+          const bookingsWithCustomerNames = await Promise.all(
+            rawBookings.map(async (booking) => {
+              let customerName = "Unknown";
+              if (booking.customerId) {
+                const customerDoc = await getDoc(doc(db, "customers", booking.customerId));
+                if (customerDoc.exists()) {
+                  const customerData = customerDoc.data();
+                  customerName = `${customerData.f_name || ""} ${customerData.l_name || ""}`;
+                }
+              }
+              return { ...booking, customerName };
+            })
           );
+
+          setBookings(bookingsWithCustomerNames);
         }
       } catch (error) {
         console.error("Error fetching supplier data:", error);
@@ -104,10 +119,22 @@ const SupplierDashboard = () => {
     setSelected360Image(imageUrl);
   };
 
+  const handleBookingAction = async (bookingId, status) => {
+    try {
+      await updateDoc(doc(db, "bookings", bookingId), {
+        status,
+      });
+      setBookings((prev) =>
+        prev.map((b) => (b.id === bookingId ? { ...b, status } : b))
+      );
+    } catch (error) {
+      console.error("Failed to update booking status:", error);
+    }
+  };
+
   useEffect(() => {
     if (selected360Image && viewerRef.current) {
       if (viewer) viewer.destroy();
-
       const newViewer = new Viewer({
         container: viewerRef.current,
         panorama: selected360Image,
@@ -123,9 +150,7 @@ const SupplierDashboard = () => {
   return (
     <div style={styles.container}>
       <h1>Supplier Dashboard</h1>
-      <h2>
-        Welcome, {supplierData.f_name} {supplierData.l_name}
-      </h2>
+      <h2>Welcome, {supplierData.f_name} {supplierData.l_name}</h2>
 
       <div style={styles.buttonGroup}>
         <button onClick={() => navigate("/supplier-login")}>Back</button>
@@ -189,19 +214,28 @@ const SupplierDashboard = () => {
           <table style={styles.table}>
             <thead>
               <tr>
-                <th>Booking ID</th>
-                <th>Vehicle</th>
-                <th>Customer</th>
+                <th>Customer Name</th>
+                <th>Customer Email</th>
+                <th>Phone</th>
+                <th>Start</th>
+                <th>End</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.id}>
-                  <td>{booking.id}</td>
-                  <td>{booking.vehicle_name}</td>
-                  <td>{booking.customer_name}</td>
-                  <td>{booking.status}</td>
+                  <td>{booking.customerName}</td>
+                  <td>{booking.customerEmail}</td>
+                  <td>{booking.phone}</td>
+                  <td>{booking.startDate}</td>
+                  <td>{booking.endDate}</td>
+                  <td>{booking.status || "Pending"}</td>
+                  <td>
+                    <button onClick={() => handleBookingAction(booking.id, "Accepted")}>Accept</button>
+                    <button onClick={() => handleBookingAction(booking.id, "Rejected")} style={{ marginLeft: "0.5rem" }}>Reject</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -227,9 +261,6 @@ const styles = {
     fontFamily: "Arial, sans-serif",
     maxWidth: "1200px",
     margin: "auto",
-  },
-  heading: {
-    color: "#2c3e50",
   },
   section: {
     marginBottom: "2rem",
