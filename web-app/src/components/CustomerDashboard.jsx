@@ -7,9 +7,11 @@ import {
   getDocs,
   doc,
   getDoc,
+  deleteDoc, // ✅ Import deleteDoc
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { Link } from "react-router-dom";
 
 // Firebase config
 const firebaseConfig = {
@@ -48,7 +50,7 @@ const CustomerDashboard = () => {
             const vehicleRef = doc(db, "vehicles", bookingData.vehicleId);
             const vehicleSnap = await getDoc(vehicleRef);
             const vehicleData = vehicleSnap.exists() ? vehicleSnap.data() : null;
-            return { ...bookingData, vehicle: vehicleData };
+            return { ...bookingData, vehicle: vehicleData, id: docSnap.id };
           })
         );
 
@@ -70,6 +72,21 @@ const CustomerDashboard = () => {
 
     return () => unsubscribe();
   }, []);
+
+  // ✅ Handle Delete Booking
+  const handleDelete = async (bookingId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this booking?");
+    if (!confirmDelete) return;
+
+    try {
+      await deleteDoc(doc(db, "bookings", bookingId));
+      setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== bookingId));
+      alert("Booking deleted successfully.");
+    } catch (error) {
+      console.error("Failed to delete booking:", error);
+      alert("Error deleting booking.");
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (!customer) return <p>No customer data found.</p>;
@@ -136,6 +153,39 @@ const CustomerDashboard = () => {
             ) : (
               <p>Vehicle details not available.</p>
             )}
+
+            {/* ✅ Update Booking Button */}
+            <Link
+              to={`/update-booking/${booking.id}`}
+              style={{
+                display: "inline-block",
+                marginTop: "15px",
+                padding: "8px 16px",
+                backgroundColor: "#007bff",
+                color: "white",
+                textDecoration: "none",
+                borderRadius: "5px",
+                marginRight: "10px",
+              }}
+            >
+              Update Booking
+            </Link>
+
+            {/* ✅ Delete Booking Button */}
+            <button
+              onClick={() => handleDelete(booking.id)}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#dc3545",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              Delete Booking
+            </button>
+
             <hr style={{ marginTop: "20px", borderTop: "2px solid #ccc" }} />
           </div>
         ))
