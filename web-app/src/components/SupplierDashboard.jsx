@@ -46,12 +46,11 @@ const SupplierDashboard = () => {
             where("userId", "==", supplierId)
           );
           const vehicleSnapshot = await getDocs(vehicleQuery);
-          setVehicles(
-            vehicleSnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-          );
+          const vehicleList = vehicleSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setVehicles(vehicleList);
 
           const bookingQuery = query(
             collection(db, "bookings"),
@@ -63,22 +62,38 @@ const SupplierDashboard = () => {
             ...doc.data(),
           }));
 
-          // Fetch customer names using customerId
-          const bookingsWithCustomerNames = await Promise.all(
+          const bookingsWithDetails = await Promise.all(
             rawBookings.map(async (booking) => {
               let customerName = "Unknown";
               if (booking.customerId) {
-                const customerDoc = await getDoc(doc(db, "customers", booking.customerId));
+                const customerDoc = await getDoc(
+                  doc(db, "customers", booking.customerId)
+                );
                 if (customerDoc.exists()) {
                   const customerData = customerDoc.data();
-                  customerName = `${customerData.f_name || ""} ${customerData.l_name || ""}`;
+                  customerName = `${customerData.f_name || ""} ${
+                    customerData.l_name || ""
+                  }`;
                 }
               }
-              return { ...booking, customerName };
+
+              const vehicle = vehicleList.find((v) => v.id === booking.vehicleId);
+              return {
+                ...booking,
+                customerName,
+                customerEmail: booking.customerEmail || "N/A",
+                phone: booking.phone || "N/A",
+                startDate: booking.startDate || "N/A",
+                endDate: booking.endDate || "N/A",
+                status: booking.status || "Pending",
+                vehicleModel: vehicle?.model || "Unknown",
+                vehicleImage: vehicle?.vehicleImageUrl || "",
+                vehiclePlate: vehicle?.plate || "N/A",
+              };
             })
           );
 
-          setBookings(bookingsWithCustomerNames);
+          setBookings(bookingsWithDetails);
         }
       } catch (error) {
         console.error("Error fetching supplier data:", error);
@@ -111,6 +126,19 @@ const SupplierDashboard = () => {
     }
   };
 
+  const handleDeleteBooking = async (bookingId) => {
+    if (window.confirm("Are you sure you want to delete this booking?")) {
+      try {
+        await deleteDoc(doc(db, "bookings", bookingId));
+        setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+        alert("Booking deleted.");
+      } catch (error) {
+        console.error("Error deleting booking:", error);
+        alert("Failed to delete booking.");
+      }
+    }
+  };
+
   const handleEdit = (vehicleId) => {
     navigate(`/update-vehicle/${vehicleId}`);
   };
@@ -121,9 +149,7 @@ const SupplierDashboard = () => {
 
   const handleBookingAction = async (bookingId, status) => {
     try {
-      await updateDoc(doc(db, "bookings", bookingId), {
-        status,
-      });
+      await updateDoc(doc(db, "bookings", bookingId), { status });
       setBookings((prev) =>
         prev.map((b) => (b.id === bookingId ? { ...b, status } : b))
       );
@@ -150,7 +176,9 @@ const SupplierDashboard = () => {
   return (
     <div style={styles.container}>
       <h1>Supplier Dashboard</h1>
-      <h2>Welcome, {supplierData.f_name} {supplierData.l_name}</h2>
+      <h2>
+        Welcome, {supplierData.f_name} {supplierData.l_name}
+      </h2>
 
       <div style={styles.buttonGroup}>
         <button onClick={() => navigate("/supplier-login")}>Back</button>
@@ -214,8 +242,10 @@ const SupplierDashboard = () => {
           <table style={styles.table}>
             <thead>
               <tr>
-                <th>Customer Name</th>
-                <th>Customer Email</th>
+                <th>Vehicle</th>
+                <th>Plate No</th>
+                <th>Customer</th>
+                <th>Email</th>
                 <th>Phone</th>
                 <th>Start</th>
                 <th>End</th>
@@ -226,29 +256,58 @@ const SupplierDashboard = () => {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.id}>
+                  <td>
+                    <img
+                      src={booking.vehicleImage}
+                      alt={booking.vehicleModel}
+                      style={{ width: "80px", borderRadius: "4px" }}
+                    />
+                    <br />
+                    {booking.vehicleModel}
+                  </td>
+                  <td>{booking.vehiclePlate}</td>
                   <td>{booking.customerName}</td>
                   <td>{booking.customerEmail}</td>
                   <td>{booking.phone}</td>
                   <td>{booking.startDate}</td>
                   <td>{booking.endDate}</td>
-                  <td>{booking.status || "Pending"}</td>
+                  <td>{booking.status}</td>
                   <td>
-                    <button onClick={() => handleBookingAction(booking.id, "Accepted")}>Accept</button>
-                    <button onClick={() => handleBookingAction(booking.id, "Rejected")} style={{ marginLeft: "0.5rem" }}>Reject</button>
+                    <button
+                      onClick={() => handleBookingAction(booking.id, "Accepted")}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleBookingAction(booking.id, "Rejected")}
+                      style={{ marginLeft: "0.5rem" }}
+                    >
+                      Reject
+                    </button>
+                    <button
+                      onClick={() => handleDeleteBooking(booking.id)}
+                      style={{
+                        marginLeft: "0.5rem",
+                        backgroundColor: "red",
+                        color: "white",
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
-          <p>No bookings found.</p>
+          <p>No bookings available.</p>
         )}
       </section>
 
       {selected360Image && (
-        <div>
-          <h3>360° Viewer</h3>
-          <div ref={viewerRef} style={{ width: "100%", height: "500px" }} />
+        <div style={styles.viewerContainer}>
+          <h3>360° Vehicle View</h3>
+          <div ref={viewerRef} style={{ width: "100%", height: "500px" }}></div>
         </div>
       )}
     </div>
@@ -256,49 +315,47 @@ const SupplierDashboard = () => {
 };
 
 const styles = {
-  container: {
-    padding: "1.5rem",
-    fontFamily: "Arial, sans-serif",
-    maxWidth: "1200px",
-    margin: "auto",
-  },
-  section: {
-    marginBottom: "2rem",
-  },
-  vehiclesContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "1rem",
-  },
+  container: { padding: "20px", fontFamily: "Arial" },
+  buttonGroup: { display: "flex", gap: "10px", marginBottom: "20px" },
+  section: { marginBottom: "40px" },
+  vehiclesContainer: { display: "flex", flexWrap: "wrap", gap: "20px" },
   card: {
     border: "1px solid #ccc",
+    padding: "15px",
     borderRadius: "8px",
-    padding: "1rem",
     width: "300px",
+    backgroundColor: "#f9f9f9",
   },
   vehicleImage: {
     width: "100%",
-    height: "auto",
-    marginBottom: "0.5rem",
+    height: "200px",
+    objectFit: "cover",
+    borderRadius: "4px",
   },
   cardButtons: {
     display: "flex",
-    gap: "0.5rem",
-    marginTop: "0.5rem",
+    justifyContent: "space-between",
+    marginTop: "10px",
   },
   table: {
     width: "100%",
     borderCollapse: "collapse",
   },
-  buttonGroup: {
-    display: "flex",
-    gap: "1rem",
-    marginBottom: "1.5rem",
+  tableHeader: {
+    backgroundColor: "#eee",
+  },
+  tableCell: {
+    padding: "8px",
+    border: "1px solid #ddd",
+    textAlign: "left",
+  },
+  viewerContainer: {
+    marginTop: "40px",
   },
   loading: {
-    fontSize: "1.2rem",
     textAlign: "center",
-    marginTop: "2rem",
+    fontSize: "18px",
+    marginTop: "50px",
   },
 };
 
