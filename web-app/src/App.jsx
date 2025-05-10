@@ -14,6 +14,7 @@ import VehicleRegisterPage from "./pages/VehicleRegisterPage";
 import VehicleAddUpdatePage from "./pages/VehicleAddUpdatePage";
 import AllVehiclesPage from "./pages/AllVehiclesPage";
 import BookNowPage from './pages/BookNowPage';
+import UpdateBookingPage from "./pages/UpdateBookingPage";
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/update-vehicle/:id" element={<VehicleAddUpdatePage />} />
         <Route path="/all-vehicles" element={<AllVehiclesPage />} />
         <Route path="/book/:vehicleId" element={<BookNowPage />} />
+        <Route path="/update-booking/:bookingId" element={<UpdateBookingPage />} />
 
 
       </Routes>
