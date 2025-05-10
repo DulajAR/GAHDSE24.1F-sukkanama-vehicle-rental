@@ -4,17 +4,31 @@ import {
   collection,
   addDoc,
   getDoc,
+  getDocs,
   setDoc,
   doc,
-  serverTimestamp
+  serverTimestamp,
+  query,
+  where
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase-config';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { addDays, isWithinInterval, parseISO, eachDayOfInterval } from 'date-fns';
 
 const BookNow = () => {
   const { vehicleId } = useParams();
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 1),
+      key: 'selection'
+    }
+  ]);
+  const [bookedRanges, setBookedRanges] = useState([]);
+  const [disabledDates, setDisabledDates] = useState([]);
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -39,7 +53,6 @@ const BookNow = () => {
   const ensureCustomerProfile = async (currentUser) => {
     const customerRef = doc(db, 'customers', currentUser.uid);
     const docSnap = await getDoc(customerRef);
-
     if (!docSnap.exists()) {
       await setDoc(customerRef, {
         email: currentUser.email,
@@ -49,30 +62,26 @@ const BookNow = () => {
         nic: '',
         tel_no: '',
         user_type: 'customer',
-        reg_date: new Date().toISOString().split('T')[0],
+        reg_date: new Date().toISOString().split('T')[0]
       });
     }
   };
 
   useEffect(() => {
-    const fetchVehicleOwner = async () => {
+    const fetchVehicleDetails = async () => {
       if (!vehicleId) {
         setMessage('❌ Vehicle ID not provided.');
         return;
       }
-
       try {
         const vehicleRef = doc(db, 'vehicles', vehicleId);
         const vehicleSnap = await getDoc(vehicleRef);
-
         if (!vehicleSnap.exists()) {
           setMessage('❌ Vehicle not found in database.');
           return;
         }
-
         const data = vehicleSnap.data();
         setVehicleDetails(data);
-
         if (data.userId) {
           setVehicleOwnerId(data.userId);
         } else {
@@ -84,13 +93,49 @@ const BookNow = () => {
       }
     };
 
-    fetchVehicleOwner();
+    const fetchBookedRanges = async () => {
+      try {
+        const q = query(collection(db, 'bookings'), where('vehicleId', '==', vehicleId));
+        const querySnapshot = await getDocs(q);
+        const ranges = [];
+        const allDisabledDates = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.status !== 'Rejected') {
+            const start = parseISO(data.startDate);
+            const end = parseISO(data.endDate);
+            ranges.push({ start, end });
+            const rangeDays = eachDayOfInterval({ start, end });
+            allDisabledDates.push(...rangeDays);
+          }
+        });
+
+        setBookedRanges(ranges);
+        setDisabledDates(allDisabledDates);
+      } catch (err) {
+        console.error('Error loading booked dates:', err);
+      }
+    };
+
+    fetchVehicleDetails();
+    fetchBookedRanges();
   }, [vehicleId]);
+
+  const isOverlapping = (startDate, endDate) => {
+    return bookedRanges.some(range =>
+      isWithinInterval(startDate, { start: range.start, end: range.end }) ||
+      isWithinInterval(endDate, { start: range.start, end: range.end }) ||
+      (startDate <= range.start && endDate >= range.end)
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+
+    const { startDate, endDate } = dateRange[0];
 
     if (!user) {
       setMessage('❌ User is not authenticated.');
@@ -104,22 +149,27 @@ const BookNow = () => {
       return;
     }
 
+    if (isOverlapping(startDate, endDate)) {
+      setMessage('❌ Selected date range overlaps with an existing booking.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const bookingData = {
         vehicleId,
         vehicleOwnerId,
-        customerId: user.uid, // ✅ Add the customer ID (logged-in user's UID)
+        customerId: user.uid,
         customerEmail: user.email,
-        startDate,
-        endDate,
+        startDate: startDate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0],
         phone,
-        createdAt: serverTimestamp(),
+        status: 'Pending',
+        createdAt: serverTimestamp()
       };
 
       const docRef = await addDoc(collection(db, 'bookings'), bookingData);
       setMessage(`✅ Booking confirmed! Booking ID: ${docRef.id}`);
-      setStartDate('');
-      setEndDate('');
       setPhone('');
     } catch (error) {
       console.error('Booking error:', error);
@@ -167,20 +217,14 @@ const BookNow = () => {
           <p>Loading vehicle details...</p>
         )}
 
-        <label>Pick-up Date:</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          required
-        />
-
-        <label>Drop-off Date:</label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          required
+        <label>Select Booking Dates:</label>
+        <DateRange
+          editableDateInputs={true}
+          onChange={(item) => setDateRange([item.selection])}
+          moveRangeOnFirstSelection={false}
+          ranges={dateRange}
+          minDate={new Date()}
+          disabledDates={disabledDates}
         />
 
         <label>Contact Number:</label>
@@ -199,7 +243,7 @@ const BookNow = () => {
 
       <style jsx>{`
         .booking-container {
-          max-width: 600px;
+          max-width: 700px;
           margin: 50px auto;
           padding: 20px;
           background-color: #fff;
@@ -237,7 +281,7 @@ const BookNow = () => {
         }
 
         .booking-form label {
-          margin-bottom: 8px;
+          margin: 15px 0 8px;
           font-size: 16px;
         }
 
@@ -260,31 +304,23 @@ const BookNow = () => {
         }
 
         .submit-button:disabled {
-          background-color: #ccc;
-        }
-
-        .submit-button:hover:not(:disabled) {
-          background-color: #218838;
-        }
-
-        .back-button {
-          background-color: transparent;
-          border: none;
-          color: #007BFF;
-          font-size: 16px;
-          margin-bottom: 20px;
-          cursor: pointer;
-        }
-
-        .back-button:hover {
-          color: #0056b3;
+          background-color: #aaa;
         }
 
         .booking-message {
-          font-size: 16px;
           text-align: center;
-          margin-bottom: 20px;
-          color: ${message.includes('✅') ? '#28a745' : '#dc3545'};
+          margin-bottom: 15px;
+          font-weight: bold;
+        }
+
+        .back-button {
+          margin-bottom: 10px;
+          background: none;
+          border: none;
+          color: #007bff;
+          cursor: pointer;
+          font-size: 16px;
+          text-align: left;
         }
       `}</style>
     </div>
