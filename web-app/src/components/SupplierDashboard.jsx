@@ -14,6 +14,8 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { Viewer } from "photo-sphere-viewer";
 import "photo-sphere-viewer/dist/photo-sphere-viewer.css";
+import Calendar from "react-calendar"; // Import react-calendar
+import "react-calendar/dist/Calendar.css"; // Import calendar styles
 
 const SupplierDashboard = () => {
   const [supplierData, setSupplierData] = useState(null);
@@ -139,6 +141,36 @@ const SupplierDashboard = () => {
     }
   };
 
+
+
+
+
+
+const [unavailableDates, setUnavailableDates] = useState({});
+
+useEffect(() => {
+  const fetchAndSetUnavailableDates = async () => {
+    const newUnavailableDates = {};
+    for (const vehicle of vehicles) {
+      const dates = await fetchUnavailableDates(vehicle.id);
+      newUnavailableDates[vehicle.id] = dates;
+    }
+    setUnavailableDates(newUnavailableDates);
+  };
+
+  if (vehicles.length > 0) {
+    fetchAndSetUnavailableDates();
+  }
+}, [vehicles]);
+
+
+
+
+
+
+
+
+
   const handleEdit = (vehicleId) => {
     navigate(`/update-vehicle/${vehicleId}`);
   };
@@ -169,6 +201,43 @@ const SupplierDashboard = () => {
       setViewer(newViewer);
     }
   }, [selected360Image]);
+
+ const fetchUnavailableDates = async (vehicleId) => {
+  try {
+    const bookingQuery = query(
+      collection(db, "bookings"),
+      where("vehicleId", "==", vehicleId),
+      where("status", "==", "Accepted") // Filter by "Accepted" bookings
+    );
+
+    const bookingSnapshot = await getDocs(bookingQuery);
+    
+    // Array to hold unavailable dates
+    const unavailableDates = [];
+
+    // Iterate over each booking and collect start and end dates
+    bookingSnapshot.forEach((doc) => {
+      const bookingData = doc.data();
+      const startDate = new Date(bookingData.startDate).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      const endDate = new Date(bookingData.endDate).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      unavailableDates.push(startDate);
+      unavailableDates.push(endDate);
+
+      // If there are multiple days between start and end, add all intermediate dates
+      let currentDate = new Date(bookingData.startDate);
+      while (currentDate <= new Date(bookingData.endDate)) {
+        unavailableDates.push(currentDate.toISOString().split('T')[0]);
+        currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+      }
+    });
+
+    return unavailableDates;
+  } catch (error) {
+    console.error("Error fetching unavailable dates:", error);
+    return [];
+  }
+};
+
 
   if (loading) return <p style={styles.loading}>Loading dashboard...</p>;
   if (!supplierData) return <p>No supplier data found.</p>;
@@ -228,6 +297,18 @@ const SupplierDashboard = () => {
                   <button onClick={() => handleEdit(vehicle.id)}>Update</button>
                   <button onClick={() => handleDelete(vehicle.id)}>Delete</button>
                 </div>
+
+               <div style={{ marginTop: "20px" }}>
+  <h5>Vehicle Availability</h5>
+  <Calendar
+    onChange={(date) => handleDateChange(vehicle.id, date)}
+    value={new Date()} // Default to current date
+    tileDisabled={({ date }) => {
+      const dateString = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      return unavailableDates[vehicle.id]?.includes(dateString);
+    }}
+  />
+</div>
               </div>
             ))
           ) : (
@@ -278,85 +359,76 @@ const SupplierDashboard = () => {
                     >
                       Accept
                     </button>
-                    <button
-                      onClick={() => handleBookingAction(booking.id, "Rejected")}
-                      style={{ marginLeft: "0.5rem" }}
-                    >
-                      Reject
-                    </button>
-                    <button
-                      onClick={() => handleDeleteBooking(booking.id)}
-                      style={{
-                        marginLeft: "0.5rem",
-                        backgroundColor: "red",
-                        color: "white",
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No bookings available.</p>
-        )}
-      </section>
+                <button
+                  onClick={() => handleBookingAction(booking.id, "Rejected")}
+                >
+                  Reject
+                </button>
+                <button
+                  onClick={() => handleDeleteBooking(booking.id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    ) : (
+      <p>No bookings found.</p>
+    )}
+  </section>
 
-      {selected360Image && (
-        <div style={styles.viewerContainer}>
-          <h3>360° Vehicle View</h3>
-          <div ref={viewerRef} style={{ width: "100%", height: "500px" }}></div>
-        </div>
-      )}
-    </div>
-  );
+  <div
+    ref={viewerRef}
+    style={{ width: "100%", height: "500px", marginTop: "20px" }}
+  ></div>
+</div>
+);
 };
 
 const styles = {
-  container: { padding: "20px", fontFamily: "Arial" },
-  buttonGroup: { display: "flex", gap: "10px", marginBottom: "20px" },
-  section: { marginBottom: "40px" },
-  vehiclesContainer: { display: "flex", flexWrap: "wrap", gap: "20px" },
-  card: {
-    border: "1px solid #ccc",
-    padding: "15px",
-    borderRadius: "8px",
-    width: "300px",
-    backgroundColor: "#f9f9f9",
-  },
-  vehicleImage: {
-    width: "100%",
-    height: "200px",
-    objectFit: "cover",
-    borderRadius: "4px",
-  },
-  cardButtons: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "10px",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  tableHeader: {
-    backgroundColor: "#eee",
-  },
-  tableCell: {
-    padding: "8px",
-    border: "1px solid #ddd",
-    textAlign: "left",
-  },
-  viewerContainer: {
-    marginTop: "40px",
-  },
-  loading: {
-    textAlign: "center",
-    fontSize: "18px",
-    marginTop: "50px",
-  },
+container: {
+fontFamily: "Arial, sans-serif",
+padding: "20px",
+},
+section: {
+marginBottom: "30px",
+},
+buttonGroup: {
+marginBottom: "20px",
+},
+loading: {
+textAlign: "center",
+fontSize: "1.5rem",
+color: "#333",
+},
+vehiclesContainer: {
+display: "flex",
+flexWrap: "wrap",
+},
+card: {
+backgroundColor: "#fff",
+padding: "20px",
+borderRadius: "8px",
+boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+margin: "10px",
+width: "300px",
+textAlign: "center",
+},
+vehicleImage: {
+width: "100%",
+height: "200px",
+objectFit: "cover",
+borderRadius: "8px",
+},
+cardButtons: {
+marginTop: "10px",
+},
+table: {
+width: "100%",
+borderCollapse: "collapse",
+},
 };
 
 export default SupplierDashboard;
