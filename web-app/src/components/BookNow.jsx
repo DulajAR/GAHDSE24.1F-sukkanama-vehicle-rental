@@ -308,7 +308,7 @@ const BookNow = () => {
         }
 
         .booking-message {
-          text-align: center;
+          text-align: center
           margin-bottom: 15px;
           font-weight: bold;
         }
