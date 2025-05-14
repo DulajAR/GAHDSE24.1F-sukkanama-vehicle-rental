@@ -15,6 +15,9 @@ import VehicleAddUpdatePage from "./pages/VehicleAddUpdatePage";
 import AllVehiclesPage from "./pages/AllVehiclesPage";
 import BookNowPage from './pages/BookNowPage';
 import UpdateBookingPage from "./pages/UpdateBookingPage";
+import AdminLoginPage from "./admin/pages/AdminLoginPage";
+import AdminSignupFormPage from "./admin/pages/AdminSignupFormPage";
+import AdminDashboardPage from "./admin/pages/AdminDashboardPage";
 
 const App = () => {
   return (
@@ -35,6 +38,9 @@ const App = () => {
         <Route path="/all-vehicles" element={<AllVehiclesPage />} />
         <Route path="/book/:vehicleId" element={<BookNowPage />} />
         <Route path="/update-booking/:bookingId" element={<UpdateBookingPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin-signup" element={<AdminSignupFormPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
 
 
       </Routes>
