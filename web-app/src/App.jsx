@@ -18,6 +18,7 @@ import UpdateBookingPage from "./pages/UpdateBookingPage";
 import AdminLoginPage from "./admin/pages/AdminLoginPage";
 import AdminSignupFormPage from "./admin/pages/AdminSignupFormPage";
 import AdminDashboardPage from "./admin/pages/AdminDashboardPage";
+import AdminManageCustomersPage from "./admin/pages/AdminManageCustomersPage";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin-signup" element={<AdminSignupFormPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/admin/manage-customers" element={<AdminManageCustomersPage />} />
 
        
 

@@ -60,7 +60,7 @@ const AdminDashboard = () => {
 
         <div
           style={cardStyle}
-          onClick={() => navigateTo("/admin/customers")}
+          onClick={() => navigateTo("/admin/manage-customers")}
           onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
           onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
