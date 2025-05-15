@@ -13,13 +13,13 @@ const AdminHeader = () => {
       <nav>
         <ul id="navbar">
           <li>
-            <a href="#">Home</a>
+            <a href="/admin/dashboard">Home</a>
           </li>
           <li>
             <a href="#">Supplier/Vehicles</a>
           </li>
           <li>
-            <a href="#">Customer/Bookings</a>
+            <a href="/admin/manage-customers">Customer/Bookings</a>
           </li>
           <li>
             <a href="#">Overview</a>

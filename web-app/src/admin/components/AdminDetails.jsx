@@ -69,7 +69,7 @@ const AdminDetails = () => {
 
   return (
     <div style={styles.dashboard}>
-      <h1 style={styles.heading}>Admin Dashboard</h1>
+      <h1 style={styles.heading}>Admin Details</h1>
       <h2 style={styles.subHeading}>
         Welcome, {adminData.f_name} {adminData.l_name}
       </h2>
