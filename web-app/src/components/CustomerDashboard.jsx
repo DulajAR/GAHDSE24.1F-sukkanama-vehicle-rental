@@ -7,7 +7,7 @@ import {
   getDocs,
   doc,
   getDoc,
-  deleteDoc, // ✅ Import deleteDoc
+  deleteDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
@@ -73,7 +73,6 @@ const CustomerDashboard = () => {
     return () => unsubscribe();
   }, []);
 
-  // ✅ Handle Delete Booking
   const handleDelete = async (bookingId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this booking?");
     if (!confirmDelete) return;
@@ -128,6 +127,7 @@ const CustomerDashboard = () => {
             }}
           >
             <h4>Booking #{index + 1}</h4>
+            <p><strong>Booking ID:</strong> {booking.id}</p>
             <p><strong>Status:</strong> {booking.status}</p>
             <p><strong>Start Date:</strong> {booking.startDate}</p>
             <p><strong>End Date:</strong> {booking.endDate}</p>
@@ -154,7 +154,6 @@ const CustomerDashboard = () => {
               <p>Vehicle details not available.</p>
             )}
 
-            {/* ✅ Update Booking Button */}
             <Link
               to={`/update-booking/${booking.id}`}
               style={{
@@ -171,7 +170,6 @@ const CustomerDashboard = () => {
               Update Booking
             </Link>
 
-            {/* ✅ Delete Booking Button */}
             <button
               onClick={() => handleDelete(booking.id)}
               style={{

@@ -242,130 +242,336 @@ useEffect(() => {
   if (loading) return <p style={styles.loading}>Loading dashboard...</p>;
   if (!supplierData) return <p>No supplier data found.</p>;
 
-  return (
-    <div style={styles.container}>
-      <h1>Supplier Dashboard</h1>
-      <h2>
-        Welcome, {supplierData.f_name} {supplierData.l_name}
-      </h2>
 
-      <div style={styles.buttonGroup}>
-        <button onClick={() => navigate("/supplier-login")}>Back</button>
-        <button onClick={() => navigate("/register-vehicle")}>Add Vehicle</button>
-      </div>
 
-      <section style={styles.section}>
-        <h3>Your Information</h3>
-        <p><strong>Email:</strong> {supplierData.email}</p>
-        <p><strong>NIC:</strong> {supplierData.nic}</p>
-        <p><strong>Registered on:</strong> {supplierData.reg_date}</p>
-        <p><strong>Tax ID:</strong> {supplierData.tax_id}</p>
-        <p><strong>Phone Number:</strong> {supplierData.tel_no}</p>
-      </section>
 
-      <section style={styles.section}>
-        <h3>Your Vehicles</h3>
-        <div style={styles.vehiclesContainer}>
-          {vehicles.length > 0 ? (
-            vehicles.map((vehicle) => (
-              <div key={vehicle.id} style={styles.card}>
+
+
+
+ return (
+  <div style={styles.container}>
+    <h1 style={styles.heading1}>Supplier Dashboard</h1>
+    <h2 style={styles.heading2}>
+      Welcome, {supplierData.f_name} {supplierData.l_name}
+    </h2>
+
+    <div style={styles.buttonGroup}>
+      <button
+        style={styles.button}
+        onClick={() => navigate("/supplier-login")}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+      >
+        Log Out
+      </button>
+      <button
+        style={styles.button}
+        onClick={() => navigate("/register-vehicle")}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+      >
+        Add Vehicle
+      </button>
+    </div>
+
+
+
+
+
+
+
+
+<section className="booking-table-container">
+  <h1>Your Information</h1>
+  <h2><strong>Email:</strong> {supplierData.email}</h2>
+  <h2><strong>NIC:</strong> {supplierData.nic}</h2>
+  <h2><strong>Registered on:</strong> {supplierData.reg_date}</h2>
+  <h2><strong>Tax ID:</strong> {supplierData.tax_id}</h2>
+  <h2><strong>Phone Number:</strong> {supplierData.tel_no}</h2>
+
+  <style>{`
+    .booking-table-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px 20px;
+      background: #f9f9f9; /* light gray background for soft look */
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #34495e; /* dark gray-blue for body text */
+    }
+
+    .booking-table-container h1 {
+      font-size: 2.8rem;
+      color: #2c3e50; /* deep navy blue */
+      font-weight: 900;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+    }
+
+    .booking-table-container h2 {
+      margin: 12px 0;
+      font-weight: 600;
+      color: #1a5276; /* elegant mid-blue for labels */
+    }
+
+    .booking-table-container h2 strong {
+      color: #2980b9; /* distinct blue for the "label" part (e.g., Email:) */
+    }
+  `}</style>
+</section>
+
+
+
+
+
+     
+
+
+
+
+
+<section className="vehicle-section">
+  <h3>Your Vehicles</h3>
+  <div className="vehicle-scroll-wrapper">
+    <div className="vehicle-horizontal-scroll">
+      {vehicles.length > 0 ? (
+        vehicles.map((vehicle) => (
+          <div key={vehicle.id} className="vehicle-card">
+            <img
+              src={vehicle.vehicleImageUrl}
+              alt={vehicle.model}
+              className="vehicle-img"
+            />
+            <h4>{vehicle.model}</h4>
+            <p><strong>Brand:</strong> {vehicle.brand}</p>
+            <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
+            <p><strong>Fuel:</strong> {vehicle.f_type}</p>
+            <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
+            <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
+            <p><strong>Year:</strong> {vehicle.yom}</p>
+            <p><strong>Color:</strong> {vehicle.color}</p>
+            <p><strong>Price/Day:</strong> Rs.{vehicle.per_day_chrg}</p>
+            <p><strong>Description:</strong> {vehicle.description}</p>
+
+            {vehicle.view360ImageUrl ? (
+              <button onClick={() => handleView360(vehicle.view360ImageUrl)}>
+                View 360 Image
+              </button>
+            ) : (
+              <p className="no-360">No 360 image</p>
+            )}
+
+            <div className="card-buttons">
+              <button onClick={() => handleEdit(vehicle.id)}>Update</button>
+              <button onClick={() => handleDelete(vehicle.id)}>Delete</button>
+            </div>
+
+            <div style={{ marginTop: "20px" }}>
+              <h5>Vehicle Availability</h5>
+              <Calendar
+                onChange={(date) => handleDateChange(vehicle.id, date)}
+                value={new Date()}
+                tileDisabled={({ date }) => {
+                  const dateString = date.toISOString().split('T')[0];
+                  return unavailableDates[vehicle.id]?.includes(dateString);
+                }}
+              />
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No vehicles found.</p>
+      )}
+    </div>
+  </div>
+
+  <style>{`
+    .vehicle-section {
+      max-width: 100%;
+      margin: 50px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-family: Arial, sans-serif;
+    }
+
+    /* Style for "Your Vehicles" heading */
+    .vehicle-section h3 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .vehicle-scroll-wrapper {
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .vehicle-horizontal-scroll {
+      display: flex;
+      gap: 20px;
+      justify-content: flex-start;
+      padding-left: 20px;
+      min-width: fit-content;
+    }
+
+    .vehicle-card {
+      min-width: 300px;
+      max-width: 320px;
+      flex-shrink: 0;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #fafafa;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .vehicle-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .card-buttons button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .card-buttons button:hover {
+      background-color: #0056b3;
+    }
+
+    .vehicle-card button {
+      margin-top: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .vehicle-card button:hover {
+      background-color: #218838;
+    }
+
+    .no-360 {
+      font-size: 0.85rem;
+      color: gray;
+      margin-top: 5px;
+    }
+  `}</style>
+</section>
+
+
+
+
+
+
+
+
+<section className="booking-table-container">
+  <h2>Recent Bookings</h2>
+
+  {bookings.length > 0 ? (
+    <div className="table-wrapper">
+      <table className="booking-table">
+        <thead>
+          <tr>
+            <th>Vehicle</th>
+            <th>Plate No</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Booking ID</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bookings.map((booking) => (
+            <tr key={booking.id}>
+              <td>
                 <img
-                  src={vehicle.vehicleImageUrl}
-                  alt={vehicle.model}
-                  style={styles.vehicleImage}
+                  src={booking.vehicleImage}
+                  alt={booking.vehicleModel}
+                  style={{ width: "80px", borderRadius: "4px" }}
                 />
-                <h4>{vehicle.model}</h4>
-                <p><strong>Brand:</strong> {vehicle.brand}</p>
-                <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
-                <p><strong>Fuel:</strong> {vehicle.f_type}</p>
-                <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
-                <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
-                <p><strong>Year:</strong> {vehicle.yom}</p>
-                <p><strong>Color:</strong> {vehicle.color}</p>
-                <p><strong>Price/Day:</strong> Rs.{vehicle.per_day_chrg}</p>
-                <p><strong>Description:</strong> {vehicle.description}</p>
-
-                {vehicle.view360ImageUrl ? (
-                  <button onClick={() => handleView360(vehicle.view360ImageUrl)}>
-                    View 360 Image
-                  </button>
-                ) : (
-                  <p style={{ fontSize: "0.85rem", color: "gray" }}>No 360 image</p>
-                )}
-
-                <div style={styles.cardButtons}>
-                  <button onClick={() => handleEdit(vehicle.id)}>Update</button>
-                  <button onClick={() => handleDelete(vehicle.id)}>Delete</button>
-                </div>
-
-               <div style={{ marginTop: "20px" }}>
-  <h5>Vehicle Availability</h5>
-  <Calendar
-    onChange={(date) => handleDateChange(vehicle.id, date)}
-    value={new Date()} // Default to current date
-    tileDisabled={({ date }) => {
-      const dateString = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      return unavailableDates[vehicle.id]?.includes(dateString);
-    }}
-  />
-</div>
-              </div>
-            ))
-          ) : (
-            <p>No vehicles found.</p>
-          )}
-        </div>
-      </section>
-
-      <section style={styles.section}>
-        <h3>Recent Bookings</h3>
-        {bookings.length > 0 ? (
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th>Vehicle</th>
-                <th>Plate No</th>
-                <th>Customer</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((booking) => (
-                <tr key={booking.id}>
-                  <td>
-                    <img
-                      src={booking.vehicleImage}
-                      alt={booking.vehicleModel}
-                      style={{ width: "80px", borderRadius: "4px" }}
-                    />
-                    <br />
-                    {booking.vehicleModel}
-                  </td>
-                  <td>{booking.vehiclePlate}</td>
-                  <td>{booking.customerName}</td>
-                  <td>{booking.customerEmail}</td>
-                  <td>{booking.phone}</td>
-                  <td>{booking.startDate}</td>
-                  <td>{booking.endDate}</td>
-                  <td>{booking.status}</td>
-                  <td>
-                    <button
-                      onClick={() => handleBookingAction(booking.id, "Accepted")}
-                    >
-                      Accept
-                    </button>
+                <br />
+                {booking.vehicleModel}
+              </td>
+              <td>{booking.vehiclePlate}</td>
+              <td>{booking.customerName}</td>
+              <td>{booking.customerEmail}</td>
+              <td>{booking.phone}</td>
+              <td>{booking.startDate}</td>
+              <td>{booking.endDate}</td>
+              <td>{booking.id}</td>
+              <td>{booking.status}</td>
+              <td>
+                <button
+                  onClick={() => handleBookingAction(booking.id, "Accepted")}
+                  style={{
+                    color: "yellow",
+                    marginRight: "5px",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontWeight: "bold"
+                  }}
+                >
+                  Accept
+                </button>
                 <button
                   onClick={() => handleBookingAction(booking.id, "Rejected")}
+                  style={{
+                    color: "orange",
+                    marginRight: "5px",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontWeight: "bold"
+                  }}
                 >
                   Reject
                 </button>
                 <button
                   onClick={() => handleDeleteBooking(booking.id)}
+                  style={{
+                    color: "red",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontWeight: "bold"
+                  }}
                 >
                   Delete
                 </button>
@@ -374,61 +580,144 @@ useEffect(() => {
           ))}
         </tbody>
       </table>
-    ) : (
-      <p>No bookings found.</p>
-    )}
-  </section>
+    </div>
+  ) : (
+    <p>No bookings found.</p>
+  )}
 
-  <div
-    ref={viewerRef}
-    style={{ width: "100%", height: "500px", marginTop: "20px" }}
-  ></div>
-</div>
+  <style>{`
+    .booking-table-container {
+      max-width: 100%;
+      margin: 50px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-family: Arial, sans-serif;
+    }
+
+    .table-wrapper {
+      overflow-y: auto;
+      max-height: 500px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .booking-table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: collapse;
+    }
+
+    .booking-table th, .booking-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .booking-table th {
+      background-color: rgb(7, 0, 0);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .booking-table button:hover {
+      text-decoration: underline;
+    }
+  `}</style>
+</section>
+
+
+
+
+
+
+
+
+   <div
+      ref={viewerRef}
+      style={{ width: "100%", height: "500px", marginTop: "20px" }}
+    ></div>
+  </div>
 );
 };
 
 const styles = {
-container: {
-fontFamily: "Arial, sans-serif",
-padding: "20px",
-},
-section: {
-marginBottom: "30px",
-},
-buttonGroup: {
-marginBottom: "20px",
-},
-loading: {
-textAlign: "center",
-fontSize: "1.5rem",
-color: "#333",
-},
-vehiclesContainer: {
-display: "flex",
-flexWrap: "wrap",
-},
-card: {
-backgroundColor: "#fff",
-padding: "20px",
-borderRadius: "8px",
-boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-margin: "10px",
-width: "300px",
-textAlign: "center",
-},
-vehicleImage: {
-width: "100%",
-height: "200px",
-objectFit: "cover",
-borderRadius: "8px",
-},
-cardButtons: {
-marginTop: "10px",
-},
-table: {
-width: "100%",
-borderCollapse: "collapse",
-},
+  container: {
+    fontFamily: '"Open Sans", "Segoe UI", Tahoma, Geneva, sans-serif',
+
+    padding: "20px",
+    margin: "50px auto",
+    background: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    maxWidth: "100%",
+    textAlign: "center",
+  },
+  heading1: {
+    fontSize: "5rem",
+    color: "#ffc107	",
+    marginBottom: "10px",
+  },
+  heading2: {
+    fontSize: "1.5rem",
+    color: "#333",
+    marginBottom: "30px",
+  },
+  buttonGroup: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    marginBottom: "20px",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    transition: "background-color 0.3s ease",
+  },
+  section: {
+    marginBottom: "30px",
+  },
+  loading: {
+    textAlign: "center",
+    fontSize: "1.5rem",
+    color: "#333",
+  },
+  vehiclesContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    margin: "10px",
+    width: "300px",
+    textAlign: "center",
+  },
+  vehicleImage: {
+    width: "100%",
+    height: "200px",
+    objectFit: "cover",
+    borderRadius: "8px",
+  },
+  cardButtons: {
+    marginTop: "10px",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+  },
 };
+
 
 export default SupplierDashboard;
