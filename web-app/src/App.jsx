@@ -19,6 +19,8 @@ import AdminLoginPage from "./admin/pages/AdminLoginPage";
 import AdminSignupFormPage from "./admin/pages/AdminSignupFormPage";
 import AdminDashboardPage from "./admin/pages/AdminDashboardPage";
 import AdminManageCustomersPage from "./admin/pages/AdminManageCustomersPage";
+import AdminCustomerDetailUpdatePage from "./admin/pages/AdminCustomerDetailUpdatePage";
+
 
 const App = () => {
   return (
@@ -43,6 +45,7 @@ const App = () => {
         <Route path="/admin-signup" element={<AdminSignupFormPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         <Route path="/admin/manage-customers" element={<AdminManageCustomersPage />} />
+        <Route path="/admin/customers/edit/:id" element={<AdminCustomerDetailUpdatePage />} />
 
        
 

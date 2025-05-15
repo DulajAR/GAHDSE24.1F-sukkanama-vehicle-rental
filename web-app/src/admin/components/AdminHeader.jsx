@@ -25,7 +25,7 @@ const AdminHeader = () => {
             <a href="#">Overview</a>
           </li>
           <li>
-            <a href="#">Settings</a>
+             
           </li>
         </ul>
       </nav>
