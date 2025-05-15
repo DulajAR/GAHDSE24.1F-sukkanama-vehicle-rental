@@ -1,42 +1,28 @@
-// src/pages/AdminManageCustomersPage.jsx
-import AdminHeader from "../components/AdminHeader";
+import React from "react";
+import AdminHeader from "../components/AdminHeader"; 
 import AdminManageCustomers from "../components/AdminManageCustomers";
+import AdminCustomerBookings from "../components/AdminCustomerBookings";  // Import new component
 
 const AdminManageCustomersPage = () => {
   return (
-    <div>
-      {/* Container fixed at the top to hold header and title */}
+    <>
+      <AdminHeader />
       <div
         style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          backgroundColor: "#fff",
-          zIndex: 1000,
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          paddingBottom: "10px",
+          paddingTop: "80px", // same as header height
+          minHeight: "100vh",
+          backgroundColor: "#eef1f5", // optional, for consistent styling
+          paddingLeft: "20px",
+          paddingRight: "20px",
         }}
       >
-        <AdminHeader />
-        <h1
-          style={{
-            textAlign: "center",
-            margin: "10px 0",
-            fontWeight: "bold",
-          }}
-        >
-          Customer Management
-        </h1>
-         {/* Content with padding-top equal to header + heading height */}
-        <div style={{ paddingTop: "140px" /* adjust as needed */, maxWidth: "1000px", margin: "0 auto" }}>
         <AdminManageCustomers />
+        {/* Added AdminCustomerBookings component here */}
+        <div style={{ marginTop: "40px" }}>
+          <AdminCustomerBookings />
+        </div>
       </div>
-      </div>
-
-     
-      
-    </div>
+    </>
   );
 };
 
