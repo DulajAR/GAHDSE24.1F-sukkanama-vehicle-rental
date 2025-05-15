@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminHeader from "../components/AdminHeader";
 import AdminDashboard from "../components/AdminDashboard";
+import AdminDetails from "../components/AdminDetails"; // ✅ Import it
 
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isAdmin = localStorage.getItem("admin") === "true";
+    const isAdmin = localStorage.getItem("admin") !== null;
     if (!isAdmin) {
       navigate("/admin-login");
     }
@@ -28,6 +29,11 @@ const AdminDashboardPage = () => {
       >
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <AdminDashboard />
+
+          <div style={{ marginTop: "40px" }}>
+            <h3 style={{ marginBottom: "20px", color: "#555" }}>Admin Details</h3>
+            <AdminDetails />
+          </div>
         </div>
       </div>
     </>

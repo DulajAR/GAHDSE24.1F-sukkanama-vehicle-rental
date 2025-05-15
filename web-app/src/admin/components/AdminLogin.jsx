@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { auth, db } from "../../firebase-config";
+import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 
 const AdminLogin = () => {
@@ -17,10 +18,39 @@ const AdminLogin = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Optional: Check Firestore role
-      localStorage.setItem("admin", "true");
-      navigate("/admin/dashboard");
+      // Query admins collection for document with this email
+      const adminsRef = collection(db, "admins");
+      const q = query(adminsRef, where("email", "==", user.email));
+      const querySnapshot = await getDocs(q);
 
+      if (!querySnapshot.empty) {
+        // Admin found, use existing document ID
+        const adminDoc = querySnapshot.docs[0];
+        console.log("Admin found with ID:", adminDoc.id);
+
+        // Store admin document ID in localStorage
+        localStorage.setItem("admin", adminDoc.id);
+      } else {
+        // Admin not found, create new document with email as ID
+        const adminDocRef = doc(db, "admins", user.email); // Using email as document ID
+
+        await setDoc(adminDocRef, {
+          email: user.email,
+          f_name: "Admin",
+          l_name: "User",
+          nic: "N/A",
+          tel_no: "N/A",
+          reg_date: new Date().toISOString().split("T")[0],
+          user_type: "admin",
+        });
+
+        console.log("New admin document created with email as ID:", user.email);
+
+        // Store new admin document ID in localStorage
+        localStorage.setItem("admin", user.email);
+      }
+
+      navigate("/admin/dashboard");
     } catch (err) {
       console.error("Login error:", err.message);
       setError("Invalid email or password");
@@ -30,18 +60,18 @@ const AdminLogin = () => {
   return (
     <>
       <style>
-           {`
-        .admin-login-form {
-        width: 100%;
-        padding: 30px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        font-family: Arial, sans-serif;
-
- 
-}
+        {`
+          .admin-login-form {
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+          }
 
           .admin-login-form h2 {
             text-align: center;
