@@ -1,13 +1,12 @@
-// src/components/admin/AdminManageCustomers.jsx
 import { useEffect, useState } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase-config";
-import { useNavigate } from "react-router-dom";  // <-- import useNavigate
+import { useNavigate } from "react-router-dom";
 
 const AdminManageCustomers = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();  // <-- initialize navigate
+  const navigate = useNavigate();
 
   const fetchCustomers = async () => {
     try {
@@ -62,47 +61,70 @@ const AdminManageCustomers = () => {
         &larr; Back to Dashboard
       </button>
 
-      <table className="customer-table">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Name</th>
-            <th>NIC</th>
-            <th>Phone</th>
-            <th>Reg. Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customers.length === 0 ? (
+      <div className="table-wrapper">
+        <table className="customer-table">
+          <thead>
             <tr>
-              <td colSpan="6">No customers found.</td>
+              <th>Email</th>
+              <th>Name</th>
+              <th>NIC</th>
+              <th>Phone</th>
+              <th>Reg. Date</th>
+              <th>Driving License No</th>
+              <th>Actions</th>
             </tr>
-          ) : (
-            customers.map((customer) => (
-              <tr key={customer.id}>
-                <td>{customer.email}</td>
-                <td>{customer.f_name} {customer.l_name}</td>
-                <td>{customer.nic}</td>
-                <td>{customer.tel_no}</td>
-                <td>{customer.reg_date}</td>
-                <td>
-                  <button
-                    onClick={() => handleDelete(customer.id)}
-                    style={{ color: "red" }}
-                  >
-                    Delete
-                  </button>
-                </td>
+          </thead>
+          <tbody>
+            {customers.length === 0 ? (
+              <tr>
+                <td colSpan="7">No customers found.</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              customers.map((customer) => (
+                <tr key={customer.id}>
+                  <td>{customer.email}</td>
+                  <td>{customer.f_name} {customer.l_name}</td>
+                  <td>{customer.nic}</td>
+                  <td>{customer.tel_no}</td>
+                  <td>{customer.reg_date}</td>
+                  <td>{customer.d_licen || "N/A"}</td>
+                  <td>
+                    <button
+                      onClick={() => navigate(`/admin/customers/edit/${customer.id}`)}
+                      style={{
+                        color: "green",
+                        marginRight: "10px",
+                        cursor: "pointer",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(customer.id)}
+                      style={{
+                        color: "red",
+                        cursor: "pointer",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       <style>{`
         .customer-table-container {
-          max-width: 1000px;
+          max-width: 100%;
           margin: 50px auto;
           padding: 20px;
           background: #fff;
@@ -111,8 +133,17 @@ const AdminManageCustomers = () => {
           font-family: Arial, sans-serif;
         }
 
+        .table-wrapper {
+          overflow-x: auto;
+          overflow-y: auto;
+          max-height: 500px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+        }
+
         .customer-table {
           width: 100%;
+          min-width: 900px;
           border-collapse: collapse;
         }
 
@@ -120,18 +151,14 @@ const AdminManageCustomers = () => {
           border: 1px solid #ddd;
           padding: 10px;
           text-align: center;
+          white-space: nowrap;
         }
 
         .customer-table th {
           background-color: #f2f2f2;
-        }
-
-        .customer-table button {
-          padding: 5px 10px;
-          border: none;
-          background-color: transparent;
-          cursor: pointer;
-          font-weight: bold;
+          position: sticky;
+          top: 0;
+          z-index: 1;
         }
 
         .customer-table button:hover {
