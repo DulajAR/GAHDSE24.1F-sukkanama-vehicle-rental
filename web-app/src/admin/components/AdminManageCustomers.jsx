@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const AdminManageCustomers = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchEmail, setSearchEmail] = useState(""); // 👈 for search input
   const navigate = useNavigate();
 
   const fetchCustomers = async () => {
@@ -38,13 +39,16 @@ const AdminManageCustomers = () => {
     fetchCustomers();
   }, []);
 
+  const filteredCustomers = customers.filter((customer) =>
+    customer.email.toLowerCase().includes(searchEmail.toLowerCase())
+  );
+
   if (loading) return <p>Loading customers...</p>;
 
   return (
     <div className="customer-table-container">
       <h2>Manage Customers</h2>
 
-      {/* Back button */}
       <button
         onClick={() => navigate("/admin/dashboard")}
         style={{
@@ -61,6 +65,23 @@ const AdminManageCustomers = () => {
         &larr; Back to Dashboard
       </button>
 
+      {/* 🔍 Search Field */}
+      <input
+        type="text"
+        placeholder="Search by email"
+        value={searchEmail}
+        onChange={(e) => setSearchEmail(e.target.value)}
+        style={{
+          marginBottom: "15px",
+          padding: "10px",
+          width: "100%",
+          maxWidth: "300px",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+          fontSize: "14px",
+        }}
+      />
+
       <div className="table-wrapper">
         <table className="customer-table">
           <thead>
@@ -75,12 +96,12 @@ const AdminManageCustomers = () => {
             </tr>
           </thead>
           <tbody>
-            {customers.length === 0 ? (
+            {filteredCustomers.length === 0 ? (
               <tr>
                 <td colSpan="7">No customers found.</td>
               </tr>
             ) : (
-              customers.map((customer) => (
+              filteredCustomers.map((customer) => (
                 <tr key={customer.id}>
                   <td>{customer.email}</td>
                   <td>{customer.f_name} {customer.l_name}</td>
