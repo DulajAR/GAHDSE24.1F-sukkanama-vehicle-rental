@@ -5,8 +5,20 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("admin"); // Clear the admin flag
-    navigate("/admin/login"); // Redirect to login page
+    localStorage.removeItem("admin");
+    navigate("/admin/login");
+  };
+
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+
+  const cardStyle = {
+    padding: "20px",
+    background: "#f5f5f5",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "transform 0.2s",
   };
 
   return (
@@ -36,22 +48,42 @@ const AdminDashboard = () => {
       </div>
 
       <div style={{ marginTop: "30px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-        <div style={{ padding: "20px", background: "#f5f5f5", borderRadius: "8px" }}>
+        <div
+          style={cardStyle}
+          onClick={() => navigateTo("/admin/overview")}
+          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
           <h4>📊 Overview</h4>
-          <p>Quick stats about users, suppliers, and reports.</p>
+          <p>Quick stats about customers, suppliers, and reports.</p>
         </div>
 
-        <div style={{ padding: "20px", background: "#f5f5f5", borderRadius: "8px" }}>
-          <h4>🧑‍💼 Manage Users</h4>
-          <p>Add, update or remove admin users.</p>
+        <div
+          style={cardStyle}
+          onClick={() => navigateTo("/admin/customers")}
+          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
+          <h4>🧑‍💼 Manage Customers</h4>
+          <p>View and control customer accounts, vehicle bookings.</p>
         </div>
 
-        <div style={{ padding: "20px", background: "#f5f5f5", borderRadius: "8px" }}>
+        <div
+          style={cardStyle}
+          onClick={() => navigateTo("/admin/suppliers")}
+          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
           <h4>📦 Manage Suppliers</h4>
-          <p>View and control supplier accounts.</p>
+          <p>View and control supplier accounts, vehicle adds.</p>
         </div>
 
-        <div style={{ padding: "20px", background: "#f5f5f5", borderRadius: "8px" }}>
+        <div
+          style={cardStyle}
+          onClick={() => navigateTo("/admin/settings")}
+          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
           <h4>⚙️ Settings</h4>
           <p>Update admin settings or preferences.</p>
         </div>
