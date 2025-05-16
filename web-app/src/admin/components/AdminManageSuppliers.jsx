@@ -108,9 +108,21 @@ const AdminManageSuppliers = () => {
                   <td>{supplier.nic}</td>
                   <td>{supplier.tel_no}</td>
                   <td>{supplier.reg_date}</td>
-                  <td>{supplier.tax_id}</td>
+                  <td>{supplier.tax_id || "N/A"}</td>
                   <td>
-                    {/* You can add update functionality here if needed */}
+                    <button
+                      onClick={() => navigate(`/admin/suppliers/update/:id${supplier.id}`)}
+                      style={{
+                        color: "yellow",
+                        marginRight: "10px",
+                        cursor: "pointer",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Update
+                    </button>
                     <button
                       onClick={() => handleDelete(supplier.id)}
                       style={{
