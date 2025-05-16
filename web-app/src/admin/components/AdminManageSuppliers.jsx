@@ -110,19 +110,20 @@ const AdminManageSuppliers = () => {
                   <td>{supplier.reg_date}</td>
                   <td>{supplier.tax_id || "N/A"}</td>
                   <td>
-                    <button
-                      onClick={() => navigate(`/admin/suppliers/update/:id${supplier.id}`)}
-                      style={{
-                        color: "Red",
-                        marginRight: "10px",
-                        cursor: "pointer",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      Update
-                    </button>
+              <button
+                   onClick={() => navigate(`/admin/suppliers/update/${supplier.id}`)}
+                   style={{
+                     color: "yellow",
+                     marginRight: "10px",
+                     cursor: "pointer",
+                     backgroundColor: "transparent",
+                     border: "none",
+                    fontWeight: "bold"
+                   }}
+              >
+               Update
+              </button>
+
                     <button
                       onClick={() => handleDelete(supplier.id)}
                       style={{
