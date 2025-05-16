@@ -87,107 +87,148 @@ const CustomerDashboard = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (!customer) return <p>No customer data found.</p>;
+  if (loading) return <p style={{ padding: "30px", fontSize: "18px" }}>Loading...</p>;
+  if (!customer) return <p style={{ padding: "30px", fontSize: "18px" }}>No customer data found.</p>;
 
   return (
-    <div className="customer-dashboard" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Customer Dashboard</h1>
-      <h2>Welcome, {customer.f_name} {customer.l_name}</h2>
-
-      <div className="customer-details" style={{ marginBottom: "20px" }}>
-        <p><strong>Email:</strong> {customer.email}</p>
-        <p><strong>NIC:</strong> {customer.nic}</p>
-        <p><strong>Driving License:</strong> {customer.d_licen}</p>
-        <p><strong>Phone:</strong> {customer.tel_no}</p>
-        <p><strong>Registered on:</strong> {customer.reg_date}</p>
-      </div>
-
-      <button
-        onClick={() => window.location.href = "/all-vehicles"}
-        style={{ marginBottom: "30px", padding: "10px 20px", fontSize: "16px", cursor: "pointer" }}
+    <div
+      className="customer-dashboard"
+      style={{
+        padding: "50px",
+        fontFamily: "Segoe UI, sans-serif",
+        background: "#f1f4f9",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1200px",
+          background: "#ffffff",
+          padding: "40px",
+          borderRadius: "12px",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+        }}
       >
-        View All Vehicles
-      </button>
+        <h1 style={{ color: "#333", fontSize: "32px", marginBottom: "10px" }}>Customer Dashboard</h1>
+        <h2 style={{ color: "#555", fontSize: "24px", marginBottom: "25px" }}>
+          Welcome, {customer.f_name} {customer.l_name}
+        </h2>
 
-      <h3>My Bookings</h3>
-      {bookings.length === 0 ? (
-        <p>No bookings found.</p>
-      ) : (
-        bookings.map((booking, index) => (
-          <div
-            key={index}
-            className="booking-card"
-            style={{
-              border: "1px solid #ccc",
-              padding: "15px",
-              marginBottom: "20px",
-              borderRadius: "10px",
-              backgroundColor: "#f9f9f9",
-            }}
-          >
-            <h4>Booking #{index + 1}</h4>
-            <p><strong>Booking ID:</strong> {booking.id}</p>
-            <p><strong>Status:</strong> {booking.status}</p>
-            <p><strong>Start Date:</strong> {booking.startDate}</p>
-            <p><strong>End Date:</strong> {booking.endDate}</p>
-            <p><strong>Phone:</strong> {booking.phone}</p>
+        <div style={{ marginBottom: "30px", fontSize: "18px", lineHeight: "1.6" }}>
+          <p><strong>Email:</strong> {customer.email}</p>
+          <p><strong>NIC:</strong> {customer.nic}</p>
+          <p><strong>Driving License:</strong> {customer.d_licen}</p>
+          <p><strong>Phone:</strong> {customer.tel_no}</p>
+          <p><strong>Registered on:</strong> {customer.reg_date}</p>
+        </div>
 
-            {booking.vehicle ? (
-              <div className="vehicle-details" style={{ marginTop: "15px" }}>
-                <h5>Vehicle Details</h5>
-                <img
-                  src={booking.vehicle.vehicleImageUrl}
-                  alt="Vehicle"
-                  width="200"
-                  style={{ marginBottom: "10px", borderRadius: "8px" }}
-                />
-                <p><strong>Brand:</strong> {booking.vehicle.brand}</p>
-                <p><strong>Model:</strong> {booking.vehicle.model}</p>
-                <p><strong>Plate:</strong> {booking.vehicle.plate}</p>
-                <p><strong>Seats:</strong> {booking.vehicle.seat_capacity}</p>
-                <p><strong>Fuel Type:</strong> {booking.vehicle.f_type}</p>
-                <p><strong>Transmission:</strong> {booking.vehicle.t_mission}</p>
-                <p><strong>Charge/Day:</strong> Rs. {booking.vehicle.per_day_chrg}</p>
+        <button
+          onClick={() => window.location.href = "/all-vehicles"}
+          style={{
+            padding: "14px 28px",
+            fontSize: "16px",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            marginBottom: "40px",
+          }}
+        >
+          View All Vehicles
+        </button>
+
+        <h3 style={{ fontSize: "22px", marginBottom: "25px", color: "#333" }}>My Bookings</h3>
+
+        {bookings.length === 0 ? (
+          <p style={{ fontSize: "18px" }}>No bookings found.</p>
+        ) : (
+          bookings.map((booking, index) => (
+            <div
+              key={index}
+              style={{
+                backgroundColor: "#f9fafc",
+                border: "1px solid #ddd",
+                padding: "25px",
+                borderRadius: "12px",
+                marginBottom: "35px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                fontSize: "17px",
+              }}
+            >
+              <h4 style={{ marginBottom: "12px", fontSize: "20px" }}>Booking #{index + 1}</h4>
+              <p><strong>Booking ID:</strong> {booking.id}</p>
+              <p><strong>Status:</strong> {booking.status}</p>
+              <p><strong>Start Date:</strong> {booking.startDate}</p>
+              <p><strong>End Date:</strong> {booking.endDate}</p>
+              <p><strong>Phone:</strong> {booking.phone}</p>
+
+              {booking.vehicle ? (
+                <div style={{ marginTop: "20px" }}>
+                  <h5 style={{ marginBottom: "10px", fontSize: "18px" }}>Vehicle Details</h5>
+                  <img
+                    src={booking.vehicle.vehicleImageUrl}
+                    alt="Vehicle"
+                    width="350"
+                    height="200"
+                    style={{
+                      marginBottom: "15px",
+                      borderRadius: "10px",
+                      objectFit: "cover",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                    }}
+                  />
+                  <p><strong>Brand:</strong> {booking.vehicle.brand}</p>
+                  <p><strong>Model:</strong> {booking.vehicle.model}</p>
+                  <p><strong>Plate:</strong> {booking.vehicle.plate}</p>
+                  <p><strong>Seats:</strong> {booking.vehicle.seat_capacity}</p>
+                  <p><strong>Fuel Type:</strong> {booking.vehicle.f_type}</p>
+                  <p><strong>Transmission:</strong> {booking.vehicle.t_mission}</p>
+                  <p><strong>Charge/Day:</strong> Rs. {booking.vehicle.per_day_chrg}</p>
+                </div>
+              ) : (
+                <p style={{ marginTop: "10px" }}>Vehicle details not available.</p>
+              )}
+
+              <div style={{ marginTop: "20px" }}>
+                <Link
+                  to={`/update-booking/${booking.id}`}
+                  style={{
+                    padding: "12px 20px",
+                    backgroundColor: "#28a745",
+                    color: "white",
+                    textDecoration: "none",
+                    borderRadius: "6px",
+                    marginRight: "12px",
+                    display: "inline-block",
+                    fontSize: "16px",
+                  }}
+                >
+                  Update Booking
+                </Link>
+
+                <button
+                  onClick={() => handleDelete(booking.id)}
+                  style={{
+                    padding: "12px 20px",
+                    backgroundColor: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                  }}
+                >
+                  Delete Booking
+                </button>
               </div>
-            ) : (
-              <p>Vehicle details not available.</p>
-            )}
-
-            <Link
-              to={`/update-booking/${booking.id}`}
-              style={{
-                display: "inline-block",
-                marginTop: "15px",
-                padding: "8px 16px",
-                backgroundColor: "#007bff",
-                color: "white",
-                textDecoration: "none",
-                borderRadius: "5px",
-                marginRight: "10px",
-              }}
-            >
-              Update Booking
-            </Link>
-
-            <button
-              onClick={() => handleDelete(booking.id)}
-              style={{
-                padding: "8px 16px",
-                backgroundColor: "#dc3545",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              Delete Booking
-            </button>
-
-            <hr style={{ marginTop: "20px", borderTop: "2px solid #ccc" }} />
-          </div>
-        ))
-      )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
