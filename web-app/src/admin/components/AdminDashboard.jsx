@@ -70,7 +70,7 @@ const AdminDashboard = () => {
 
         <div
           style={cardStyle}
-          onClick={() => navigateTo("/admin/suppliers")}
+          onClick={() => navigateTo("/admin/manage-suppliers")}
           onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
           onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
@@ -84,7 +84,7 @@ const AdminDashboard = () => {
           onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
           onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
-          <h4>⚙️ Settings</h4>
+          <h4>⚙ Settings</h4>
           <p>Update admin settings or preferences.</p>
         </div>
       </div>

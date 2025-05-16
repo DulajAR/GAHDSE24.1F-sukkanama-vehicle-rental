@@ -20,6 +20,8 @@ import AdminSignupFormPage from "./admin/pages/AdminSignupFormPage";
 import AdminDashboardPage from "./admin/pages/AdminDashboardPage";
 import AdminManageCustomersPage from "./admin/pages/AdminManageCustomersPage";
 import AdminCustomerDetailUpdatePage from "./admin/pages/AdminCustomerDetailUpdatePage";
+import AdminManageSuppliersPage from "./admin/pages/AdminManageSuppliersPage";
+
 
 
 const App = () => {
@@ -46,6 +48,7 @@ const App = () => {
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         <Route path="/admin/manage-customers" element={<AdminManageCustomersPage />} />
         <Route path="/admin/customers/edit/:id" element={<AdminCustomerDetailUpdatePage />} />
+        <Route path="/admin/manage-suppliers" element={<AdminManageSuppliersPage />} />
 
        
 

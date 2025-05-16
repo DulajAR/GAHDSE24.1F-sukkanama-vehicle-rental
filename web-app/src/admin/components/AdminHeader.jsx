@@ -16,7 +16,7 @@ const AdminHeader = () => {
             <a href="/admin/dashboard">Home</a>
           </li>
           <li>
-            <a href="#">Supplier/Vehicles</a>
+            <a href="/admin/manage-suppliers">Supplier/Vehicles</a>
           </li>
           <li>
             <a href="/admin/manage-customers">Customer/Bookings</a>
