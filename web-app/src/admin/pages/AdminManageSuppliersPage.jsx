@@ -1,32 +1,23 @@
-// src/pages/AdminManageSuppliersPage.jsx
-import React, { useEffect, useState } from "react";
+import React from "react";
+import AdminHeader from "../components/AdminHeader";
 import AdminManageSuppliers from "../components/AdminManageSuppliers";
 
 const AdminManageSuppliersPage = () => {
-  const [suppliers, setSuppliers] = useState([]);
-
-  useEffect(() => {
-    // Fetch supplier data from backend
-    fetch("/api/suppliers")
-      .then((res) => res.json())
-      .then((data) => setSuppliers(data))
-      .catch((err) => console.error("Error fetching suppliers:", err));
-  }, []);
-
-  const handleDelete = (id) => {
-    // Delete supplier logic
-    fetch(`/api/suppliers/${id}`, { method: "DELETE" })
-      .then(() => {
-        setSuppliers((prev) => prev.filter((s) => s.id !== id));
-      })
-      .catch((err) => console.error("Error deleting supplier:", err));
-  };
-
   return (
-    <div style={{ margin: "40px" }}>
-      <h1>Admin Panel - Manage Suppliers</h1>
-      <AdminManageSuppliers suppliers={suppliers} onDelete={handleDelete} />
-    </div>
+    <>
+      <AdminHeader />
+      <div
+        style={{
+          paddingTop: "80px", // same height as AdminHeader so content isn't hidden
+          minHeight: "100vh",
+          backgroundColor: "#eef1f5", // optional background for page
+          paddingLeft: "20px",
+          paddingRight: "20px",
+        }}
+      >
+        <AdminManageSuppliers />
+      </div>
+    </>
   );
 };
 

@@ -5,11 +5,24 @@ import Footer from "../components/Footer";
 
 const CustomerDashboardPage = () => {
   return (
-    <div>
-         <Header />
-      <CustomerDashboard />
-      <Footer />
-    </div>
+    <>
+      <Header />
+      <div
+        style={{
+          paddingTop: "80px",  // Same height as your Header
+          minHeight: "100vh",
+          backgroundColor: "#eef1f5",  // Optional styling
+          paddingLeft: "20px",
+          paddingRight: "20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <CustomerDashboard />
+        <Footer />
+      </div>
+    </>
   );
 };
 

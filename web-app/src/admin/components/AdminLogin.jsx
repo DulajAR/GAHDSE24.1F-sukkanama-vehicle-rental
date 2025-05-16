@@ -11,51 +11,47 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-      // Query admins collection for document with this email
-      const adminsRef = collection(db, "admins");
-      const q = query(adminsRef, where("email", "==", user.email));
-      const querySnapshot = await getDocs(q);
+    const adminsRef = collection(db, "admins");
+    const q = query(adminsRef, where("email", "==", user.email));
+    const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        // Admin found, use existing document ID
-        const adminDoc = querySnapshot.docs[0];
-        console.log("Admin found with ID:", adminDoc.id);
-
-        // Store admin document ID in localStorage
-        localStorage.setItem("admin", adminDoc.id);
-      } else {
-        // Admin not found, create new document with email as ID
-        const adminDocRef = doc(db, "admins", user.email); // Using email as document ID
-
-        await setDoc(adminDocRef, {
-          email: user.email,
-          f_name: "Admin",
-          l_name: "User",
-          nic: "N/A",
-          tel_no: "N/A",
-          reg_date: new Date().toISOString().split("T")[0],
-          user_type: "admin",
-        });
-
-        console.log("New admin document created with email as ID:", user.email);
-
-        // Store new admin document ID in localStorage
-        localStorage.setItem("admin", user.email);
-      }
-
-      navigate("/admin/dashboard");
-    } catch (err) {
-      console.error("Login error:", err.message);
-      setError("Invalid email or password");
+    if (!querySnapshot.empty) {
+      const adminDoc = querySnapshot.docs[0];
+      console.log("Admin found with ID:", adminDoc.id);
+      localStorage.setItem("admin", adminDoc.id);
+    } else {
+      const adminDocRef = doc(db, "admins", user.email);
+      await setDoc(adminDocRef, {
+        email: user.email,
+        f_name: "Admin",
+        l_name: "User",
+        nic: "N/A",
+        tel_no: "N/A",
+        reg_date: new Date().toISOString().split("T")[0],
+        user_type: "admin",
+      });
+      console.log("New admin document created with email as ID:", user.email);
+      localStorage.setItem("admin", user.email);
     }
-  };
+
+    // Show success alert
+    window.alert("Login successful!");
+    navigate("/admin/dashboard");
+
+  } catch (err) {
+    console.error("Login error:", err.message);
+    setError("Invalid email or password");
+    window.alert("Login failed: Invalid email or password");
+  }
+};
+
 
   return (
     <>
