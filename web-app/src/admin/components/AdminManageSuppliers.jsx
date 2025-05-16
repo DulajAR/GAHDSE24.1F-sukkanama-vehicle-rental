@@ -113,7 +113,7 @@ const AdminManageSuppliers = () => {
                     <button
                       onClick={() => navigate(`/admin/suppliers/update/:id${supplier.id}`)}
                       style={{
-                        color: "green",
+                        color: "Red",
                         marginRight: "10px",
                         cursor: "pointer",
                         backgroundColor: "transparent",
