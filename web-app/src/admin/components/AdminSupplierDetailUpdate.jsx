@@ -1,71 +1,177 @@
-// src/components/AdminSupplierDetailUpdate.jsx
-
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
 
 const AdminSupplierDetailUpdate = () => {
   const { id } = useParams();
-  const [supplier, setSupplier] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [updatedName, setUpdatedName] = useState('');
+  const navigate = useNavigate();
+
+  const [supplier, setSupplier] = useState({
+    f_name: "",
+    l_name: "",
+    email: "",
+    nic: "",
+    reg_date: "",
+    tax_id: "",
+    tel_no: "",
+    user_type: "supplier",
+  });
 
   useEffect(() => {
-    console.log('Fetching supplier with ID:', id);
+    const fetchSupplier = async () => {
+      try {
+        const docRef = doc(db, "suppliers", id);
+        const docSnap = await getDoc(docRef);
 
-    fetch(`http://localhost:8080/supplier/get/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Supplier not found');
-        return res.json();
-      })
-      .then((data) => {
-        setSupplier(data);
-        setUpdatedName(data.name);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(`Supplier not found with ID: ${id}`, err);
-        setLoading(false);
-      });
-  }, [id]);
+        if (docSnap.exists()) {
+          setSupplier(docSnap.data());
+        } else {
+          alert("Supplier not found");
+          navigate("/admin/manage-suppliers");
+        }
+      } catch (err) {
+        console.error("Error fetching supplier:", err);
+      }
+    };
+    fetchSupplier();
+  }, [id, navigate]);
 
-  const handleUpdate = () => {
-    fetch(`http://localhost:8080/supplier/update/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...supplier, name: updatedName }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Update failed');
-        return res.json();
-      })
-      .then((data) => {
-        alert('Supplier updated successfully!');
-        setSupplier(data);
-      })
-      .catch((err) => {
-        console.error('Update failed:', err);
-        alert('Error updating supplier.');
-      });
+  const handleChange = (e) => {
+    setSupplier({ ...supplier, [e.target.name]: e.target.value });
   };
 
-  if (loading) return <div>Loading supplier data...</div>;
-  if (!supplier) return <div>Supplier not found.</div>;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const supplierRef = doc(db, "suppliers", id);
+      await updateDoc(supplierRef, supplier);
+      alert("Supplier updated successfully!");
+      navigate("/admin/manage-suppliers");
+    } catch (err) {
+      console.error("Error updating supplier:", err);
+      alert("Update failed");
+    }
+  };
 
   return (
-    <div>
+    <div style={styles.container}>
       <h2>Update Supplier Details</h2>
-      <label>
-        Supplier Name:
+
+      <button
+        style={styles.backButton}
+        onClick={() => navigate("/admin/manage-suppliers")}
+      >
+        ← Back
+      </button>
+
+      <form onSubmit={handleSubmit} style={styles.form}>
         <input
-          type="text"
-          value={updatedName}
-          onChange={(e) => setUpdatedName(e.target.value)}
+          name="f_name"
+          value={supplier.f_name}
+          onChange={handleChange}
+          placeholder="First Name"
+          required
+          style={styles.input}
         />
-      </label>
-      <br />
-      <button onClick={handleUpdate}>Update Supplier</button>
+        <input
+          name="l_name"
+          value={supplier.l_name}
+          onChange={handleChange}
+          placeholder="Last Name"
+          required
+          style={styles.input}
+        />
+        <input
+          name="email"
+          type="email"
+          value={supplier.email}
+          onChange={handleChange}
+          placeholder="Email"
+          required
+          style={styles.input}
+        />
+        <input
+          name="nic"
+          value={supplier.nic}
+          onChange={handleChange}
+          placeholder="NIC"
+          required
+          style={styles.input}
+        />
+        <input
+          name="reg_date"
+          type="date"
+          value={supplier.reg_date}
+          onChange={handleChange}
+          placeholder="Registration Date"
+          required
+          style={styles.input}
+        />
+        <input
+          name="tax_id"
+          value={supplier.tax_id}
+          onChange={handleChange}
+          placeholder="Tax ID"
+          style={styles.input}
+        />
+        <input
+          name="tel_no"
+          value={supplier.tel_no}
+          onChange={handleChange}
+          placeholder="Telephone"
+          required
+          style={styles.input}
+        />
+        <button type="submit" style={styles.button}>
+          Update Supplier
+        </button>
+      </form>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    maxWidth: "500px",
+    margin: "50px auto",
+    padding: "20px",
+    background: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+    fontFamily: "Arial",
+  },
+  backButton: {
+    backgroundColor: "#6c757d",
+    color: "#fff",
+    padding: "8px 15px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginBottom: "20px",
+    fontWeight: "bold",
+    fontSize: "14px",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+  input: {
+    padding: "10px",
+    fontSize: "16px",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "10px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
 };
 
 export default AdminSupplierDetailUpdate;
