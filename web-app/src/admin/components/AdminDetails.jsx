@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
+import { useNavigate } from "react-router-dom";
 
 const AdminDetails = () => {
   const [adminData, setAdminData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminDetails = async () => {
@@ -38,6 +40,8 @@ const AdminDetails = () => {
   if (loading) return <p>Loading admin details...</p>;
   if (!adminData) return <p>No admin data found.</p>;
 
+  const adminId = localStorage.getItem("admin"); // get id for URL
+
   const styles = {
     dashboard: {
       padding: "30px",
@@ -47,13 +51,12 @@ const AdminDetails = () => {
       backgroundColor: "#f7f7f7",
       boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
       fontFamily: "'Segoe UI', sans-serif",
+      textAlign: "center",
     },
     heading: {
-      textAlign: "center",
       color: "#333",
     },
     subHeading: {
-      textAlign: "center",
       color: "#4CAF50",
       marginBottom: "30px",
     },
@@ -64,6 +67,28 @@ const AdminDetails = () => {
     },
     strongText: {
       color: "#000",
+    },
+    buttonContainer: {
+      marginTop: "25px",
+      display: "flex",
+      justifyContent: "center",
+      gap: "20px",
+    },
+    button: {
+      padding: "10px 20px",
+      cursor: "pointer",
+      borderRadius: "5px",
+      border: "none",
+      fontWeight: "bold",
+      fontSize: "16px",
+    },
+    dashboardBtn: {
+      backgroundColor: "#007bff",
+      color: "white",
+    },
+    updateBtn: {
+      backgroundColor: "#28a745",
+      color: "white",
     },
   };
 
@@ -89,6 +114,22 @@ const AdminDetails = () => {
         <p style={styles.detailText}>
           <strong style={styles.strongText}>User Type:</strong> {adminData.user_type}
         </p>
+      </div>
+
+      <div style={styles.buttonContainer}>
+        <button
+          style={{ ...styles.button, ...styles.dashboardBtn }}
+          onClick={() => navigate("/admin/dashboard")}
+        >
+          Dashboard
+        </button>
+
+        <button
+          style={{ ...styles.button, ...styles.updateBtn }}
+          onClick={() => navigate(`/admin/settings/update/${adminId}`)}
+        >
+          Update
+        </button>
       </div>
     </div>
   );

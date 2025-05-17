@@ -23,6 +23,9 @@ import AdminCustomerDetailUpdatePage from "./admin/pages/AdminCustomerDetailUpda
 import AdminManageSuppliersPage from "./admin/pages/AdminManageSuppliersPage";
 import AdminSupplierDetailUpdatePage from './admin/pages/AdminSupplierDetailUpdatePage';
 import AdminSupplierVehicleUpdatePage from "./admin/pages/AdminSupplierVehicleUpdatePage";
+import AdminSettingsPage from "./admin/pages/AdminSettingsPage"; 
+import AdminDetailUpdatePage from "./admin/pages/AdminDetailUpdatePage";
+
 
 
 
@@ -53,6 +56,9 @@ const App = () => {
         <Route path="/admin/manage-suppliers" element={<AdminManageSuppliersPage />} />
         <Route path="/admin/suppliers/update/:id" element={<AdminSupplierDetailUpdatePage />} />
         <Route path="/admin/vehicles/edit/:id" element={<AdminSupplierVehicleUpdatePage />} />
+        <Route path="/admin/settings" element={<AdminSettingsPage />} />
+        <Route path="/admin/settings/update/:id" element={<AdminDetailUpdatePage />} />
+
        
 
 
