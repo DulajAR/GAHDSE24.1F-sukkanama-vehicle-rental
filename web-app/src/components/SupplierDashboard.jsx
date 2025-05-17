@@ -335,7 +335,6 @@ useEffect(() => {
 
 
 
-
 <section className="vehicle-section">
   <h3>Your Vehicles</h3>
   <div className="vehicle-scroll-wrapper">
@@ -348,10 +347,10 @@ useEffect(() => {
               alt={vehicle.model}
               className="vehicle-img"
             />
-            
-            {/* Vehicle ID with Copy Functionality */}
+
+            {/* Vehicle ID */}
             <div className="vehicle-id-block">
-              <label htmlFor="vehicle-id">Vehicle ID:</label>
+              <label>Vehicle ID:</label>
               <div className="vehicle-id-wrapper">
                 <code className="vehicle-id">{vehicle.id}</code>
                 <button
@@ -366,7 +365,24 @@ useEffect(() => {
               </div>
             </div>
 
-            <h4>{vehicle.model}</h4>
+            {/* Plate Number with Copy */}
+            <div className="plate-block">
+              <label>Plate Number:</label>
+              <div className="plate-id-wrapper">
+                <span className="plate-number">{vehicle.plate}</span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(vehicle.plate);
+                    alert("Plate number copied!");
+                  }}
+                  className="copy-btn"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <h3>{vehicle.model}</h3>
             <p><strong>Brand:</strong> {vehicle.brand}</p>
             <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
             <p><strong>Fuel:</strong> {vehicle.f_type}</p>
@@ -396,7 +412,7 @@ useEffect(() => {
                 onChange={(date) => handleDateChange(vehicle.id, date)}
                 value={new Date()}
                 tileDisabled={({ date }) => {
-                  const dateString = date.toISOString().split('T')[0];
+                  const dateString = date.toISOString().split("T")[0];
                   return unavailableDates[vehicle.id]?.includes(dateString);
                 }}
               />
@@ -504,7 +520,8 @@ useEffect(() => {
       margin-top: 5px;
     }
 
-    .vehicle-id-block {
+    .vehicle-id-block,
+    .plate-block {
       margin: 10px 0;
       padding: 8px;
       background-color: #f3f3f3;
@@ -513,13 +530,15 @@ useEffect(() => {
       font-family: 'Courier New', Courier, monospace;
     }
 
-    .vehicle-id-wrapper {
+    .vehicle-id-wrapper,
+    .plate-id-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .vehicle-id {
+    .vehicle-id,
+    .plate-number {
       background-color: #e9ecef;
       padding: 5px 8px;
       border-radius: 4px;
@@ -527,6 +546,12 @@ useEffect(() => {
       word-break: break-all;
       flex-grow: 1;
       margin-right: 10px;
+    }
+
+    .plate-number {
+      font-weight: bold;
+      color: #343a40;
+      letter-spacing: 1px;
     }
 
     .copy-btn {
@@ -568,6 +593,7 @@ useEffect(() => {
             <th>Phone</th>
             <th>Start</th>
             <th>End</th>
+            <th>Vehicle ID</th>
             <th>Booking ID</th>
             <th>Status</th>
             <th>Action</th>
@@ -591,7 +617,26 @@ useEffect(() => {
               <td>{booking.phone}</td>
               <td>{booking.startDate}</td>
               <td>{booking.endDate}</td>
-              <td>{booking.id}</td>
+              <td>
+                {booking.vehicleId}{" "}
+                <button
+                  className="copy-btn"
+                  onClick={() =>
+                    navigator.clipboard.writeText(booking.vehicleId)
+                  }
+                >
+                  📋
+                </button>
+              </td>
+              <td>
+                {booking.id}{" "}
+                <button
+                  className="copy-btn"
+                  onClick={() => navigator.clipboard.writeText(booking.id)}
+                >
+                  📋
+                </button>
+              </td>
               <td>{booking.status}</td>
               <td>
                 <button
@@ -602,7 +647,7 @@ useEffect(() => {
                     cursor: "pointer",
                     backgroundColor: "transparent",
                     border: "none",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Accept
@@ -615,7 +660,7 @@ useEffect(() => {
                     cursor: "pointer",
                     backgroundColor: "transparent",
                     border: "none",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Reject
@@ -627,7 +672,7 @@ useEffect(() => {
                     cursor: "pointer",
                     backgroundColor: "transparent",
                     border: "none",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   Delete
@@ -684,8 +729,21 @@ useEffect(() => {
     .booking-table button:hover {
       text-decoration: underline;
     }
+
+    .copy-btn {
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 16px;
+      margin-left: 5px;
+    }
+
+    .copy-btn:hover {
+      color: green;
+    }
   `}</style>
 </section>
+
 
 
 
