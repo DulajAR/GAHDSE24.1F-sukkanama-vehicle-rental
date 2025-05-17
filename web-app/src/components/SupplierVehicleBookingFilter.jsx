@@ -196,7 +196,7 @@ export default function SupplierDashboard() {
                     <button
                       onClick={() => handleBookingAction(booking.id, "Accepted")}
                       style={{
-                        color: "yellow",
+                        color: "green",
                         marginRight: "5px",
                         background: "transparent",
                         border: "none",

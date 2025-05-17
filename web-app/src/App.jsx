@@ -22,6 +22,8 @@ import AdminManageCustomersPage from "./admin/pages/AdminManageCustomersPage";
 import AdminCustomerDetailUpdatePage from "./admin/pages/AdminCustomerDetailUpdatePage";
 import AdminManageSuppliersPage from "./admin/pages/AdminManageSuppliersPage";
 import AdminSupplierDetailUpdatePage from './admin/pages/AdminSupplierDetailUpdatePage';
+import AdminSupplierVehicleUpdatePage from "./admin/pages/AdminSupplierVehicleUpdatePage";
+
 
 
 const App = () => {
@@ -50,6 +52,7 @@ const App = () => {
         <Route path="/admin/customers/edit/:id" element={<AdminCustomerDetailUpdatePage />} />
         <Route path="/admin/manage-suppliers" element={<AdminManageSuppliersPage />} />
         <Route path="/admin/suppliers/update/:id" element={<AdminSupplierDetailUpdatePage />} />
+        <Route path="/admin/vehicles/edit/:id" element={<AdminSupplierVehicleUpdatePage />} />
        
 
 
