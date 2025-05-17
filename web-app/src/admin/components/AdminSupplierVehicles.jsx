@@ -8,6 +8,7 @@ const AdminSupplierVehicles = () => {
   const [loading, setLoading] = useState(true);
   const [searchPlate, setSearchPlate] = useState("");
   const [searchId, setSearchId] = useState("");
+  const [searchEmail, setSearchEmail] = useState("");
   const navigate = useNavigate();
 
   const fetchVehicles = async () => {
@@ -43,7 +44,8 @@ const AdminSupplierVehicles = () => {
   const filteredVehicles = vehicles.filter(
     (v) =>
       v.plate.toLowerCase().includes(searchPlate.toLowerCase()) &&
-      v.id.toLowerCase().includes(searchId.toLowerCase())
+      v.id.toLowerCase().includes(searchId.toLowerCase()) &&
+      v.userEmail.toLowerCase().includes(searchEmail.toLowerCase())
   );
 
   if (loading) return <p>Loading vehicles...</p>;
@@ -75,28 +77,21 @@ const AdminSupplierVehicles = () => {
           placeholder="Search by plate number"
           value={searchPlate}
           onChange={(e) => setSearchPlate(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "100%",
-            maxWidth: "300px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            fontSize: "14px",
-          }}
+          style={inputStyle}
         />
         <input
           type="text"
           placeholder="Search by vehicle ID"
           value={searchId}
           onChange={(e) => setSearchId(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "100%",
-            maxWidth: "300px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            fontSize: "14px",
-          }}
+          style={inputStyle}
+        />
+        <input
+          type="text"
+          placeholder="Search by supplier email"
+          value={searchEmail}
+          onChange={(e) => setSearchEmail(e.target.value)}
+          style={inputStyle}
         />
       </div>
 
@@ -164,26 +159,13 @@ const AdminSupplierVehicles = () => {
                   <td>
                     <button
                       onClick={() => navigate(`/admin/vehicles/edit/${vehicle.id}`)}
-                      style={{
-                        color: "yellow",
-                        marginRight: "10px",
-                        cursor: "pointer",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        fontWeight: "bold",
-                      }}
+                      style={actionButtonStyle("yellow")}
                     >
                       Update
                     </button>
                     <button
                       onClick={() => handleDelete(vehicle.id)}
-                      style={{
-                        color: "red",
-                        cursor: "pointer",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        fontWeight: "bold",
-                      }}
+                      style={actionButtonStyle("red")}
                     >
                       Delete
                     </button>
@@ -241,5 +223,23 @@ const AdminSupplierVehicles = () => {
     </div>
   );
 };
+
+const inputStyle = {
+  padding: "10px",
+  width: "100%",
+  maxWidth: "300px",
+  border: "1px solid #ccc",
+  borderRadius: "5px",
+  fontSize: "14px",
+};
+
+const actionButtonStyle = (color) => ({
+  color: color,
+  cursor: "pointer",
+  backgroundColor: "transparent",
+  border: "none",
+  fontWeight: "bold",
+  marginRight: color === "yellow" ? "10px" : "0",
+});
 
 export default AdminSupplierVehicles;
