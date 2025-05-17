@@ -348,6 +348,24 @@ useEffect(() => {
               alt={vehicle.model}
               className="vehicle-img"
             />
+            
+            {/* Vehicle ID with Copy Functionality */}
+            <div className="vehicle-id-block">
+              <label htmlFor="vehicle-id">Vehicle ID:</label>
+              <div className="vehicle-id-wrapper">
+                <code className="vehicle-id">{vehicle.id}</code>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(vehicle.id);
+                    alert("Vehicle ID copied!");
+                  }}
+                  className="copy-btn"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
             <h4>{vehicle.model}</h4>
             <p><strong>Brand:</strong> {vehicle.brand}</p>
             <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
@@ -402,7 +420,6 @@ useEffect(() => {
       font-family: Arial, sans-serif;
     }
 
-    /* Style for "Your Vehicles" heading */
     .vehicle-section h3 {
       font-size: 2.4rem;
       font-weight: 800;
@@ -486,8 +503,48 @@ useEffect(() => {
       color: gray;
       margin-top: 5px;
     }
+
+    .vehicle-id-block {
+      margin: 10px 0;
+      padding: 8px;
+      background-color: #f3f3f3;
+      border-left: 4px solid #007bff;
+      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .vehicle-id-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .vehicle-id {
+      background-color: #e9ecef;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      word-break: break-all;
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .copy-btn {
+      background-color: #343a40;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .copy-btn:hover {
+      background-color: #1d2124;
+    }
   `}</style>
 </section>
+
 
 
 

@@ -113,7 +113,7 @@ const AdminManageCustomers = () => {
                     <button
                       onClick={() => navigate(`/admin/customers/edit/${customer.id}`)}
                       style={{
-                        color: "green",
+                        color: "yellow",
                         marginRight: "10px",
                         cursor: "pointer",
                         backgroundColor: "transparent",
