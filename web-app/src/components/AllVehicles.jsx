@@ -193,23 +193,33 @@ const AllVehicles = () => {
                 <strong>Supplier Email:</strong> {vehicle.supplierEmail}
               </p>
 
-              <div style={styles.buttonContainer}>
-                <button
-                  style={styles.bookButton}
-                  onClick={() => handleBookNow(vehicle.id)}
-                >
-                  Book Now
-                </button>
+             <div style={styles.buttonContainer}>
+  <button
+    style={styles.bookButton}
+    onClick={() => handleBookNow(vehicle.id)}
+  >
+    Book Now
+  </button>
 
-                {vehicle.view360ImageUrl && (
-                  <button
-                    style={styles.previewButton}
-                    onClick={() => setSelected360Image(vehicle.view360ImageUrl)}
-                  >
-                    View in 360°
-                  </button>
-                )}
-              </div>
+  {vehicle.view360ImageUrl && (
+    <button
+      style={styles.previewButton}
+      onClick={() => setSelected360Image(vehicle.view360ImageUrl)}
+    >
+      View in 360°
+    </button>
+  )}
+
+  <button
+    style={styles.ratingButton}
+    onClick={() =>
+      navigate(`/supplier-rating-display?supplierId=${vehicle.userId}`)
+    }
+  >
+    View Rating
+  </button>
+</div>
+
             </div>
           </div>
         ))}
