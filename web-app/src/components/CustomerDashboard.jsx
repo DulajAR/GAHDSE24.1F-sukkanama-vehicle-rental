@@ -160,11 +160,33 @@ const CustomerDashboard = () => {
               }}
             >
               <h4 style={{ marginBottom: "12px", fontSize: "20px" }}>Booking #{index + 1}</h4>
-              <p><strong>Booking ID:</strong> {booking.id}</p>
+              <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+  <strong>Booking ID:</strong> {booking.id}
+  <button
+    onClick={() => {
+      navigator.clipboard.writeText(booking.id);
+      alert("Booking ID copied to clipboard!");
+    }}
+    style={{
+      padding: "6px 12px",
+      fontSize: "14px",
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer"
+    }}
+  >
+    Copy
+  </button>
+</p>
+
               <p><strong>Status:</strong> {booking.status}</p>
               <p><strong>Start Date:</strong> {booking.startDate}</p>
               <p><strong>End Date:</strong> {booking.endDate}</p>
               <p><strong>Phone:</strong> {booking.phone}</p>
+              
+              
 
               {booking.vehicle ? (
                 <div style={{ marginTop: "20px" }}>
@@ -183,7 +205,28 @@ const CustomerDashboard = () => {
                   />
                   <p><strong>Brand:</strong> {booking.vehicle.brand}</p>
                   <p><strong>Model:</strong> {booking.vehicle.model}</p>
-                  <p><strong>Plate:</strong> {booking.vehicle.plate}</p>
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", margin: "10px 0" }}>
+  <strong>Plate:</strong>
+  <span>{booking.vehicle.plate}</span>
+  <button
+    onClick={() => {
+      navigator.clipboard.writeText(booking.vehicle.plate);
+      alert("Plate number copied to clipboard!");
+    }}
+    style={{
+      padding: "6px 12px",
+      fontSize: "14px",
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer"
+    }}
+  >
+    Copy
+  </button>
+</div>
+
                   <p><strong>Seats:</strong> {booking.vehicle.seat_capacity}</p>
                   <p><strong>Fuel Type:</strong> {booking.vehicle.f_type}</p>
                   <p><strong>Transmission:</strong> {booking.vehicle.t_mission}</p>
