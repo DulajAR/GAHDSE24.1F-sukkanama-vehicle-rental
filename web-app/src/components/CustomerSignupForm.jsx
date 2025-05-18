@@ -32,7 +32,15 @@ const CustomerSignupForm = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [formError, setFormError] = useState(""); // For empty fields or general errors
   const [passwordError, setPasswordError] = useState("");
+  const [btnHover, setBtnHover] = useState(false);
+  const [linkHover, setLinkHover] = useState(false);
+
+  // Check if all fields are filled (non-empty after trimming spaces)
+  const allFieldsFilled = () => {
+    return Object.values(formData).every((field) => field.trim() !== "");
+  };
 
   // Handle input change
   const handleChange = (e) => {
@@ -40,13 +48,24 @@ const CustomerSignupForm = () => {
     setFormData({ ...formData, [name]: value });
 
     if (name === "p_word") {
-      setPasswordError(value.length < 6 ? "Password must be at least 6 characters" : "");
+      setPasswordError(
+        value.length < 6 ? "Password must be at least 6 characters" : ""
+      );
     }
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Clear previous errors/messages
+    setFormError("");
+    setMessage("");
+
+    if (!allFieldsFilled()) {
+      setFormError("❌ Please fill in all fields.");
+      return;
+    }
 
     if (formData.p_word.length < 6) {
       setPasswordError("Password must be at least 6 characters");
@@ -84,13 +103,104 @@ const CustomerSignupForm = () => {
     }
   };
 
-  return (
-    <div className="signup-container">
-      <h2>Customer Signup</h2>
-      {message && <p className="message">{message}</p>}
+  const styles = {
+    container: {
+      maxWidth: "480px",
+      margin: "50px auto",
+      background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+      borderRadius: "20px",
+      padding: "40px 30px",
+      boxShadow: "0 15px 25px rgba(0, 0, 0, 0.2)",
+      color: "#222",
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      textAlign: "center",
+    },
+    title: {
+      fontSize: "28px",
+      fontWeight: "700",
+      color: "#0d3b66",
+      marginBottom: "30px",
+      textShadow: "1px 1px 3px rgba(0,0,0,0.1)",
+    },
+    formGroup: {
+      marginBottom: "22px",
+      textAlign: "left",
+    },
+    input: {
+      width: "100%",
+      height: "42px",
+      padding: "12px 15px",
+      fontSize: "16px",
+      borderRadius: "12px",
+      border: "1.5px solid #0d3b66",
+      outline: "none",
+      boxShadow: "inset 0 2px 5px rgba(0,0,0,0.05)",
+      transition: "border-color 0.3s ease",
+      marginBottom: "8px",
+      boxSizing: "border-box",
+      appearance: "none",
+      WebkitAppearance: "none",
+      MozAppearance: "none",
+    },
+    errorText: {
+      color: "red",
+      marginBottom: "20px",
+      fontWeight: "600",
+      fontSize: "16px",
+      textAlign: "left",
+    },
+    message: {
+      marginBottom: "20px",
+      fontSize: "16px",
+      fontWeight: "600",
+      color: "#0d3b66",
+    },
+    button: {
+      width: "100%",
+      padding: "14px",
+      backgroundColor: "#0d3b66",
+      color: "white",
+      fontSize: "18px",
+      fontWeight: "700",
+      border: "none",
+      borderRadius: "15px",
+      cursor: passwordError ? "not-allowed" : "pointer",
+      boxShadow: "0 8px 15px rgba(13, 59, 102, 0.4)",
+      transition: "all 0.3s ease",
+      marginTop: "10px",
+    },
+    buttonHover: {
+      backgroundColor: "#062841",
+      boxShadow: "0 10px 20px rgba(6, 40, 65, 0.6)",
+    },
+    loginText: {
+      marginTop: "25px",
+      fontSize: "15px",
+      color: "#0d3b66",
+    },
+    link: {
+      color: "#07407c",
+      fontWeight: "700",
+      textDecoration: "none",
+    },
+    linkHover: {
+      textDecoration: "underline",
+    },
+  };
 
-      <form onSubmit={handleSubmit}>
+  return (
+    <div style={styles.container}>
+      <h2 style={styles.title}>Customer Signup</h2>
+
+      {/* Show form error */}
+      {formError && <p style={styles.errorText}>{formError}</p>}
+
+      {/* Show general message */}
+      {message && <p style={styles.message}>{message}</p>}
+
+      <form onSubmit={handleSubmit} noValidate>
         <input
+          style={styles.input}
           type="text"
           name="f_name"
           placeholder="First Name"
@@ -99,6 +209,7 @@ const CustomerSignupForm = () => {
           required
         />
         <input
+          style={styles.input}
           type="text"
           name="l_name"
           placeholder="Last Name"
@@ -107,6 +218,7 @@ const CustomerSignupForm = () => {
           required
         />
         <input
+          style={styles.input}
           type="email"
           name="email"
           placeholder="Email"
@@ -115,6 +227,7 @@ const CustomerSignupForm = () => {
           required
         />
         <input
+          style={styles.input}
           type="text"
           name="nic"
           placeholder="NIC"
@@ -123,6 +236,7 @@ const CustomerSignupForm = () => {
           required
         />
         <input
+          style={styles.input}
           type="date"
           name="reg_date"
           value={formData.reg_date}
@@ -130,6 +244,7 @@ const CustomerSignupForm = () => {
           required
         />
         <input
+          style={styles.input}
           type="password"
           name="p_word"
           placeholder="Password"
@@ -137,8 +252,9 @@ const CustomerSignupForm = () => {
           onChange={handleChange}
           required
         />
-        {passwordError && <p className="error-text">{passwordError}</p>}
+        {passwordError && <p style={styles.errorText}>{passwordError}</p>}
         <input
+          style={styles.input}
           type="tel"
           name="tel_no"
           placeholder="Phone Number"
@@ -147,6 +263,7 @@ const CustomerSignupForm = () => {
           required
         />
         <input
+          style={styles.input}
           type="text"
           name="d_licen"
           placeholder="Driving License"
@@ -155,14 +272,28 @@ const CustomerSignupForm = () => {
           required
         />
 
-        <button type="submit" disabled={passwordError}>
+        <button
+          type="submit"
+          disabled={!!passwordError}
+          style={btnHover ? { ...styles.button, ...styles.buttonHover } : styles.button}
+          onMouseEnter={() => setBtnHover(true)}
+          onMouseLeave={() => setBtnHover(false)}
+        >
           Sign Up
         </button>
       </form>
 
-      <div className="login-link">
+      <div style={styles.loginText}>
         <p>
-          Already have an account? <Link to="/loginCustomer">Login here</Link>
+          Already have an account?{" "}
+          <Link
+            to="/loginCustomer"
+            style={linkHover ? { ...styles.link, ...styles.linkHover } : styles.link}
+            onMouseEnter={() => setLinkHover(true)}
+            onMouseLeave={() => setLinkHover(false)}
+          >
+            Login here
+          </Link>
         </p>
       </div>
     </div>

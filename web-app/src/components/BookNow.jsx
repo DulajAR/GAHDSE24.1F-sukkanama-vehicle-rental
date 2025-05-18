@@ -203,6 +203,8 @@ const BookNow = () => {
                 className="vehicle-img"
               />
             )}
+            <p><strong>Plate:</strong> {vehicleDetails.plate || 'N/A'}</p>
+            <p><strong>Brand:</strong> {vehicleDetails.brand || 'N/A'}</p>
             <p><strong>Engine Capacity:</strong> {vehicleDetails.eng_capacity || 'N/A'}</p>
             <p><strong>Fuel Type:</strong> {vehicleDetails.f_type || 'N/A'}</p>
             <p><strong>Transmission:</strong> {vehicleDetails.t_mission || 'N/A'}</p>
@@ -211,7 +213,8 @@ const BookNow = () => {
             <p><strong>Year:</strong> {vehicleDetails.yom || 'N/A'}</p>
             <p><strong>Color:</strong> {vehicleDetails.color || 'N/A'}</p>
             <p><strong>Price/Day:</strong> Rs. {vehicleDetails.per_day_chrg || 'N/A'}</p>
-            <p><strong>Supplier:</strong> {vehicleDetails.userEmail || 'N/A'}</p>
+            <p><strong>Description:</strong> {vehicleDetails.description || 'N/A'}</p>
+            <p><strong>Supplier Email:</strong> {vehicleDetails.userEmail || 'N/A'}</p>
           </div>
         ) : (
           <p>Loading vehicle details...</p>
