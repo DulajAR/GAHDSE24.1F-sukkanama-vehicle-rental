@@ -233,20 +233,29 @@ const CustomerBookings = () => {
               )}
             </div>
 
-            <div style={styles.buttonGroup}>
-              <button
-                style={styles.updateBtn}
-                onClick={() => handleUpdate(booking.bookingId)}
-              >
-                Update Booking
-              </button>
-              <button
-                style={styles.deleteBtn}
-                onClick={() => handleDelete(booking.bookingId)}
-              >
-                Delete Booking
-              </button>
-            </div>
+        <div style={styles.buttonGroup}>
+  <button
+    style={styles.updateBtn}
+    onClick={() => handleUpdate(booking.bookingId)}
+  >
+    Update Booking
+  </button>
+  <button
+    style={styles.deleteBtn}
+    onClick={() => handleDelete(booking.bookingId)}
+  >
+    Delete Booking
+  </button>
+  <button
+    style={styles.ratingBtn}
+    onClick={() => navigate(`/rate-supplier?bookingId=${booking.bookingId}`)
+
+}
+  >
+    Supplier Rating
+  </button>
+</div>
+
           </div>
         ))
       )}
