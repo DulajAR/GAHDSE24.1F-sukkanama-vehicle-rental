@@ -10,6 +10,7 @@ const AllVehicles = () => {
   const [loading, setLoading] = useState(true);
   const [brandFilter, setBrandFilter] = useState("all");
   const [yearFilter, setYearFilter] = useState("all");
+  const [plateSearch, setPlateSearch] = useState(""); // NEW for plate search
   const [selected360Image, setSelected360Image] = useState(null);
   const [viewer, setViewer] = useState(null);
   const viewerRef = useRef(null);
@@ -80,12 +81,16 @@ const AllVehicles = () => {
     navigate(`/book/${vehicleId}`);
   };
 
+  // Updated filterVehicles with plate search logic
   const filterVehicles = () => {
     return vehicles.filter((vehicle) => {
-      return (
-        (brandFilter === "all" || vehicle.brand === brandFilter) &&
-        (yearFilter === "all" || vehicle.yom === yearFilter)
-      );
+      const matchesBrand = brandFilter === "all" || vehicle.brand === brandFilter;
+      const matchesYear = yearFilter === "all" || vehicle.yom === yearFilter;
+      const matchesPlate =
+        plateSearch.trim() === "" ||
+        vehicle.plate.toLowerCase().includes(plateSearch.trim().toLowerCase());
+
+      return matchesBrand && matchesYear && matchesPlate;
     });
   };
 
@@ -112,7 +117,9 @@ const AllVehicles = () => {
         >
           <option value="all">All Brands</option>
           {uniqueBrands.map((brand) => (
-            <option key={brand} value={brand}>{brand}</option>
+            <option key={brand} value={brand}>
+              {brand}
+            </option>
           ))}
         </select>
 
@@ -124,9 +131,22 @@ const AllVehicles = () => {
         >
           <option value="all">All Years</option>
           {uniqueYears.map((year) => (
-            <option key={year} value={year}>{year}</option>
+            <option key={year} value={year}>
+              {year}
+            </option>
           ))}
         </select>
+
+        {/* New input for plate search */}
+        <label htmlFor="plate-search">Search by Plate:</label>
+        <input
+          type="text"
+          id="plate-search"
+          placeholder="Enter plate number"
+          value={plateSearch}
+          onChange={(e) => setPlateSearch(e.target.value)}
+          style={styles.plateSearchInput}
+        />
       </div>
 
       <div style={styles.scrollContainer}>
@@ -141,17 +161,37 @@ const AllVehicles = () => {
               {vehicle.brand} {vehicle.model}
             </h2>
             <div style={styles.details}>
-              <p><strong>Engine:</strong> {vehicle.eng_capacity}</p>
-              <p><strong>Fuel:</strong> {vehicle.f_type}</p>
-              <p><strong>Transmission:</strong> {vehicle.t_mission}</p>
-              <p><strong>Seats:</strong> {vehicle.seat_capacity}</p>
-              <p><strong>Year:</strong> {vehicle.yom || "N/A"}</p>
-              <p><strong>Color:</strong> {vehicle.color}</p>
-              <p><strong>Price/Day:</strong> Rs. {vehicle.per_day_chrg}</p>
+              <p>
+                <strong>Engine:</strong> {vehicle.eng_capacity}
+              </p>
+              <p>
+                <strong>Fuel:</strong> {vehicle.f_type}
+              </p>
+              <p>
+                <strong>Transmission:</strong> {vehicle.t_mission}
+              </p>
+              <p>
+                <strong>Seats:</strong> {vehicle.seat_capacity}
+              </p>
+              <p>
+                <strong>Year:</strong> {vehicle.yom || "N/A"}
+              </p>
+              <p>
+                <strong>Color:</strong> {vehicle.color}
+              </p>
+              <p>
+                <strong>Price/Day:</strong> Rs. {vehicle.per_day_chrg}
+              </p>
               <hr />
-              <p><strong>Supplier Name:</strong> {vehicle.supplierName}</p>
-              <p><strong>Supplier Phone:</strong> {vehicle.supplierPhone}</p>
-              <p><strong>Supplier Email:</strong> {vehicle.supplierEmail}</p>
+              <p>
+                <strong>Supplier Name:</strong> {vehicle.supplierName}
+              </p>
+              <p>
+                <strong>Supplier Phone:</strong> {vehicle.supplierPhone}
+              </p>
+              <p>
+                <strong>Supplier Email:</strong> {vehicle.supplierEmail}
+              </p>
 
               <div style={styles.buttonContainer}>
                 <button
@@ -179,7 +219,12 @@ const AllVehicles = () => {
         <div style={styles.modalOverlay} onClick={() => setSelected360Image(null)}>
           <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div ref={viewerRef} style={{ width: "100%", height: "500px" }}></div>
-            <button style={styles.closeButton} onClick={() => setSelected360Image(null)}>✖ Close</button>
+            <button
+              style={styles.closeButton}
+              onClick={() => setSelected360Image(null)}
+            >
+              ✖ Close
+            </button>
           </div>
         </div>
       )}
@@ -215,6 +260,15 @@ const styles = {
     justifyContent: "center",
     gap: "1rem",
     marginBottom: "1rem",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  plateSearchInput: {
+    padding: "8px",
+    fontSize: "1rem",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    minWidth: "150px",
   },
   scrollContainer: {
     display: "flex",
@@ -238,78 +292,82 @@ const styles = {
     width: "100%",
     height: "160px",
     objectFit: "cover",
-    borderRadius: "8px",
-    marginBottom: "1rem",
-  },
-  modelTitle: {
-    fontSize: "1.25rem",
-    margin: "0.5rem 0",
-    color: "#222",
-  },
-  details: {
-    fontSize: "0.95rem",
-    color: "#555",
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "1rem",
-  },
-  bookButton: {
-    padding: "10px 20px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    width: "48%",
-  },
-  previewButton: {
-    padding: "10px 20px",
-    backgroundColor: "#28a745",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    width: "48%",
-  },
-  loadingText: {
-    textAlign: "center",
-    fontSize: "1.2rem",
-    color: "#888",
-    padding: "2rem",
-  },
-  modalOverlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0,0,0,0.7)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 999,
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    borderRadius: "10px",
-    padding: "1rem",
-    maxWidth: "90%",
-    width: "800px",
-    position: "relative",
-  },
-  closeButton: {
-    position: "absolute",
-    top: "10px",
-    right: "10px",
-    background: "transparent",
-    fontSize: "1.5rem",
-    border: "none",
-    cursor: "pointer",
-  },
+   
+   borderRadius: "8px",
+marginBottom: "1rem",
+},
+modelTitle: {
+fontSize: "1.2rem",
+marginBottom: "0.5rem",
+color: "#007bff",
+},
+details: {
+fontSize: "0.9rem",
+color: "#555",
+},
+buttonContainer: {
+marginTop: "1rem",
+display: "flex",
+justifyContent: "space-between",
+gap: "0.5rem",
+},
+bookButton: {
+backgroundColor: "#28a745",
+color: "white",
+border: "none",
+padding: "8px 12px",
+borderRadius: "5px",
+cursor: "pointer",
+flex: 1,
+},
+previewButton: {
+backgroundColor: "#17a2b8",
+color: "white",
+border: "none",
+padding: "8px 12px",
+borderRadius: "5px",
+cursor: "pointer",
+flex: 1,
+},
+loadingText: {
+textAlign: "center",
+marginTop: "2rem",
+fontSize: "1.2rem",
+color: "#666",
+},
+modalOverlay: {
+position: "fixed",
+top: 0,
+left: 0,
+width: "100vw",
+height: "100vh",
+backgroundColor: "rgba(0,0,0,0.6)",
+display: "flex",
+justifyContent: "center",
+alignItems: "center",
+zIndex: 9999,
+},
+modalContent: {
+backgroundColor: "#fff",
+padding: "1rem",
+borderRadius: "10px",
+maxWidth: "700px",
+width: "90%",
+position: "relative",
+},
+closeButton: {
+position: "absolute",
+top: "10px",
+right: "10px",
+backgroundColor: "#dc3545",
+border: "none",
+color: "#fff",
+fontSize: "1.2rem",
+borderRadius: "50%",
+width: "30px",
+height: "30px",
+cursor: "pointer",
+},
 };
 
 export default AllVehicles;
