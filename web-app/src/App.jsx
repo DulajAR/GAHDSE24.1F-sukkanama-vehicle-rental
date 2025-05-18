@@ -25,6 +25,8 @@ import AdminSupplierDetailUpdatePage from './admin/pages/AdminSupplierDetailUpda
 import AdminSupplierVehicleUpdatePage from "./admin/pages/AdminSupplierVehicleUpdatePage";
 import AdminSettingsPage from "./admin/pages/AdminSettingsPage"; 
 import AdminDetailUpdatePage from "./admin/pages/AdminDetailUpdatePage";
+import RateSupplierPage from "./pages/RateSupplierPage";
+import RateCustomerPage from "./pages/RateCustomerPage";
 
 
 
@@ -58,6 +60,8 @@ const App = () => {
         <Route path="/admin/vehicles/edit/:id" element={<AdminSupplierVehicleUpdatePage />} />
         <Route path="/admin/settings" element={<AdminSettingsPage />} />
         <Route path="/admin/settings/update/:id" element={<AdminDetailUpdatePage />} />
+        <Route path="/rate-supplier" element={<RateSupplierPage />} />
+        <Route path="/rate-customer" element={<RateCustomerPage />} />
 
        
 
