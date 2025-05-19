@@ -1,77 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase-config";
-import { collection, getDocs } from "firebase/firestore";
+import { db, auth } from "../firebase-config";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 
-// Booking filter form
-function SupplierVehicleBookingFilter({ onFilter }) {
-  const [plateNo, setPlateNo] = useState("");
-  const [vehicleId, setVehicleId] = useState("");
-  const [bookingId, setBookingId] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onFilter({ plateNo, vehicleId, bookingId });
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ marginBottom: "20px", display: "flex", gap: "10px" }}
-    >
-      <input
-        type="text"
-        placeholder="Plate No"
-        value={plateNo}
-        onChange={(e) => setPlateNo(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Vehicle ID"
-        value={vehicleId}
-        onChange={(e) => setVehicleId(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Booking ID"
-        value={bookingId}
-        onChange={(e) => setBookingId(e.target.value)}
-      />
-      <button type="submit">Filter</button>
-    </form>
-  );
-}
-
-// Main Dashboard Component
 export default function SupplierDashboard() {
   const [bookings, setBookings] = useState([]);
-  const [filteredBookings, setFilteredBookings] = useState([]);
+  const [supplierId, setSupplierId] = useState(null);
+  const [filters, setFilters] = useState({
+    plateNo: "",
+    vehicleId: "",
+    bookingId: "",
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const bookingsSnapshot = await getDocs(collection(db, "bookings"));
-      const vehiclesSnapshot = await getDocs(collection(db, "vehicles"));
-      const customersSnapshot = await getDocs(collection(db, "customers"));
+    const fetchSupplierAndData = async (userEmail) => {
+      const supplierQuery = query(
+        collection(db, "suppliers"),
+        where("email", "==", userEmail)
+      );
+      const supplierSnapshot = await getDocs(supplierQuery);
+      if (supplierSnapshot.empty) {
+        alert("Supplier not found.");
+        navigate("/login");
+        return;
+      }
+      const supplierDoc = supplierSnapshot.docs[0];
+      const supplierId = supplierDoc.id;
+      setSupplierId(supplierId);
 
+      const vehicleQuery = query(
+        collection(db, "vehicles"),
+        where("userId", "==", supplierId)
+      );
+      const vehicleSnapshot = await getDocs(vehicleQuery);
       const vehiclesMap = {};
-      vehiclesSnapshot.forEach((doc) => {
+      vehicleSnapshot.forEach((doc) => {
         vehiclesMap[doc.id] = doc.data();
       });
 
+      const bookingsSnapshot = await getDocs(collection(db, "bookings"));
+      const filteredBookings = bookingsSnapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((booking) => vehiclesMap.hasOwnProperty(booking.vehicleId));
+
+      const customersSnapshot = await getDocs(collection(db, "customers"));
       const customersMap = {};
       customersSnapshot.forEach((doc) => {
         customersMap[doc.id] = doc.data();
       });
 
-      const bookingList = bookingsSnapshot.docs.map((doc) => {
-        const data = doc.data();
-        const vehicle = vehiclesMap[data.vehicleId] || {};
-        const customer = customersMap[data.customerId] || {};
-
+      const bookingList = filteredBookings.map((booking) => {
+        const vehicle = vehiclesMap[booking.vehicleId] || {};
+        const customer = customersMap[booking.customerId] || {};
         return {
-          id: doc.id,
-          ...data,
+          ...booking,
           vehiclePlate: vehicle.plate || "N/A",
           vehicleModel: vehicle.model || "Unknown Model",
           vehicleImage: vehicle.vehicleImageUrl || "https://via.placeholder.com/80",
@@ -82,66 +71,78 @@ export default function SupplierDashboard() {
       });
 
       setBookings(bookingList);
-      setFilteredBookings(bookingList);
     };
 
-    fetchData();
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchSupplierAndData(user.email);
+      } else {
+        navigate("/login");
+      }
+    });
 
-  const handleFilter = ({ plateNo, vehicleId, bookingId }) => {
-    if (!plateNo && !vehicleId && !bookingId) {
-      alert("Please enter at least one filter criteria.");
-      return;
-    }
-
-    let filtered = bookings;
-
-    if (plateNo) {
-      filtered = filtered.filter((b) =>
-        b.vehiclePlate?.toLowerCase().includes(plateNo.toLowerCase())
-      );
-    }
-    if (vehicleId) {
-      filtered = filtered.filter((b) =>
-        b.vehicleId?.toLowerCase().includes(vehicleId.toLowerCase())
-      );
-    }
-    if (bookingId) {
-      filtered = filtered.filter((b) =>
-        b.id?.toLowerCase().includes(bookingId.toLowerCase())
-      );
-    }
-
-    setFilteredBookings(filtered);
-  };
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleBookingAction = (id, newStatus) => {
     const updated = bookings.map((booking) =>
       booking.id === id ? { ...booking, status: newStatus } : booking
     );
     setBookings(updated);
-    setFilteredBookings(updated);
   };
 
   const handleDeleteBooking = (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this booking?"
-    );
-    if (confirmed) {
-      const updated = bookings.filter((booking) => booking.id !== id);
-      setBookings(updated);
-      setFilteredBookings(updated);
+    if (window.confirm("Are you sure you want to delete this booking?")) {
+      setBookings(bookings.filter((booking) => booking.id !== id));
     }
   };
 
-  const handleAddRating = (booking) => {
-    navigate("/rate-customer", { state: { booking } });
-  };
+  // Safely filter bookings according to search filters:
+  const filteredBookings = bookings.filter((booking) => {
+    const plateMatch = (booking.vehiclePlate || "")
+      .toLowerCase()
+      .includes(filters.plateNo.toLowerCase());
+    const vehicleIdMatch = (booking.vehicleId || "")
+      .toLowerCase()
+      .includes(filters.vehicleId.toLowerCase());
+    const bookingIdMatch = (booking.id || "")
+      .toLowerCase()
+      .includes(filters.bookingId.toLowerCase());
+    return plateMatch && vehicleIdMatch && bookingIdMatch;
+  });
 
   return (
     <section className="booking-table-container">
-      <h2>Bookings Filter</h2>
-      <SupplierVehicleBookingFilter onFilter={handleFilter} />
+      <h2>Your Vehicle Bookings</h2>
+
+      <div style={{ marginBottom: "20px" }}>
+        <input
+          type="text"
+          placeholder="Search by Plate No"
+          value={filters.plateNo}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, plateNo: e.target.value }))
+          }
+          style={{ marginRight: "10px" }}
+        />
+        <input
+          type="text"
+          placeholder="Search by Vehicle ID"
+          value={filters.vehicleId}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, vehicleId: e.target.value }))
+          }
+          style={{ marginRight: "10px" }}
+        />
+        <input
+          type="text"
+          placeholder="Search by Booking ID"
+          value={filters.bookingId}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, bookingId: e.target.value }))
+          }
+        />
+      </div>
 
       {filteredBookings.length > 0 ? (
         <div className="table-wrapper">
@@ -278,6 +279,9 @@ export default function SupplierDashboard() {
       )}
 
 
+
+
+
  
 
 
@@ -328,6 +332,7 @@ export default function SupplierDashboard() {
         .copy-btn:hover {
           color: green;
         }
+          
       `}</style>
     </section>
   );
