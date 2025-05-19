@@ -28,6 +28,8 @@ import AdminDetailUpdatePage from "./admin/pages/AdminDetailUpdatePage";
 import RateSupplierPage from "./pages/RateSupplierPage";
 import RateCustomerPage from "./pages/RateCustomerPage";
 import SupplierRatingDisplayPage from "./pages/SupplierRatingDisplayPage";
+import CustomerRatingDisplayPage from "./pages/CustomerRatingDisplayPage";
+
 
 
 
@@ -62,8 +64,10 @@ const App = () => {
         <Route path="/admin/settings" element={<AdminSettingsPage />} />
         <Route path="/admin/settings/update/:id" element={<AdminDetailUpdatePage />} />
         <Route path="/rate-supplier" element={<RateSupplierPage />} />
-        <Route path="/rate-customer" element={<RateCustomerPage />} />
+        <Route path="/rate-customer/:bookingId" element={<RateCustomerPage />} />
         <Route path="/supplier-rating-display" element={<SupplierRatingDisplayPage />} />
+        <Route path="/customer-ratings/:bookingId" element={<CustomerRatingDisplayPage />} />
+
 
 
        

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 // Booking filter form
 function SupplierVehicleBookingFilter({ onFilter }) {
@@ -45,6 +46,7 @@ function SupplierVehicleBookingFilter({ onFilter }) {
 export default function SupplierDashboard() {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,9 +134,13 @@ export default function SupplierDashboard() {
     }
   };
 
+  const handleAddRating = (booking) => {
+    navigate("/rate-customer", { state: { booking } });
+  };
+
   return (
     <section className="booking-table-container">
-      <h2>Bookings Fillter</h2>
+      <h2>Bookings Filter</h2>
       <SupplierVehicleBookingFilter onFilter={handleFilter} />
 
       {filteredBookings.length > 0 ? (
@@ -152,7 +158,7 @@ export default function SupplierDashboard() {
                 <th>Vehicle ID</th>
                 <th>Booking ID</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -231,6 +237,36 @@ export default function SupplierDashboard() {
                     >
                       Delete
                     </button>
+                    <br />
+                    <button
+                      onClick={() => navigate(`/rate-customer/${booking.id}`)}
+                      style={{
+                        marginTop: "5px",
+                        backgroundColor: "#007BFF",
+                        color: "#fff",
+                        border: "none",
+                        padding: "4px 8px",
+                        cursor: "pointer",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      Add Rating
+                    </button>
+                    <button
+                      style={{
+                        marginTop: "5px",
+                        marginLeft: "5px",
+                        backgroundColor: "#6c757d",
+                        color: "#fff",
+                        border: "none",
+                        padding: "4px 8px",
+                        cursor: "pointer",
+                        borderRadius: "4px",
+                      }}
+                      onClick={() => navigate(`/customer-ratings/${booking.id}`)}
+                    >
+                      View Rating
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -240,6 +276,10 @@ export default function SupplierDashboard() {
       ) : (
         <p>No bookings found.</p>
       )}
+
+
+ 
+
 
       <style>{`
         .booking-table-container {
