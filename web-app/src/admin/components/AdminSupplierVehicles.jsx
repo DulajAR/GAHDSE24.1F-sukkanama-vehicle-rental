@@ -56,22 +56,13 @@ const AdminSupplierVehicles = () => {
 
       <button
         onClick={() => navigate("/admin/dashboard")}
-        style={{
-          marginBottom: "15px",
-          padding: "8px 15px",
-          cursor: "pointer",
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          fontWeight: "bold",
-        }}
+        className="back-button"
       >
         &larr; Back to Dashboard
       </button>
 
       {/* Search filters */}
-      <div style={{ display: "flex", gap: "15px", flexWrap: "wrap", marginBottom: "15px" }}>
+      <div className="search-filters">
         <input
           type="text"
           placeholder="Search by plate number"
@@ -159,7 +150,7 @@ const AdminSupplierVehicles = () => {
                   <td>
                     <button
                       onClick={() => navigate(`/admin/vehicles/edit/${vehicle.id}`)}
-                      style={actionButtonStyle("yellow")}
+                      style={actionButtonStyle("orange")}
                     >
                       Update
                     </button>
@@ -179,19 +170,34 @@ const AdminSupplierVehicles = () => {
 
       <style>{`
         .vehicle-table-container {
+          width: 100%;
           max-width: 100%;
-          margin: 50px auto;
           padding: 20px;
+          box-sizing: border-box;
           background: #fff;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.1);
           font-family: Arial, sans-serif;
+        }
+
+        .back-button {
+          margin-bottom: 15px;
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .search-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 15px;
         }
 
         .table-wrapper {
           overflow-x: auto;
-          overflow-y: auto;
-          max-height: 600px;
           border: 1px solid #ddd;
           border-radius: 8px;
         }
@@ -206,7 +212,6 @@ const AdminSupplierVehicles = () => {
           border: 1px solid #ddd;
           padding: 10px;
           text-align: center;
-          white-space: nowrap;
         }
 
         .vehicle-table th {
@@ -216,8 +221,19 @@ const AdminSupplierVehicles = () => {
           z-index: 1;
         }
 
-        .vehicle-table button:hover {
-          text-decoration: underline;
+        @media (max-width: 768px) {
+          .vehicle-table-container {
+            padding: 10px;
+          }
+
+          .vehicle-table {
+            min-width: 1000px;
+          }
+
+          .search-filters input {
+            max-width: 100%;
+            flex: 1 1 100%;
+          }
         }
       `}</style>
     </div>
@@ -234,12 +250,14 @@ const inputStyle = {
 };
 
 const actionButtonStyle = (color) => ({
-  color: color,
-  cursor: "pointer",
-  backgroundColor: "transparent",
+  color: "white",
+  backgroundColor: color,
   border: "none",
+  padding: "6px 10px",
+  borderRadius: "5px",
+  cursor: "pointer",
   fontWeight: "bold",
-  marginRight: color === "yellow" ? "10px" : "0",
+  marginRight: "5px",
 });
 
 export default AdminSupplierVehicles;

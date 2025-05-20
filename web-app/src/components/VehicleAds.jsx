@@ -64,134 +64,157 @@ const VehicleAds = () => {
   const uniqueBrands = [...new Set(vehicles.map(vehicle => vehicle.brand))];
   const uniqueYears = [...new Set(vehicles.map(vehicle => vehicle.yom))].sort();
 
-  if (loading) return <p style={styles.loadingText}>Loading vehicles...</p>;
-  if (vehicles.length === 0) return <p style={styles.loadingText}>No vehicles found.</p>;
+  if (loading) return <p className="loading-text">Loading vehicles...</p>;
+  if (vehicles.length === 0) return <p className="loading-text">No vehicles found.</p>;
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Pick Your Vehicle</h1>
+    <div className="vehicle-container">
+      <style>{`
+        .vehicle-container {
+          padding: 1rem;
+          background-color: #f5f5f5;
+          font-family: Arial, sans-serif;
+          min-height: 100vh;
+          box-sizing: border-box;
+        }
+        .vehicle-title {
+          text-align: center;
+          font-size: 2rem;
+          margin-bottom: 1rem;
+          color: #222;
+        }
+        .filter-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          justify-content: center;
+          margin-bottom: 1rem;
+        }
+        .filter-group {
+          display: flex;
+          flex-direction: column;
+          font-size: 1rem;
+        }
+        .scroll-container {
+          max-height: 70vh;
+          overflow-y: auto;
+          padding: 0 1rem;
+        }
+        .grid-wrapper {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1rem;
+        }
+        .vehicle-card {
+          background-color: #fff;
+          border-radius: 10px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .vehicle-image {
+          width: 100%;
+          height: 160px;
+          object-fit: cover;
+          border-radius: 8px;
+          margin-bottom: 0.5rem;
+        }
+        .vehicle-model {
+          font-size: 1.1rem;
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+          text-align: center;
+          color: #333;
+        }
+        .vehicle-details {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          font-size: 0.9rem;
+          color: #444;
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+        .book-button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-weight: bold;
+          width: 100%;
+          transition: background-color 0.3s ease;
+        }
+        .book-button:hover {
+          background-color: #0056b3;
+        }
+        .loading-text {
+          text-align: center;
+          font-size: 1.2rem;
+          color: #777;
+          padding: 2rem;
+        }
+      `}</style>
 
-      {/* Filters */}
-      <div style={styles.filterContainer}>
-        <label htmlFor="brand-filter">Brand:</label>
-        <select id="brand-filter" value={brandFilter} onChange={(e) => setBrandFilter(e.target.value)}>
-          <option value="all">All Brands</option>
-          {uniqueBrands.map(brand => (
-            <option key={brand} value={brand}>{brand}</option>
-          ))}
-        </select>
+      <h1 className="vehicle-title">Pick Your Vehicle</h1>
 
-        <label htmlFor="year-filter">Year:</label>
-        <select id="year-filter" value={yearFilter} onChange={(e) => setYearFilter(e.target.value)}>
-          <option value="all">All Years</option>
-          {uniqueYears.map(year => (
-            <option key={year} value={year}>{year}</option>
-          ))}
-        </select>
+      <div className="filter-container">
+        <div className="filter-group">
+          <label htmlFor="brand-filter">Brand:</label>
+          <select id="brand-filter" value={brandFilter} onChange={(e) => setBrandFilter(e.target.value)}>
+            <option value="all">All Brands</option>
+            {uniqueBrands.map(brand => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor="year-filter">Year:</label>
+          <select id="year-filter" value={yearFilter} onChange={(e) => setYearFilter(e.target.value)}>
+            <option value="all">All Years</option>
+            {uniqueYears.map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Horizontal Scrollable Cards */}
-      <div style={styles.scrollContainer}>
-        {filterAds().map(vehicle => (
-          <div key={vehicle.id} style={styles.card}>
-            <img src={vehicle.vehicleImageUrl || 'https://via.placeholder.com/300x150'} alt={vehicle.model} style={styles.image} />
-            <h3 style={styles.model}>{vehicle.brand} {vehicle.model}</h3>
-            <ul style={styles.details}>
-              <li><strong>Plate:</strong> {vehicle.plate_no || 'N/A'}</li>
-              <li><strong>Year:</strong> {vehicle.yom}</li>
-              <li><strong>Seats:</strong> {vehicle.seat_capacity}</li>
-              <li><strong>Fuel:</strong> {vehicle.f_type}</li>
-              <li><strong>Engine:</strong> {vehicle.eng_capacity}</li>
-              <li><strong>Transmission:</strong> {vehicle.t_mission}</li>
-              <li><strong>Color:</strong> {vehicle.color}</li>
-              <li><strong>Price/Day:</strong> Rs.{vehicle.per_day_chrg}</li>
-            </ul>
-            <button
-              style={styles.bookButton}
-              onClick={() => navigate(`/loginCustomer?vehicle_id=${vehicle.id}`)}
-            >
-              Book Now
-            </button>
-          </div>
-        ))}
+      <div className="scroll-container">
+        <div className="grid-wrapper">
+          {filterAds().map(vehicle => (
+            <div key={vehicle.id} className="vehicle-card">
+              <img
+                src={vehicle.vehicleImageUrl || 'https://via.placeholder.com/300x150'}
+                alt={vehicle.model}
+                className="vehicle-image"
+              />
+              <h3 className="vehicle-model">{vehicle.brand} {vehicle.model}</h3>
+              <ul className="vehicle-details">
+                <li><strong>Plate:</strong> {vehicle.plate_no || 'N/A'}</li>
+                <li><strong>Year:</strong> {vehicle.yom}</li>
+                <li><strong>Seats:</strong> {vehicle.seat_capacity}</li>
+                <li><strong>Fuel:</strong> {vehicle.f_type}</li>
+                <li><strong>Engine:</strong> {vehicle.eng_capacity}</li>
+                <li><strong>Transmission:</strong> {vehicle.t_mission}</li>
+                <li><strong>Color:</strong> {vehicle.color}</li>
+                <li><strong>Price/Day:</strong> Rs.{vehicle.per_day_chrg}</li>
+              </ul>
+              <button
+                className="book-button"
+                onClick={() => navigate(`/loginCustomer?vehicle_id=${vehicle.id}`)}
+              >
+                Book Now
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: '2rem',
-    backgroundColor: '#f8f9fa',
-    fontFamily: 'Arial, sans-serif',
-    minHeight: '100vh',
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: '2rem',
-    marginBottom: '1.5rem',
-    color: '#333',
-  },
-  filterContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '1rem',
-    marginBottom: '1.5rem',
-  },
-  scrollContainer: {
-    display: 'flex',
-    overflowX: 'auto',
-    gap: '1rem',
-    padding: '1rem',
-  },
-  card: {
-    flex: '0 0 auto',
-    width: '300px',
-    backgroundColor: '#fff',
-    padding: '1rem',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '160px',
-    objectFit: 'cover',
-    borderRadius: '8px',
-    marginBottom: '1rem',
-  },
-  model: {
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    margin: '0.5rem 0',
-    color: '#222',
-  },
-  details: {
-    listStyle: 'none',
-    padding: 0,
-    fontSize: '0.95rem',
-    color: '#555',
-    width: '100%',
-    marginBottom: '1rem',
-  },
-  bookButton: {
-    backgroundColor: '#28a745',
-    color: '#fff',
-    padding: '10px 20px',
-    borderRadius: '5px',
-    fontWeight: 'bold',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s ease-in-out',
-  },
-  loadingText: {
-    textAlign: 'center',
-    fontSize: '1.2rem',
-    color: '#777',
-    padding: '2rem',
-  }
 };
 
 export default VehicleAds;

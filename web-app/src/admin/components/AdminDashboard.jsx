@@ -48,15 +48,16 @@ const AdminDashboard = () => {
       </div>
 
       <div style={{ marginTop: "30px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-        <div
-          style={cardStyle}
-          onClick={() => navigateTo("/admin/overview")}
-          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-        >
-          <h4>📊 Overview</h4>
-          <p>Quick stats about customers, suppliers, and reports.</p>
-        </div>
+    <div
+  style={cardStyle}
+  onClick={() => navigateTo("/admin/ratings")}
+  onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+  onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+>
+  <h4>⭐️ Ratings</h4>
+  <p>Manage and review customer feedback and service ratings.</p>
+</div>
+
 
         <div
           style={cardStyle}
