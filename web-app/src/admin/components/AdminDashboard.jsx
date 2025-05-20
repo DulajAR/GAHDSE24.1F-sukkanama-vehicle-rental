@@ -50,7 +50,7 @@ const AdminDashboard = () => {
       <div style={{ marginTop: "30px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
     <div
   style={cardStyle}
-  onClick={() => navigateTo("/admin/ratings")}
+  onClick={() => navigateTo("/admin-view-all-ratings")}
   onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
   onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
 >
