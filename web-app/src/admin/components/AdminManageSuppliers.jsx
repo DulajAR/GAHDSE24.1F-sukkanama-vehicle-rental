@@ -51,35 +51,17 @@ const AdminManageSuppliers = () => {
 
       <button
         onClick={() => navigate("/admin/dashboard")}
-        style={{
-          marginBottom: "15px",
-          padding: "8px 15px",
-          cursor: "pointer",
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          fontWeight: "bold",
-        }}
+        className="back-button"
       >
         &larr; Back to Dashboard
       </button>
 
-      {/* 🔍 Search Field */}
       <input
         type="text"
         placeholder="Search by email"
         value={searchEmail}
         onChange={(e) => setSearchEmail(e.target.value)}
-        style={{
-          marginBottom: "15px",
-          padding: "10px",
-          width: "100%",
-          maxWidth: "300px",
-          border: "1px solid #ccc",
-          borderRadius: "5px",
-          fontSize: "14px",
-        }}
+        className="search-input"
       />
 
       <div className="table-wrapper">
@@ -104,35 +86,25 @@ const AdminManageSuppliers = () => {
               filteredSuppliers.map((supplier) => (
                 <tr key={supplier.id}>
                   <td>{supplier.email}</td>
-                  <td>{supplier.f_name} {supplier.l_name}</td>
+                  <td>
+                    {supplier.f_name} {supplier.l_name}
+                  </td>
                   <td>{supplier.nic}</td>
                   <td>{supplier.tel_no}</td>
                   <td>{supplier.reg_date}</td>
                   <td>{supplier.tax_id || "N/A"}</td>
                   <td>
-              <button
-                   onClick={() => navigate(`/admin/suppliers/update/${supplier.id}`)}
-                   style={{
-                     color: "yellow",
-                     marginRight: "10px",
-                     cursor: "pointer",
-                     backgroundColor: "transparent",
-                     border: "none",
-                    fontWeight: "bold"
-                   }}
-              >
-               Update
-              </button>
-
+                    <button
+                      onClick={() =>
+                        navigate(`/admin/suppliers/update/${supplier.id}`)
+                      }
+                      className="action-btn update"
+                    >
+                      Update
+                    </button>
                     <button
                       onClick={() => handleDelete(supplier.id)}
-                      style={{
-                        color: "red",
-                        cursor: "pointer",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        fontWeight: "bold"
-                      }}
+                      className="action-btn delete"
                     >
                       Delete
                     </button>
@@ -146,7 +118,7 @@ const AdminManageSuppliers = () => {
 
       <style>{`
         .supplier-table-container {
-          max-width: 100%;
+          max-width: 1000px;
           margin: 50px auto;
           padding: 20px;
           background: #fff;
@@ -155,21 +127,42 @@ const AdminManageSuppliers = () => {
           font-family: Arial, sans-serif;
         }
 
-        .table-wrapper {
-          overflow-x: auto;
-          overflow-y: auto;
-          max-height: 500px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+        .back-button {
+          margin-bottom: 15px;
+          padding: 8px 15px;
+          cursor: pointer;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-weight: bold;
         }
+
+        .search-input {
+          margin-bottom: 15px;
+          padding: 10px;
+          width: 100%;
+          max-width: 300px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 14px;
+        }
+
+     .table-wrapper {
+  overflow-y: auto;
+  max-height: 450px; /* Show about 10 rows */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
 
         .supplier-table {
           width: 100%;
-          min-width: 900px;
           border-collapse: collapse;
         }
 
-        .supplier-table th, .supplier-table td {
+        .supplier-table th,
+        .supplier-table td {
           border: 1px solid #ddd;
           padding: 10px;
           text-align: center;
@@ -183,8 +176,45 @@ const AdminManageSuppliers = () => {
           z-index: 1;
         }
 
-        .supplier-table button:hover {
+        .action-btn {
+          background-color: transparent;
+          border: none;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .action-btn.update {
+          color: orange;
+          margin-right: 10px;
+        }
+
+        .action-btn.delete {
+          color: red;
+        }
+
+        .action-btn:hover {
           text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+          .supplier-table-container {
+            padding: 10px;
+          }
+
+          .supplier-table th,
+          .supplier-table td {
+            padding: 8px;
+            font-size: 12px;
+          }
+
+          .search-input {
+            width: 100%;
+          }
+
+          .supplier-table-container h2 {
+            font-size: 20px;
+            text-align: center;
+          }
         }
       `}</style>
     </div>

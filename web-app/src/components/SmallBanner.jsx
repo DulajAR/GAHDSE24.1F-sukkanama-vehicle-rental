@@ -17,7 +17,7 @@ const SmallBanner = () => {
         <div className="banner-content">
           <h4>Hosts</h4>
           <p>Sign up and start earning from your vehicles</p>
-          <button onClick={() => navigate("/loginCustomer")}>Register Now</button>
+          <button onClick={() => navigate("/supplier-login")}>Register Now</button>
         </div>
       </div>
 
@@ -30,7 +30,7 @@ const SmallBanner = () => {
         <div className="banner-content">
           <h4>Hirers</h4>
           <p>Register and start choosing from hundreds of vehicles to find your perfect match.</p>
-          <button onClick={() => navigate("/loginSupplier")}>Register Now</button>
+          <button onClick={() => navigate("/loginCustomer")}>Register Now</button>
         </div>
       </div>
     </section>
