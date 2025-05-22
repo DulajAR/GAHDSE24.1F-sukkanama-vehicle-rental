@@ -9,7 +9,7 @@ const AllVehiclesPage = () => {
     <>
       <Header />
       <div className="all-vehicles-page">
-        <h1 style={{ textAlign: "center", marginTop: "1rem" }}>All Your Vehicles</h1>
+        <h1 style={{ textAlign: "center", marginTop: "1rem" }}>All Vehicles</h1>
         <AllVehicles />
       </div>
       <Footer />
