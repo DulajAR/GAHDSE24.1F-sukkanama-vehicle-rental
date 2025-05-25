@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:mobile_app/screens/home_screen.dart';
+import 'package:mobile_app/screens/supplier_dashboard_screen.dart';
 import 'package:mobile_app/theme/theme.dart';
-import 'firebase_options.dart'; // Make sure this file exists
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: appTheme, // ✅ Using Theme
-      home: const HomeScreen(), // ✅ Set Home Screen
+      theme: appTheme,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+        '/supplierDashboard': (context) => const SupplierDashboardScreen(), // ✅ This line fixes the error
+      },
     );
   }
 }

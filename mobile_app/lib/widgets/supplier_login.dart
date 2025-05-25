@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mobile_app/screens/supplier_signup_screen.dart'; // ✅ Don't forget this import
+import 'package:mobile_app/screens/supplier_signup_screen.dart';
 
 class SupplierLogin extends StatefulWidget {
   const SupplierLogin({super.key});
@@ -14,8 +14,6 @@ class _SupplierLoginState extends State<SupplierLogin> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  String? _errorMessage;
-
   Future<void> _loginSupplier() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -23,11 +21,40 @@ class _SupplierLoginState extends State<SupplierLogin> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
-        Navigator.pushReplacementNamed(context, '/supplierDashboard');
+
+        // ✅ Show success dialog
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => AlertDialog(
+            title: const Text("Login Successful"),
+            content: const Text("Welcome back!"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close dialog
+                  Navigator.pushReplacementNamed(context, '/supplierDashboard'); // Navigate to dashboard
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
       } on FirebaseAuthException catch (e) {
-        setState(() {
-          _errorMessage = e.message;
-        });
+        // ❌ Show error dialog
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("Login Failed"),
+            content: Text(e.message ?? "An unknown error occurred."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
       }
     }
   }
@@ -63,14 +90,6 @@ class _SupplierLoginState extends State<SupplierLogin> {
                 ),
               ),
               const SizedBox(height: 20),
-              if (_errorMessage != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    _errorMessage!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(

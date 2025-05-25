@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminHeader from "../components/AdminHeader";
 import AdminSignupForm from "../components/AdminSignupForm";
 
 const AdminSignupFormPage = () => {
@@ -15,19 +14,26 @@ const AdminSignupFormPage = () => {
 
   return (
     <>
-      <AdminHeader />
-      <div
-        className="admin-signup-page"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          paddingTop: "80px", // Space for fixed header
-          backgroundColor: "#eef1f5", // Optional background for better contrast
-        }}
-      >
-        <div style={{ maxWidth: "500px", width: "100%" }}>
+      <style>{`
+        .admin-signup-page {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          width: 100vw;
+          background-color: #eef1f5;
+          padding: 20px;
+          box-sizing: border-box;
+        }
+
+        .admin-signup-container {
+          max-width: 500px;
+          width: 100%;
+        }
+      `}</style>
+
+      <div className="admin-signup-page">
+        <div className="admin-signup-container">
           <AdminSignupForm />
         </div>
       </div>
