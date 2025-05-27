@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SupplierDashboard extends StatefulWidget {
-  const SupplierDashboard({super.key});
+  final String email; // ✅ Accept email from login screen
+
+  const SupplierDashboard({super.key, required this.email});
 
   @override
   State<SupplierDashboard> createState() => _SupplierDashboardState();
@@ -19,17 +21,20 @@ class _SupplierDashboardState extends State<SupplierDashboard> {
   }
 
   Future<void> fetchSupplierData() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final doc = await FirebaseFirestore.instance
+    try {
+      final snapshot = await FirebaseFirestore.instance
           .collection('suppliers')
-          .doc(user.uid)
+          .where('email', isEqualTo: widget.email)
+          .limit(1)
           .get();
-      if (doc.exists) {
+
+      if (snapshot.docs.isNotEmpty) {
         setState(() {
-          supplierData = doc.data();
+          supplierData = snapshot.docs.first.data();
         });
       }
+    } catch (e) {
+      print("Error fetching supplier data: $e");
     }
   }
 

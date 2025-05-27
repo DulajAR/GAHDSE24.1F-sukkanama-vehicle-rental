@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
-        '/supplierDashboard': (context) => const SupplierDashboardScreen(), // ✅ This line fixes the error
+        '/supplierDashboard': (context) => const SupplierDashboardScreen(email: 'demo@example.com'),
+
       },
     );
   }
