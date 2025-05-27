@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_app/screens/customer_dashboard_screen.dart';
+import 'package:mobile_app/screens/customer_signup_screen.dart'; // ✅ Import the signup screen
 
 class CustomerLogin extends StatefulWidget {
   const CustomerLogin({super.key});
@@ -151,6 +152,18 @@ class _CustomerLoginState extends State<CustomerLogin> {
                   minimumSize: const Size(double.infinity, 45),
                 ),
                 child: const Text('Login'),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CustomerSignupScreen(), // ✅ Navigate to signup
+                    ),
+                  );
+                },
+                child: const Text("Not registered? Register here"),
               ),
             ],
           ),
