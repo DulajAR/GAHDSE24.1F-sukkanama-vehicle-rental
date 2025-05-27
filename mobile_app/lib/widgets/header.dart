@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/contact_screen.dart';
+import 'package:mobile_app/screens/customer_login_screen.dart';
 import 'package:mobile_app/screens/supplier_login_screen.dart';
 import 'package:mobile_app/styles.dart';
 
@@ -54,7 +55,12 @@ class _HeaderState extends State<Header> {
                         MaterialPageRoute(builder: (context) => const SupplierLoginScreen()),
                   );
                     }),
-                    _navItem('Find Your Vehicle', () {}),
+                    _navItem('Find Your Vehicle', () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CustomerLoginScreen()),
+                      );
+                    }),
                     _navItem('About', () {
                       Navigator.push(
                         context,
@@ -100,7 +106,12 @@ class _HeaderState extends State<Header> {
                     MaterialPageRoute(builder: (context) => const SupplierLoginScreen()),
                   );
                 }),
-                _navItem('Find Your Vehicle', () {}),
+                _navItem('Find Your Vehicle', () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CustomerLoginScreen()),
+                  );
+                }),
                 _navItem('About', () {
                   Navigator.push(
                     context,
