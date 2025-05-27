@@ -37,86 +37,76 @@ class _SupplierDashboardState extends State<SupplierDashboard> {
       print("Error fetching supplier data: $e");
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+@override
+Widget build(BuildContext context) {
+  return SafeArea(
+    child: Padding(
       padding: const EdgeInsets.all(24.0),
-      color: Colors.grey[100],
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Welcome to Your Dashboard!',
-              style: AppStyles.heading1,
-            ),
-            const SizedBox(height: 20),
-            if (supplierData != null)
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("👤 ${supplierData!['f_name']} ${supplierData!['l_name']}", style: AppStyles.profileText),
-                      Text("📧 Email: ${supplierData!['email']}", style: AppStyles.profileText),
-                      Text("📞 Phone: ${supplierData!['tel_no']}", style: AppStyles.profileText),
-                      Text("🪪 NIC: ${supplierData!['nic']}", style: AppStyles.profileText),
-                      Text("🧾 Tax ID: ${supplierData!['tax_id']}", style: AppStyles.profileText),
-                      Text("📅 Registered on: ${supplierData!['reg_date']}", style: AppStyles.profileText),
-                    ],
-                  ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Welcome to Your Dashboard!',
+            style: AppStyles.heading1,
+          ),
+          const SizedBox(height: 20),
+          if (supplierData != null)
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("👤 ${supplierData!['f_name']} ${supplierData!['l_name']}", style: AppStyles.profileText),
+                    Text("📧 Email: ${supplierData!['email']}", style: AppStyles.profileText),
+                    Text("📞 Phone: ${supplierData!['tel_no']}", style: AppStyles.profileText),
+                    Text("🪪 NIC: ${supplierData!['nic']}", style: AppStyles.profileText),
+                    Text("🧾 Tax ID: ${supplierData!['tax_id']}", style: AppStyles.profileText),
+                    Text("📅 Registered on: ${supplierData!['reg_date']}", style: AppStyles.profileText),
+                  ],
                 ),
-              )
-            else
-              const Center(child: CircularProgressIndicator()),
-            const SizedBox(height: 20),
-            Wrap(
-              spacing: 20,
-              runSpacing: 20,
-              children: [
-                _dashboardCard(
-                  context,
-                  icon: Icons.add_circle_outline,
-                  title: 'Add New Vehicle',
-                  onTap: () {
-                    // TODO: Navigate to Add Vehicle Screen
-                  },
-                ),
-                _dashboardCard(
-                  context,
-                  icon: Icons.list_alt,
-                  title: 'Manage Listings',
-                  onTap: () {
-                    // TODO: Navigate to Manage Listings Screen
-                  },
-                ),
-                _dashboardCard(
-                  context,
-                  icon: Icons.book_online,
-                  title: 'View Bookings',
-                  onTap: () {
-                    // TODO: Navigate to Booking History
-                  },
-                ),
-                _dashboardCard(
-                  context,
-                  icon: Icons.settings,
-                  title: 'Settings',
-                  onTap: () {
-                    // TODO: Navigate to Settings
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            )
+          else
+            const Center(child: CircularProgressIndicator()),
+          const SizedBox(height: 20),
+          Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            children: [
+              _dashboardCard(
+                context,
+                icon: Icons.add_circle_outline,
+                title: 'Add New Vehicle',
+                onTap: () {},
+              ),
+              _dashboardCard(
+                context,
+                icon: Icons.list_alt,
+                title: 'Manage Listings',
+                onTap: () {},
+              ),
+              _dashboardCard(
+                context,
+                icon: Icons.book_online,
+                title: 'View Bookings',
+                onTap: () {},
+              ),
+              _dashboardCard(
+                context,
+                icon: Icons.settings,
+                title: 'Settings',
+                onTap: () {},
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _dashboardCard(BuildContext context,
       {required IconData icon, required String title, required VoidCallback onTap}) {

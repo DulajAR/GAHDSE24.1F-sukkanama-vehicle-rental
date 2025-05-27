@@ -1,10 +1,9 @@
-// lib/screens/supplier_dashboard_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/header.dart';
 import 'package:mobile_app/widgets/news_latter.dart';
 import 'package:mobile_app/widgets/footer.dart';
 import 'package:mobile_app/widgets/supplier_dashboard.dart';
+import 'package:mobile_app/screens/supplier_login_screen.dart'; // 👈 Import this
 
 class SupplierDashboardScreen extends StatelessWidget {
   final String email;
@@ -15,17 +14,52 @@ class SupplierDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Header(),
-            SupplierDashboard(email: email), // Optional: pass to widget if needed
-            const SizedBox(height: 20),
-            const NewsLetter(),
-            const Footer(),
-          ],
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Header(),
+
+                  // ✅ Logout Button that navigates to SupplierLoginScreen
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SupplierLoginScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.logout),
+                        label: const Text("Logout"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SupplierDashboard(email: email),
+                  const SizedBox(height: 20),
+                  const NewsLetter(),
+                  const Footer(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
