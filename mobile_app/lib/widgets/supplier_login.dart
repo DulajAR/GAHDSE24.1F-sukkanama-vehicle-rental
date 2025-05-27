@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/screens/supplier_signup_screen.dart';
+import 'package:mobile_app/screens/supplier_dashboard_screen.dart'; // ✅ Import the dashboard screen
 
 class SupplierLogin extends StatefulWidget {
   const SupplierLogin({super.key});
@@ -22,7 +23,7 @@ class _SupplierLoginState extends State<SupplierLogin> {
           password: _passwordController.text,
         );
 
-        // ✅ Show success dialog
+        // ✅ Show success dialog and navigate with email
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -33,7 +34,14 @@ class _SupplierLoginState extends State<SupplierLogin> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close dialog
-                  Navigator.pushReplacementNamed(context, '/supplierDashboard'); // Navigate to dashboard
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SupplierDashboardScreen(
+                        email: _emailController.text.trim(), // ✅ Pass email here
+                      ),
+                    ),
+                  );
                 },
                 child: const Text("OK"),
               ),

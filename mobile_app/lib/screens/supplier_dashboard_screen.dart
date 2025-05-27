@@ -7,18 +7,23 @@ import 'package:mobile_app/widgets/footer.dart';
 import 'package:mobile_app/widgets/supplier_dashboard.dart';
 
 class SupplierDashboardScreen extends StatelessWidget {
-  const SupplierDashboardScreen({super.key});
+  final String email;
+
+  const SupplierDashboardScreen({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
       body: SingleChildScrollView(
         child: Column(
-          children: const [
-            Header(),
-            SupplierDashboard(),
-            NewsLetter(),
-            Footer(),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Header(),
+            SupplierDashboard(email: email), // Optional: pass to widget if needed
+            const SizedBox(height: 20),
+            const NewsLetter(),
+            const Footer(),
           ],
         ),
       ),
