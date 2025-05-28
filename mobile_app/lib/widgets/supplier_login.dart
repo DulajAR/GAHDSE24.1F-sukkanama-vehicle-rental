@@ -130,7 +130,7 @@ class _SupplierLoginState extends State<SupplierLogin> {
               ElevatedButton(
                 onPressed: _loginSupplier,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: const Color.fromARGB(255, 185, 163, 224),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   textStyle: const TextStyle(fontSize: 16),
                   shape: RoundedRectangleBorder(
