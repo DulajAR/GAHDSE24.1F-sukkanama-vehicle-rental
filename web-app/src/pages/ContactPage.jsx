@@ -4,6 +4,7 @@ import ContactFormSection from "../components/ContactFormSection";
 import ContactHeader from "../components/ContactHeader";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Newsletter from "../components/Newsletter";
 
 
 const ContactPage = () => {
@@ -13,6 +14,7 @@ const ContactPage = () => {
       <ContactHeader/>
       <ContactInfo />
       <ContactFormSection />
+      <Newsletter />
       <Footer/>
     </>
   );
