@@ -30,6 +30,8 @@ import RateCustomerPage from "./pages/RateCustomerPage";
 import SupplierRatingDisplayPage from "./pages/SupplierRatingDisplayPage";
 import CustomerRatingDisplayPage from "./pages/CustomerRatingDisplayPage";
 import AdminViewAllRatingsPage from './admin/pages/AdminViewAllRatingsPage';
+import AdminMessagesPage from "./admin/pages/AdminMessagesPage";
+
 
 
 
@@ -69,6 +71,8 @@ const App = () => {
         <Route path="/supplier-rating-display" element={<SupplierRatingDisplayPage />} />
         <Route path="/customer-ratings/:bookingId" element={<CustomerRatingDisplayPage />} />
         <Route path="/admin-view-all-ratings" element={<AdminViewAllRatingsPage />} />
+        <Route path="/admin/messages" element={<AdminMessagesPage />} />
+
 
 
 
