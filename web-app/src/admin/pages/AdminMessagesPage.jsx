@@ -1,11 +1,12 @@
 import React from "react";
-import AdminHeader from "../components/AdminHeader"; // ✅ Import the AdminHeader
-import AdminMessages from "../components/AdminMessages";
+import AdminHeader from "../components/AdminHeader"; // ✅ AdminHeader at the top
+import AdminMessages from "../components/AdminMessages"; // ✅ Inbox messages
+import AdminNewsletter from "../components/AdminNewsletter"; // ✅ Import newsletter subscribers
 
 const AdminMessagesPage = () => {
   return (
     <>
-      <AdminHeader /> {/* ✅ AdminHeader at the top */}
+      <AdminHeader />
 
       <div
         style={{
@@ -17,7 +18,12 @@ const AdminMessagesPage = () => {
         }}
       >
         <h2>Inbox Messages</h2>
-        <AdminMessages /> {/* ✅ Display messages here */}
+        <AdminMessages />
+
+        <hr style={{ margin: "40px 0", borderTop: "1px solid #ccc" }} />
+
+        <h2>Newsletter Subscribers</h2>
+        <AdminNewsletter /> {/* ✅ Newsletter list below messages */}
       </div>
     </>
   );
