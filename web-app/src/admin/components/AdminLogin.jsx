@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebase-config";
-import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { useNavigate, Link } from "react-router-dom";
 
 const AdminLogin = () => {
@@ -24,9 +31,18 @@ const AdminLogin = () => {
 
       if (!querySnapshot.empty) {
         const adminDoc = querySnapshot.docs[0];
-        console.log("Admin found with ID:", adminDoc.id);
-        localStorage.setItem("admin", adminDoc.id);
+        const adminData = adminDoc.data();
+
+        if (adminData.status === "approved") {
+          localStorage.setItem("admin", adminDoc.id);
+          window.alert("✅ Login successful!");
+          navigate("/admin/dashboard");
+        } else {
+          setError("Your account is pending approval by Super Admin.");
+          window.alert("⏳ Login failed: Your account is pending approval by Super Admin.");
+        }
       } else {
+        // If admin doc not found, optionally create one (not required for approved-only logic)
         const adminDocRef = doc(db, "admins", user.email);
         await setDoc(adminDocRef, {
           email: user.email,
@@ -36,17 +52,15 @@ const AdminLogin = () => {
           tel_no: "N/A",
           reg_date: new Date().toISOString().split("T")[0],
           user_type: "admin",
+          status: "pending", // Default to pending
         });
-        console.log("New admin document created with email as ID:", user.email);
-        localStorage.setItem("admin", user.email);
+        setError("Your account is pending approval by Super Admin.");
+        window.alert("⏳ Your account has been created but is pending approval by Super Admin.");
       }
-
-      window.alert("Login successful!");
-      navigate("/admin/dashboard");
     } catch (err) {
       console.error("Login error:", err.message);
       setError("Invalid email or password");
-      window.alert("Login failed: Invalid email or password");
+      window.alert("❌ Login failed: Invalid email or password");
     }
   };
 
