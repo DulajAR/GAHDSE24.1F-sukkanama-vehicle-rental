@@ -12,7 +12,7 @@ const SuperAdminDashboard = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>🎉 Welcome to the Super Admin Dashboard</h1>
+      <h1> Welcome to the Super Admin Dashboard</h1>
       <p>You are logged in as Super Admin.</p>
 
       <button
