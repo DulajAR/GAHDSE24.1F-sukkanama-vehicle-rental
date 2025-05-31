@@ -31,6 +31,10 @@ import SupplierRatingDisplayPage from "./pages/SupplierRatingDisplayPage";
 import CustomerRatingDisplayPage from "./pages/CustomerRatingDisplayPage";
 import AdminViewAllRatingsPage from './admin/pages/AdminViewAllRatingsPage';
 import AdminMessagesPage from "./admin/pages/AdminMessagesPage";
+import RequireSuperAdminAuth from "./auth/RequireSuperAdminAuth";
+import SuperAdminLoginPage from "./admin/pages/SuperAdminLoginPage";
+import SuperAdminDashboardPage from "./admin/pages/SuperAdminDashboardPage";
+
 
 
 
@@ -72,6 +76,17 @@ const App = () => {
         <Route path="/customer-ratings/:bookingId" element={<CustomerRatingDisplayPage />} />
         <Route path="/admin-view-all-ratings" element={<AdminViewAllRatingsPage />} />
         <Route path="/admin/messages" element={<AdminMessagesPage />} />
+
+        <Route path="/superadmin/login" element={<SuperAdminLoginPage />} />
+<Route
+  path="/superadmin/dashboard"
+  element={
+    <RequireSuperAdminAuth>
+      <SuperAdminDashboardPage />
+    </RequireSuperAdminAuth>
+  }
+/>
+
 
 
 

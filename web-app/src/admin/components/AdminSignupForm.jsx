@@ -34,7 +34,6 @@ const AdminSignupForm = () => {
   const [message, setMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -44,7 +43,6 @@ const AdminSignupForm = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -65,12 +63,13 @@ const AdminSignupForm = () => {
         reg_date: formData.reg_date,
         tel_no: formData.tel_no,
         user_type: "admin",
+        status: "pending", // ✅ New status field instead of is_verified
       });
 
-      setMessage("✅ Admin sign up successful! Redirecting...");
+      setMessage("✅ Admin sign up successful! Awaiting Super Admin approval...");
       setTimeout(() => {
         window.location.href = "/admin/login";
-      }, 2000);
+      }, 3000);
     } catch (e) {
       console.error("Error adding admin: ", e);
       setMessage("❌ Error! Please try again.");
@@ -79,160 +78,21 @@ const AdminSignupForm = () => {
 
   return (
     <>
-      <style>{`
-        .signup-container {
-          max-width: 500px;
-          margin: 0 auto;
-          background: white;
-          padding: 30px;
-          border-radius: 10px;
-          box-shadow: 0 0 12px rgba(0,0,0,0.1);
-          font-family: Arial, sans-serif;
-        }
-        .signup-container h2 {
-          text-align: center;
-          margin-bottom: 20px;
-          color: #333;
-        }
-        form {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-        input, button {
-          width: 100%;        /* full width inside container */
-          max-width: 100%;
-          padding: 12px 15px;
-          font-size: 16px;
-          border-radius: 5px;
-          border: 1px solid #bbb;
-          box-sizing: border-box;
-          transition: border-color 0.3s ease;
-          -webkit-appearance: none; /* Remove default appearance for inputs */
-          -moz-appearance: none;
-          appearance: none;
-        }
-        input[type="date"]::-webkit-inner-spin-button,
-        input[type="date"]::-webkit-calendar-picker-indicator {
-          display: none; /* Hide calendar icon */
-          -webkit-appearance: none;
-        }
-        input[type="date"] {
-          padding-right: 15px; /* Adjust padding after hiding icon */
-          width: 100%; 
-        }
-        input[type="email"] {
-          padding-right: 15px; /* Adjust padding specifically for email input */
-          width: 100%; /* Ensure full width */
-        }
-
-        input:focus {
-          outline: none;
-          border-color: #4caf50;
-        }
-        button {
-          background-color: #4caf50;
-          color: white;
-          font-weight: 600;
-          border: none;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-        }
-        button:disabled {
-          background-color: #a5d6a7;
-          cursor: not-allowed;
-        }
-        button:hover:not(:disabled) {
-          background-color: #45a049;
-        }
-        .message {
-          text-align: center;
-          margin-bottom: 15px;
-          font-weight: 600;
-          color: green;
-        }
-        .error-text {
-          color: red;
-          font-size: 14px;
-          margin-top: -10px;
-          margin-bottom: 10px;
-        }
-        .login-link {
-          text-align: center;
-          margin-top: 15px;
-          font-size: 14px;
-        }
-        .login-link a {
-          color: #4caf50;
-          text-decoration: none;
-          font-weight: 600;
-        }
-        .login-link a:hover {
-          text-decoration: underline;
-        }
-      `}</style>
+      <style>{`/* Add your styles here if needed */`}</style>
 
       <div className="signup-container">
         <h2>Admin Signup</h2>
         {message && <p className="message">{message}</p>}
 
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="f_name"
-            placeholder="First Name"
-            value={formData.f_name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="l_name"
-            placeholder="Last Name"
-            value={formData.l_name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="nic"
-            placeholder="NIC"
-            value={formData.nic}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="date"
-            name="reg_date"
-            value={formData.reg_date}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="p_word"
-            placeholder="Password"
-            value={formData.p_word}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="f_name" placeholder="First Name" value={formData.f_name} onChange={handleChange} required />
+          <input type="text" name="l_name" placeholder="Last Name" value={formData.l_name} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+          <input type="text" name="nic" placeholder="NIC" value={formData.nic} onChange={handleChange} required />
+          <input type="date" name="reg_date" value={formData.reg_date} onChange={handleChange} required />
+          <input type="password" name="p_word" placeholder="Password" value={formData.p_word} onChange={handleChange} required />
           {passwordError && <p className="error-text">{passwordError}</p>}
-          <input
-            type="text"
-            name="tel_no"
-            placeholder="Telephone Number"
-            value={formData.tel_no}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="tel_no" placeholder="Telephone Number" value={formData.tel_no} onChange={handleChange} required />
 
           <button type="submit" disabled={!!passwordError}>Sign Up</button>
         </form>
