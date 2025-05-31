@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebase-config"; // adjust path as needed
+import { auth, db } from "../../firebase-config";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +8,6 @@ const SuperAdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [hover, setHover] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -41,38 +40,59 @@ const SuperAdminLogin = () => {
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f0f2f5",
-      }}
-    >
-      <form
-        onSubmit={handleLogin}
-        style={{
-          backgroundColor: "white",
-          padding: "2rem 3rem",
-          borderRadius: "10px",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-          width: "320px",
-          textAlign: "center",
-        }}
-      >
-        <h2>Super Admin Login</h2>
+    <>
+      <style>{`
+        .super-admin-login-form {
+          width: 100%;
+          max-width: 400px;
+          margin: 0 auto;
+          padding: 30px;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          background-color: #fff;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          font-family: Arial, sans-serif;
+          box-sizing: border-box;
+        }
 
-        {error && (
-          <p
-            style={{
-              color: "red",
-              marginBottom: "1rem",
-            }}
-          >
-            {error}
-          </p>
-        )}
+        .super-admin-login-form h2 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .super-admin-login-form input,
+        .super-admin-login-form button {
+          width: 100%;
+          padding: 12px;
+          margin: 10px 0;
+          border: 1px solid #bbb;
+          border-radius: 5px;
+          font-size: 16px;
+          box-sizing: border-box;
+        }
+
+        .super-admin-login-form button {
+          background-color: #007bff;
+          color: white;
+          font-weight: bold;
+          border: none;
+          cursor: pointer;
+        }
+
+        .super-admin-login-form button:hover {
+          background-color: #0056b3;
+        }
+
+        .super-admin-login-form .error {
+          color: red;
+          margin-bottom: 10px;
+          text-align: center;
+        }
+      `}</style>
+
+      <form onSubmit={handleLogin} className="super-admin-login-form">
+        <h2>Super Admin Login</h2>
+        {error && <p className="error">{error}</p>}
 
         <input
           type="email"
@@ -80,15 +100,6 @@ const SuperAdminLogin = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{
-            width: "100%",
-            padding: "0.8rem",
-            margin: "0.6rem 0",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            fontSize: "1rem",
-            boxSizing: "border-box",
-          }}
         />
 
         <input
@@ -97,38 +108,11 @@ const SuperAdminLogin = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{
-            width: "100%",
-            padding: "0.8rem",
-            margin: "0.6rem 0",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            fontSize: "1rem",
-            boxSizing: "border-box",
-          }}
         />
 
-        <button
-          type="submit"
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          style={{
-            width: "100%",
-            padding: "0.8rem",
-            marginTop: "1rem",
-            backgroundColor: hover ? "#0056b3" : "#007bff",
-            color: "white",
-            border: "none",
-            fontSize: "1.1rem",
-            borderRadius: "5px",
-            cursor: "pointer",
-            transition: "background-color 0.3s ease",
-          }}
-        >
-          Login
-        </button>
+        <button type="submit">Login</button>
       </form>
-    </div>
+    </>
   );
 };
 
