@@ -7,4 +7,8 @@ export default defineConfig({
   esbuild: {
     loader: 'jsx', // Treat .js files as JSX
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+  }
 });
