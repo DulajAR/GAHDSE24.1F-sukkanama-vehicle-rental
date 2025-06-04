@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mobile_app/screens/customer_login_screen.dart'; // Update the path if it's different
+import 'package:mobile_app/screens/customer_login_screen.dart';
 
 class VehicleAds extends StatefulWidget {
   const VehicleAds({super.key});
@@ -14,8 +14,9 @@ class _VehicleAdsState extends State<VehicleAds> {
   String? selectedYear = "All";
 
   final List<String> brandList = [
-    "All", "Audi", "BMW", "Daihatsu", "Dimo", "Ford", "Honda", "Hyundai", "Isuzu", "Jeep", "KIA", "Mazda",
-    "Benze", "Mitsubishi", "Nissan", "Perodua", "Suzuki", "Toyota", "Micro"
+    "All", "Audi", "BMW", "Daihatsu", "Dimo", "Ford", "Honda", "Hyundai", "Isuzu",
+    "Jeep", "KIA", "Mazda", "Benze", "Mitsubishi", "Nissan", "Perodua", "Suzuki",
+    "Toyota", "Micro"
   ];
 
   List<String> generateYearOptions() {
@@ -50,7 +51,6 @@ class _VehicleAdsState extends State<VehicleAds> {
           const Text('Vehicle Ads', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
 
-          // Brand Dropdown
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(labelText: 'Select Brand'),
             value: selectedBrand,
@@ -64,7 +64,6 @@ class _VehicleAdsState extends State<VehicleAds> {
 
           const SizedBox(height: 10),
 
-          // Year Dropdown
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(labelText: 'Select Year of Manufacture'),
             value: selectedYear,
@@ -78,9 +77,8 @@ class _VehicleAdsState extends State<VehicleAds> {
 
           const SizedBox(height: 20),
 
-          // Vehicle List
           SizedBox(
-            height: 330,
+            height: 400,
             child: StreamBuilder<QuerySnapshot>(
               stream: getFilteredVehicles(),
               builder: (context, snapshot) {
@@ -120,27 +118,41 @@ class _VehicleAdsState extends State<VehicleAds> {
                         ],
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Column(
-                            children: [
-                              Text(
-                                '${vehicle['brand'] ?? 'Unknown'} ${vehicle['model'] ?? ''}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                          // Vehicle image
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              vehicle['vehicleImageUrl'] ?? '',
+                              height: 150,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) => const Icon(Icons.car_repair, size: 100),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          // Vehicle details
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${vehicle['brand'] ?? 'Unknown'} ${vehicle['model'] ?? ''}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 8),
-                              Text('Plate: ${vehicle['plate'] ?? 'N/A'}'),
-                              Text('Color: ${vehicle['color'] ?? 'N/A'}'),
-                              Text('Fuel Type: ${vehicle['f_type'] ?? 'N/A'}'),
-                              Text('Seats: ${vehicle['seat_capacity'] ?? 'N/A'}'),
-                              Text('Charge per Day: Rs. ${vehicle['per_day_chrg'] ?? 'N/A'}'),
-                              Text('Year: ${vehicle['yom'] ?? 'N/A'}'),
-                            ],
+                                const SizedBox(height: 4),
+                                Text('Plate: ${vehicle['plate'] ?? 'N/A'}'),
+                                Text('Color: ${vehicle['color'] ?? 'N/A'}'),
+                                Text('Fuel Type: ${vehicle['f_type'] ?? 'N/A'}'),
+                                Text('Seats: ${vehicle['seat_capacity'] ?? 'N/A'}'),
+                                Text('Charge/Day: Rs. ${vehicle['per_day_chrg'] ?? 'N/A'}'),
+                                Text('Year: ${vehicle['yom'] ?? 'N/A'}'),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 10),
                           ElevatedButton(

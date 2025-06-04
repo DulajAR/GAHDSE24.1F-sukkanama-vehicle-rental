@@ -1,7 +1,6 @@
-// lib/widgets/customer_dashboard.dart
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../screens/all_vehicles_screen.dart'; // Adjust the path as necessary
 
 class CustomerDashboard extends StatefulWidget {
   final String email;
@@ -84,7 +83,12 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                   icon: Icons.search,
                   title: 'Browse Vehicles',
                   onTap: () {
-                    // TODO: Navigate to Browse Vehicles Screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllVehiclesScreen(email: widget.email),
+                      ),
+                    );
                   },
                 ),
                 _dashboardCard(
