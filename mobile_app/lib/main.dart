@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobile_app/screens/home_screen.dart';
 import 'package:mobile_app/screens/supplier_dashboard_screen.dart';
+import 'package:mobile_app/screens/supplier_login_screen.dart';
 import 'package:mobile_app/theme/theme.dart';
 import 'firebase_options.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(),
         '/supplierDashboard': (context) => const SupplierDashboardScreen(email: 'demo@example.com'),
+        '/loginSupplier': (context) => const SupplierLoginScreen(), // THIS LINE IS KEY
 
       },
     );
