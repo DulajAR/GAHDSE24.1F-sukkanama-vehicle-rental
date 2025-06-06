@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile_app/screens/supplier_add_new_vehicle_screen.dart';
 
 class SupplierDashboard extends StatefulWidget {
   final String email; // ✅ Accept email from login screen
@@ -76,12 +77,20 @@ Widget build(BuildContext context) {
             spacing: 20,
             runSpacing: 20,
             children: [
-              _dashboardCard(
-                context,
-                icon: Icons.add_circle_outline,
-                title: 'Add New Vehicle',
-                onTap: () {},
-              ),
+             _dashboardCard(
+  context,
+  icon: Icons.add_circle_outline,
+  title: 'Add New Vehicle',
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SupplierAddNewVehicleScreen(email: widget.email),
+      ),
+    );
+  },
+),
+
               _dashboardCard(
                 context,
                 icon: Icons.list_alt,
