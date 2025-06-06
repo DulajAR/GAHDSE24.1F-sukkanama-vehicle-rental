@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile_app/screens/customer_bookings_screen.dart';
 import '../screens/all_vehicles_screen.dart'; // Adjust the path as necessary
 
 class CustomerDashboard extends StatefulWidget {
@@ -91,30 +92,22 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
                     );
                   },
                 ),
+             
                 _dashboardCard(
                   context,
                   icon: Icons.history,
                   title: 'Booking History',
                   onTap: () {
-                    // TODO: Navigate to Booking History Screen
-                  },
-                ),
-                _dashboardCard(
-                  context,
-                  icon: Icons.favorite,
-                  title: 'Saved Vehicles',
-                  onTap: () {
-                    // TODO: Navigate to Saved Vehicles Screen
-                  },
-                ),
-                _dashboardCard(
-                  context,
-                  icon: Icons.settings,
-                  title: 'Settings',
-                  onTap: () {
-                    // TODO: Navigate to Settings Screen
-                  },
-                ),
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                       builder: (context) => CustomerBookingsScreen(email: widget.email),
+                       ),
+                     );
+                   },
+                  ),
+
+                
               ],
             ),
           ],
