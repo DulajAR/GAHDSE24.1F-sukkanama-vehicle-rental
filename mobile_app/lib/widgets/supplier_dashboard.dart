@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_app/screens/supplier_add_new_vehicle_screen.dart';
+import 'package:mobile_app/screens/supplier_manage_listing_screen.dart';
 
 class SupplierDashboard extends StatefulWidget {
   final String email; // ✅ Accept email from login screen
@@ -91,7 +92,20 @@ Widget build(BuildContext context) {
   },
 ),
 
-              _dashboardCard(
+         _dashboardCard(
+  context,
+  icon: Icons.list_alt,
+  title: 'Manage Listings',
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SupplierManageListingScreen(email: widget.email),
+      ),
+    );
+  },
+),
+     _dashboardCard(
                 context,
                 icon: Icons.list_alt,
                 title: 'Manage Listings',
