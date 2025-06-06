@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/screens/vehicle_book_screen.dart';
 
 class AllVehicles extends StatefulWidget {
   final String? brandFilter;
@@ -12,6 +14,15 @@ class AllVehicles extends StatefulWidget {
 }
 
 class _AllVehiclesState extends State<AllVehicles> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = _auth.currentUser;
+  }
+
   Future<QuerySnapshot> getFilteredVehicles() {
     Query query = FirebaseFirestore.instance.collection('vehicles');
 
@@ -52,7 +63,8 @@ class _AllVehiclesState extends State<AllVehicles> {
               elevation: 4,
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -72,7 +84,9 @@ class _AllVehiclesState extends State<AllVehicles> {
                     Text(
                       "${vehicleData['brand']} ${vehicleData['model']} (${vehicleData['yom']})",
                       style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 5),
                     Text("Plate: ${vehicleData['plate']}"),
@@ -90,7 +104,26 @@ class _AllVehiclesState extends State<AllVehicles> {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Navigate to booking screen
+                          if (currentUser == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please log in to book a vehicle."),
+                              ),
+                            );
+                            return;
+                          }
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VehicleBookScreen(
+                                vehicleId: vehicles[index].id,
+                                vehicleOwnerId: vehicleData['userId'], // owner from Firestore
+                                customerId: currentUser!.uid, // from FirebaseAuth
+                                customerEmail: currentUser!.email ?? '',
+                              ),
+                            ),
+                          );
                         },
                         child: const Text("Book Now"),
                       ),
