@@ -169,12 +169,20 @@ const BookNow = () => {
       };
 
       const docRef = await addDoc(collection(db, 'bookings'), bookingData);
-      setMessage(`✅ Booking confirmed! Booking ID: ${docRef.id}`);
-      setPhone('');
+
+      // ✅ Immediately redirect to payment page
+      navigate('/payment', {
+        state: {
+          bookingId: docRef.id,
+          vehicle: vehicleDetails,
+          startDate: bookingData.startDate,
+          endDate: bookingData.endDate,
+          perDayCharge: vehicleDetails.per_day_chrg
+        }
+      });
     } catch (error) {
       console.error('Booking error:', error);
       setMessage('❌ Booking failed. Please try again later.');
-    } finally {
       setLoading(false);
     }
   };
@@ -311,7 +319,7 @@ const BookNow = () => {
         }
 
         .booking-message {
-          text-align: center
+          text-align: center;
           margin-bottom: 15px;
           font-weight: bold;
         }

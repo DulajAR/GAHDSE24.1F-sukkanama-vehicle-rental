@@ -34,6 +34,8 @@ import AdminMessagesPage from "./admin/pages/AdminMessagesPage";
 import RequireSuperAdminAuth from "./auth/RequireSuperAdminAuth";
 import SuperAdminLoginPage from "./admin/pages/SuperAdminLoginPage";
 import SuperAdminDashboardPage from "./admin/pages/SuperAdminDashboardPage";
+import PaymentPage from "./pages/PaymentPage";
+
 
 
 
@@ -78,6 +80,8 @@ const App = () => {
         <Route path="/admin/messages" element={<AdminMessagesPage />} />
 
         <Route path="/superadmin/login" element={<SuperAdminLoginPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+
 <Route
   path="/superadmin/dashboard"
   element={
