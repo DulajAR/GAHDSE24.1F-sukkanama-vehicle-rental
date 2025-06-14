@@ -154,7 +154,10 @@ const CustomerBookings = () => {
 
             <div style={styles.section}>
               <p>
-                <strong>Status:</strong> {booking.status}
+                <strong>Status:</strong>{' '}
+                <span style={{ color: booking.status === 'Paid' ? 'green' : '#ff8800' }}>
+                  {booking.status}
+                </span>
               </p>
               <p>
                 <strong>Start Date:</strong> {booking.startDate}
@@ -165,6 +168,20 @@ const CustomerBookings = () => {
               <p>
                 <strong>Phone:</strong> {booking.phone}
               </p>
+
+              {booking.paymentInfo && (
+                <>
+                  <p>
+                    <strong>Paid Amount:</strong> Rs. {booking.paymentInfo.totalAmount}
+                  </p>
+                  <p>
+                    <strong>Payment Method:</strong> {booking.paymentInfo.method}
+                  </p>
+                  <p>
+                    <strong>Card Last 4:</strong> **** **** **** {booking.paymentInfo.cardLast4}
+                  </p>
+                </>
+              )}
             </div>
 
             <hr style={styles.divider} />
@@ -194,7 +211,6 @@ const CustomerBookings = () => {
                   <p>
                     <strong>Charge/Day:</strong> Rs. {booking.vehicle.per_day_chrg}
                   </p>
-
                   <div style={styles.imageContainer}>
                     {booking.vehicle.vehicleImageUrl ? (
                       <img
@@ -233,29 +249,20 @@ const CustomerBookings = () => {
               )}
             </div>
 
-        <div style={styles.buttonGroup}>
-  <button
-    style={styles.updateBtn}
-    onClick={() => handleUpdate(booking.bookingId)}
-  >
-    Update Booking
-  </button>
-  <button
-    style={styles.deleteBtn}
-    onClick={() => handleDelete(booking.bookingId)}
-  >
-    Delete Booking
-  </button>
-  <button
-    style={styles.ratingBtn}
-    onClick={() => navigate(`/rate-supplier?bookingId=${booking.bookingId}`)
-
-}
-  >
-    Supplier Rating
-  </button>
-</div>
-
+            <div style={styles.buttonGroup}>
+              <button style={styles.updateBtn} onClick={() => handleUpdate(booking.bookingId)}>
+                Update Booking
+              </button>
+              <button style={styles.deleteBtn} onClick={() => handleDelete(booking.bookingId)}>
+                Delete Booking
+              </button>
+              <button
+                style={styles.ratingBtn}
+                onClick={() => navigate(`/rate-supplier?bookingId=${booking.bookingId}`)}
+              >
+                Supplier Rating
+              </button>
+            </div>
           </div>
         ))
       )}
@@ -268,8 +275,7 @@ const styles = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center', // center vertically
-    alignItems: 'center', // center horizontally
+    alignItems: 'center',
     backgroundColor: '#f8f9fa',
     fontFamily: 'Arial, sans-serif',
     padding: '20px',
@@ -358,36 +364,45 @@ const styles = {
   },
   vehicleImage: {
     maxWidth: '300px',
-   
-borderRadius: '8px',
-objectFit: 'cover',
-boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-},
-buttonGroup: {
-display: 'flex',
-justifyContent: 'flex-end',
-gap: '15px',
-},
-updateBtn: {
-backgroundColor: '#28a745',
-border: 'none',
-color: '#fff',
-padding: '10px 18px',
-borderRadius: '6px',
-cursor: 'pointer',
-fontWeight: '600',
-fontSize: '14px',
-},
-deleteBtn: {
-backgroundColor: '#dc3545',
-border: 'none',
-color: '#fff',
-padding: '10px 18px',
-borderRadius: '6px',
-cursor: 'pointer',
-fontWeight: '600',
-fontSize: '14px',
-},
+    borderRadius: '8px',
+    objectFit: 'cover',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+  },
+  buttonGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '15px',
+  },
+  updateBtn: {
+    backgroundColor: '#28a745',
+    border: 'none',
+    color: '#fff',
+    padding: '10px 18px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: '600',
+    fontSize: '14px',
+  },
+  deleteBtn: {
+    backgroundColor: '#dc3545',
+    border: 'none',
+    color: '#fff',
+    padding: '10px 18px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: '600',
+    fontSize: '14px',
+  },
+  ratingBtn: {
+    backgroundColor: '#ffc107',
+    border: 'none',
+    color: '#000',
+    padding: '10px 18px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: '600',
+    fontSize: '14px',
+  },
 };
 
 export default CustomerBookings;
