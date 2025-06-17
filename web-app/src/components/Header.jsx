@@ -61,9 +61,6 @@ const Header = () => {
         </ul>
       </nav>
       <div id="mobile">
-        <Link to="/cart">
-          <i className="fas fa-shopping-bag"></i>
-        </Link>
         <i id="bar" className="fas fa-bars" onClick={toggleMobileMenu}></i>
       </div>
     </header>
