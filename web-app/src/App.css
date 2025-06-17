@@ -125,44 +125,103 @@ body {
 
 
 /* Hero Section Styles */
-#hero {
-  width: 100vw;  /* Ensures full width of the screen */
-  background-image: url('../assets/hero4.png'); /* Fallback image if inline style doesn't work */
-  background-size: cover;  /* Ensures the image covers the whole area */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents image from repeating */
+.hero-section {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   text-align: center;
-  padding: 100px 20px; /* Keep your original padding */
+  padding: 100px 20px;
   color: white;
+  overflow: hidden;
 }
 
+/* 🔲 Overlay for better contrast */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+  z-index: 1;
+}
 
+/* 🎞️ Animate background image */
+.hero-section::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: inherit;
+  transform-origin: center;
+  z-index: 0;
+  animation: scrollZoomRotate 20s infinite linear;
+  will-change: transform;
+}
 
+@keyframes scrollZoomRotate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
 
+/* 🖋️ Text styling */
+.hero-section h1,
+.hero-section h2,
+.hero-section p,
+.hero-section button {
+  position: relative;
+  z-index: 2;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
 
-#hero h1 {
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
   margin: 0;
-  font-size: 2.5rem;
 }
 
-#hero p {
+.hero-section h2 {
+  font-size: 2rem;
+  margin-top: 10px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.hero-section p {
   font-size: 1.2rem;
-  margin: 10px 0 20px;
+  margin: 20px 0;
 }
 
-#hero button {
-  padding: 10px 20px;
-  background-color: white;
-  color: #5fadb7;
+/* 🌈 Gradient Button */
+.hero-section button {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
 }
 
-#hero button:hover {
-  background-color: #f0f0f0;
+.hero-section button:hover {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
+
 
 
 
