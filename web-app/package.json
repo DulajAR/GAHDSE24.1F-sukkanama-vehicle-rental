@@ -17,6 +17,7 @@
     "cloudinary": "^2.6.0",
     "date-fns": "^4.1.0",
     "firebase": "^11.5.0",
+    "framer-motion": "^12.18.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "photo-sphere-viewer": "^4.8.1",
