@@ -3,6 +3,10 @@ import logo from '../assets/logo.png'; // Adjust the path based on your folder s
 import app from '../assets/app.jpg';
 import play from '../assets/play.jpg';
 import pay from '../assets/pay.png';
+import { Link } from 'react-router-dom';
+
+
+
 
 
 const Footer = () => {
@@ -26,19 +30,17 @@ const Footer = () => {
 
       <div className="col">
         <h4>About</h4>
-        <a href="#">About us</a>
-        <a href="#">Delivery Information</a>
+        <Link to="/about">About us</Link>
+        <a href="#">Booking Information</a>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms & Conditions</a>
-        <a href="#">Contact Us</a>
+        <Link to="/contact">Contact Us</Link>
       </div>
 
       <div className="col">
         <h4>My Account</h4>
-        <a href="#">Sign In</a>
-        <a href="#">View Cart</a>
-        <a href="#">My Wishlist</a>
-        <a href="#">Track My Order</a>
+        <Link to="/supplier-login">Sign In as Supplier</Link>
+        <Link to="/loginCustomer">Sign In as Customer</Link>
         <a href="#">Help</a>
       </div>
 
