@@ -7,8 +7,8 @@ const AboutContent = () => {
     <div>
       {/* Page Header Section */}
       <section id="page-header" className="about-header">
-        <h2>#KnownUs</h2>
-        <p>Quality Craftsmanship!</p>
+        <h2>#SmartRenting</h2>
+        <p>Post Your Ride. Find a Ride. Simple & Fast!</p>
       </section>
 
       {/* About Us Section */}

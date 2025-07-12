@@ -613,7 +613,7 @@ footer .copyright {
 /* Page Header Section */
 .about-header {
   text-align: center;
-  background-color: #333;
+  background-color: #9fd4e9;
   color: white;
   padding: 40px 0;
 }
@@ -635,7 +635,7 @@ footer .copyright {
   align-items: center;
   padding: 50px 20px;
   background-color: 
-  #5692e1;
+  #9fc3c5;
 }
 
 #about-head img {
@@ -666,7 +666,7 @@ footer .copyright {
 
 #about-head .about-marquee {
   margin-top: 20px;
-  background-color: #320ebfea;
+  background-color: #cdc9dfea;
   padding: 10px 0;
 }
 
